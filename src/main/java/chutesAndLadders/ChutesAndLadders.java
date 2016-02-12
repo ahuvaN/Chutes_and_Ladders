@@ -3,6 +3,7 @@ package chutesAndLadders;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,8 +15,10 @@ public class ChutesAndLadders extends JFrame {
 	private String[] photos;
 	private Board board;
 	private PlayTheGame logic;
+	private ActionListener buttonListen;
 
 	public ChutesAndLadders(String playerOneName, String PlayerTwoName) {
+
 		setTitle("CHUTES AND LADDERS");
 		setSize(1100, 1000);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -23,6 +26,9 @@ public class ChutesAndLadders extends JFrame {
 
 		BorderLayout bLayout = new BorderLayout();
 		setLayout(bLayout);
+
+		board = new Board();
+		add(board, BorderLayout.CENTER);
 
 		board = new Board();
 		add(board, BorderLayout.CENTER);
@@ -37,18 +43,29 @@ public class ChutesAndLadders extends JFrame {
 
 		logic = new PlayTheGame(new Player(playerOneName, 1), new Player(
 				PlayerTwoName, 2));
+
+		buttonListen = new ActionListener() {
+
+			public void actionPerformed(ActionEvent event) {
+
+				int value = logic.rollDice();
+				spinButton.setIcon(new ImageIcon(photos[value - 1]));
+				logic.turn(value);
+				board.setIconPieces(logic.getCurrent().getPosition().getRow(),
+						logic.getCurrent().getPosition().getCol());
+			}
+		};
+
+		int value = rollDice();
+		spinButton.setIcon(new ImageIcon(photos[value - 1]));
+		logic.turn(value);
 	}
 
-	ActionListener buttonListen = new ActionListener() {
+	public int rollDice() {
+		Random random = new Random();
+		int val = random.nextInt(6) + 1;
+		return val;
 
-		public void actionPerformed(ActionEvent event) {
-
-			int value = logic.rollDice();
-			spinButton.setIcon(new ImageIcon(photos[value - 1]));
-			logic.turn(value);
-			board.setIconPieces(logic.getCurrent().getPosition().getRow(),
-					logic.getCurrent().getPosition().getCol());
-		}
-	};
+	}
 
 }

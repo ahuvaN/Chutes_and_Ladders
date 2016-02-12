@@ -24,6 +24,9 @@ public class Board extends JPanel {
 			image = ImageIO.read(new File("board.jpg"));
 		} catch (IOException e) {
 
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
 		}
 		GridLayout layout = new GridLayout(10, 10);
 		setLayout(layout);
@@ -31,6 +34,7 @@ public class Board extends JPanel {
 		boardSlots = new JLabel[10][10];
 
 		Border border = BorderFactory.createLineBorder(Color.BLACK);
+
 		for (int row = 0; row < boardSlots.length; row++) {
 			for (int col = 0; col < boardSlots[row].length; col++) {
 				boardSlots[row][col] = new JLabel();
@@ -50,6 +54,9 @@ public class Board extends JPanel {
 	public void setIconPieces(int row, int column) {
 		boardSlots[row][column].setIcon(new ImageIcon("redPiece.png"));
 		boardSlots[row][column].setHorizontalAlignment(JLabel.CENTER);
+
+		// boardSlots[row][col].setBorder(BorderFactory.createLineBorder(Color.WHITE));
+		add(boardSlots[row][column]);
 	}
 
 	@Override

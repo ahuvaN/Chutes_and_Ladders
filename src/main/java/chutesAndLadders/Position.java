@@ -5,6 +5,7 @@ public class Position {
 	private int col;
 
 	public Position() {
+
 		row = 9;
 		col = -1;
 	}
@@ -46,6 +47,7 @@ public class Position {
 
 	@Override
 	public boolean equals(Object obj) {
+
 		if (this == obj) {
 			return true;
 		}
