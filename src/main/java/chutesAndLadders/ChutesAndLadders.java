@@ -1,10 +1,15 @@
 package chutesAndLadders;
 
 import java.awt.BorderLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,10 +20,11 @@ public class ChutesAndLadders extends JFrame {
 	private String[] photos;
 	private Board board;
 	private PlayTheGame logic;
+	private Player current;
+	private Image img;
 
-	// private ActionListener buttonListen;
-
-	public ChutesAndLadders(String playerOneName, String PlayerTwoName) {
+	public ChutesAndLadders(String playerOneName, String PlayerTwoName)
+			throws IOException {
 
 		setTitle("CHUTES AND LADDERS");
 		setSize(1100, 1000);
@@ -41,20 +47,29 @@ public class ChutesAndLadders extends JFrame {
 				"#5.png", "#6.png" };
 
 		add(spinButton, BorderLayout.LINE_START);
+		BufferedImage img = ImageIO.read(new File("redPiece.png"));
+		BufferedImage img2 = ImageIO.read(new File("bluePiece.jpg"));
+		current = new Player(playerOneName, 1, img);
 
-		logic = new PlayTheGame(new Player(playerOneName, 1), new Player(
-				PlayerTwoName, 2));
+		logic = new PlayTheGame(current, new Player(PlayerTwoName, 2, img2));
 	}
 
 	ActionListener buttonListen = new ActionListener() {
 
 		public void actionPerformed(ActionEvent event) {
 
-			int value = logic.rollDice();
+			int value = 6;// rollDice();
 			spinButton.setIcon(new ImageIcon(photos[value - 1]));
-			logic.turn(value);
-			board.setIconPieces(logic.getCurrent().getPosition().getRow(),
+			if (current.getPosition().getCol() != -1) {
+				board.removeImage(current.getImage(), logic.getCurrent()
+						.getPosition().getRow(), logic.getCurrent()
+						.getPosition().getCol());
+			}
+			img = logic.turn(value);
+			board.addImage(img, logic.getCurrent().getPosition().getRow(),
 					logic.getCurrent().getPosition().getCol());
+			current = logic.switchPlayer();
+
 		}
 	};
 

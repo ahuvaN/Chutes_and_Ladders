@@ -1,5 +1,6 @@
 package chutesAndLadders;
 
+import java.awt.Image;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -20,7 +21,7 @@ public class PlayTheGame {
 		setUpMaps();
 	}
 
-	public void turn(int value) {
+	public Image turn(int value) {
 		int moves = value;
 		int row = current.getPosition().getRow();
 		int col = current.getPosition().getCol();
@@ -33,8 +34,10 @@ public class PlayTheGame {
 					current.changePosition(row--, col);
 					moves--;
 				} else if (col >= moves) { // enough room to stay on same row
-					current.changePosition(row, col - moves);
+					col -= moves;
+					current.changePosition(row, col);
 					moves = 0;
+					break;
 				} else if (col < moves) { // need to go up a row
 					// calculate how many moves will be used to complete the row
 					moves = moves - col;
@@ -47,8 +50,10 @@ public class PlayTheGame {
 					moves--;
 				} else if (col + moves < 10) { // enough room to stay on same
 					// row
-					current.changePosition(row, col + moves);
+					col += moves;
+					current.changePosition(row, col);
 					moves = 0;
+					break;
 				} else if (col + moves >= 10) { // need to go up a row
 					// calc how many moves left in this row
 					moves = moves - (9 - col);
@@ -58,16 +63,18 @@ public class PlayTheGame {
 			}
 
 		} while (moves != 0);
+		System.out.println(current.getName() + "spun: " + value + " "
+				+ current.getPosition().getRow() + ", "
+				+ current.getPosition().getCol());
 		// check for snake/ladder
 		checkSnakeLadder(current.getPosition());
 
-		// if position = 100/ 0,0 showMessageDialog-"We have a winner"
+		// TODO if position = 100/ 0,0 showMessageDialog-"We have a winner"
 
 		// move the player to correct location
-		// ???????????
+		Image image = current.getImage();
 
-		// change the player
-		current = current == player1 ? player2 : player1;
+		return image;
 	}
 
 	public int rollDice() {
@@ -75,6 +82,11 @@ public class PlayTheGame {
 		int val = random.nextInt(6) + 1;
 		return val;
 
+	}
+
+	public Player switchPlayer() {
+		current = current == player1 ? player2 : player1;
+		return current;
 	}
 
 	private void setUpMaps() {
