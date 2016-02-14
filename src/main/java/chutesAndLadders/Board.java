@@ -8,9 +8,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 
 public class Board extends JPanel {
 
@@ -22,23 +20,16 @@ public class Board extends JPanel {
 			image = ImageIO.read(new File("board.jpg"));
 		} catch (IOException e) {
 
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
 		}
 		GridLayout layout = new GridLayout(10, 10);
 		setLayout(layout);
 
 		boardSlots = new BoardSquare[10][10];
 
-		Border border = BorderFactory.createLineBorder(Color.BLACK);
-
 		for (int row = 0; row < boardSlots.length; row++) {
 			for (int col = 0; col < boardSlots[row].length; col++) {
 				boardSlots[row][col] = new BoardSquare();
 				boardSlots[row][col].setBackground(new Color(0, 0, 0, 0));
-				boardSlots[row][col].setBorder(BorderFactory
-						.createLineBorder(Color.WHITE));
 				add(boardSlots[row][col]);
 			}
 		}
@@ -47,7 +38,6 @@ public class Board extends JPanel {
 
 	public void setIconPieces(int row, int column) {
 		boardSlots[row][column].repaint();
-		// boardSlots[row][col].setBorder(BorderFactory.createLineBorder(Color.WHITE));
 		add(boardSlots[row][column]);
 	}
 

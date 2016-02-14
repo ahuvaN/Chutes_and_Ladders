@@ -15,7 +15,8 @@ public class ChutesAndLadders extends JFrame {
 	private String[] photos;
 	private Board board;
 	private PlayTheGame logic;
-	private ActionListener buttonListen;
+
+	// private ActionListener buttonListen;
 
 	public ChutesAndLadders(String playerOneName, String PlayerTwoName) {
 
@@ -43,23 +44,19 @@ public class ChutesAndLadders extends JFrame {
 
 		logic = new PlayTheGame(new Player(playerOneName, 1), new Player(
 				PlayerTwoName, 2));
-
-		buttonListen = new ActionListener() {
-
-			public void actionPerformed(ActionEvent event) {
-
-				int value = logic.rollDice();
-				spinButton.setIcon(new ImageIcon(photos[value - 1]));
-				logic.turn(value);
-				board.setIconPieces(logic.getCurrent().getPosition().getRow(),
-						logic.getCurrent().getPosition().getCol());
-			}
-		};
-
-		int value = rollDice();
-		spinButton.setIcon(new ImageIcon(photos[value - 1]));
-		logic.turn(value);
 	}
+
+	ActionListener buttonListen = new ActionListener() {
+
+		public void actionPerformed(ActionEvent event) {
+
+			int value = logic.rollDice();
+			spinButton.setIcon(new ImageIcon(photos[value - 1]));
+			logic.turn(value);
+			board.setIconPieces(logic.getCurrent().getPosition().getRow(),
+					logic.getCurrent().getPosition().getCol());
+		}
+	};
 
 	public int rollDice() {
 		Random random = new Random();
