@@ -31,22 +31,25 @@ public class PlayTheGame {
 
 			if (even) {
 				if (col == 0) {
-					current.changePosition(row--, col);
+					row -=1;
+					current.changePosition(row, col);
 					moves--;
 				} else if (col >= moves) { // enough room to stay on same row
 					col -= moves;
 					current.changePosition(row, col);
 					moves = 0;
-					break;
 				} else if (col < moves) { // need to go up a row
 					// calculate how many moves will be used to complete the row
 					moves = moves - col;
 					current.changePosition(row, 0);
+					row = current.getPosition().getRow();
+					col = current.getPosition().getCol();
 				}
 
 			} else {
 				if (col == 9) {
-					current.changePosition(row--, col);
+					row -= 1;
+					current.changePosition(row, col);
 					moves--;
 				} else if (col + moves < 10) { // enough room to stay on same
 					// row
@@ -58,12 +61,14 @@ public class PlayTheGame {
 					// calc how many moves left in this row
 					moves = moves - (9 - col);
 					current.changePosition(row, 9);
+					row = current.getPosition().getRow();
+					col = current.getPosition().getCol();
 				}
 
 			}
 
 		} while (moves != 0);
-		System.out.println(current.getName() + "spun: " + value + " "
+		System.out.println(current.getName() + " spun: " + value + " "
 				+ current.getPosition().getRow() + ", "
 				+ current.getPosition().getCol());
 		// check for snake/ladder

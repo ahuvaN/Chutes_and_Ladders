@@ -58,7 +58,7 @@ public class ChutesAndLadders extends JFrame {
 
 		public void actionPerformed(ActionEvent event) {
 
-			int value = 6;// rollDice();
+			int value = rollDice();
 			spinButton.setIcon(new ImageIcon(photos[value - 1]));
 			if (current.getPosition().getCol() != -1) {
 				board.removeImage(current.getImage(), logic.getCurrent()
