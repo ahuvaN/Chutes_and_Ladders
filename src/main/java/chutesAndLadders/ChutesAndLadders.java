@@ -20,8 +20,11 @@ public class ChutesAndLadders extends JFrame {
 	private String[] photos;
 	private Board board;
 	private PlayTheGame logic;
+	private Player current;
+	private Image img;
 
-	public ChutesAndLadders(String playerOneName, String PlayerTwoName) throws IOException {
+	public ChutesAndLadders(String playerOneName, String PlayerTwoName)
+			throws IOException {
 
 		setTitle("CHUTES AND LADDERS");
 		setSize(1100, 1000);
@@ -44,31 +47,34 @@ public class ChutesAndLadders extends JFrame {
 				"#5.png", "#6.png" };
 
 		add(spinButton, BorderLayout.LINE_START);
-		BufferedImage img=ImageIO.read(new File("redPiece.png"));
-		BufferedImage img2=ImageIO.read(new File("bluePiece.jpg"));
-		
+		BufferedImage img = ImageIO.read(new File("redPiece.png"));
+		BufferedImage img2 = ImageIO.read(new File("bluePiece.jpg"));
+		current = new Player(playerOneName, 1, img);
 
-		logic = new PlayTheGame(new Player(playerOneName, 1, img), new Player(
-				PlayerTwoName, 2, img2));
+		logic = new PlayTheGame(current, new Player(PlayerTwoName, 2, img2));
+
 	}
-		ActionListener buttonListen = new ActionListener() {
 
-			public void actionPerformed(ActionEvent event) {
+	ActionListener buttonListen = new ActionListener() {
 
-				int value = rollDice();
-				spinButton.setIcon(new ImageIcon(photos[value - 1]));
-				Image img = logic.turn(value);
-				board.removeImage(img,logic.getCurrent().getPosition().getRow(), 
-						logic.getCurrent().getPosition().getCol());
-				board.addImage(img,logic.getCurrent().getPosition().getRow(), 
-						logic.getCurrent().getPosition().getCol());
-				logic.switchPlayer();
-				
+		public void actionPerformed(ActionEvent event) {
+
+			int value = rollDice();
+			spinButton.setIcon(new ImageIcon(photos[value - 1]));
+			// int row = current.getPosition().getRow();
+			// int col = current.getPosition().getCol();
+			if (current.getPosition().getCol() != -1) {
+				board.removeImage(current.getImage(), logic.getCurrent()
+						.getPosition().getRow(), logic.getCurrent()
+						.getPosition().getCol());
 			}
-		};
+			img = logic.turn(value);
+			board.addImage(img, logic.getCurrent().getPosition().getRow(),
+					logic.getCurrent().getPosition().getCol());
+			current = logic.switchPlayer();
 
-		
-	
+		}
+	};
 
 	public int rollDice() {
 		Random random = new Random();

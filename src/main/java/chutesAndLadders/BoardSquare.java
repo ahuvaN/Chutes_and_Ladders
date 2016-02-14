@@ -1,5 +1,6 @@
 package chutesAndLadders;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
@@ -9,10 +10,12 @@ import javax.swing.JComponent;
 
 public class BoardSquare extends JComponent {
 
-	private List<Image> players;
+	private ArrayList<Image> players;
+	//private int size;
 	
 	public BoardSquare(){
 		players = new ArrayList<Image>();
+		
 	}
 	
 	public void addPlayer(Image image){
@@ -21,6 +24,10 @@ public class BoardSquare extends JComponent {
 	
 	public void removePlayer(Image image){
 		players.remove(image);
+	}
+	
+	public int getLength(){
+		return players.size();
 	}
 
 	@Override

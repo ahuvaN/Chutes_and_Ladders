@@ -9,7 +9,7 @@ public class Player {
 	private int num;
 	private Position position;
 	private Image image;
-
+	
 	public Player(String name, int nmbr, Image img) {
 		this.name = name;
 		this.num = nmbr == 1 ? 1 : 2;

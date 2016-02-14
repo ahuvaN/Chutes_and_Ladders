@@ -59,6 +59,8 @@ public class PlayTheGame {
 			}
 
 		} while (moves != 0);
+		System.out.println(current.getName() + "spun: " + value + " " + current.getPosition().getRow() + ", "
+				+ current.getPosition().getCol());
 		// check for snake/ladder
 		checkSnakeLadder(current.getPosition());
 
@@ -77,8 +79,9 @@ public class PlayTheGame {
 
 	}
 	
-	public void switchPlayer(){
+	public Player switchPlayer(){
 		current = current == player1 ? player2 : player1;
+		return current;
 	}
 
 	private void setUpMaps() {

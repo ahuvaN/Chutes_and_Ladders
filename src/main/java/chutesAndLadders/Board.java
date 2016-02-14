@@ -32,8 +32,6 @@ public class Board extends JPanel {
 
 		boardSlots = new BoardSquare[10][10];
 
-		Border border = BorderFactory.createLineBorder(Color.BLACK);
-
 		for (int row = 0; row < boardSlots.length; row++) {
 			for (int col = 0; col < boardSlots[row].length; col++) {
 				boardSlots[row][col] = new BoardSquare();
@@ -53,9 +51,12 @@ public class Board extends JPanel {
 
 	public void removeImage(Image img, int row, int col) {
 		boardSlots[row][col].removePlayer(img);
-		//boardSlots[row][col].repaint();
+		boardSlots[row][col].repaint();
 	}
 
+	public BoardSquare getSquare(int row, int col){
+		return boardSlots[row][col];
+	}
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
