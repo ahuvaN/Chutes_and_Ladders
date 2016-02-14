@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -51,10 +52,17 @@ public class PlayerInfo extends JFrame {
 		submit.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				ChutesAndLadders gameBoard = new ChutesAndLadders(p1Name
-						.getText(), p2Name.getText());
-				gameBoard.setVisible(true);
-				dispose();
+				ChutesAndLadders gameBoard;
+				try {
+					gameBoard = new ChutesAndLadders(p1Name
+							.getText(), p2Name.getText());
+					gameBoard.setVisible(true);
+					dispose();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			}
 
 		});

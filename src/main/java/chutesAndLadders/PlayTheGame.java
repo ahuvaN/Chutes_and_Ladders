@@ -1,5 +1,6 @@
 package chutesAndLadders;
 
+import java.awt.Image;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -20,7 +21,7 @@ public class PlayTheGame {
 		setUpMaps();
 	}
 
-	public void turn(int value) {
+	public Image turn(int value) {
 		int moves = value;
 		int row = current.getPosition().getRow();
 		int col = current.getPosition().getCol();
@@ -61,13 +62,12 @@ public class PlayTheGame {
 		// check for snake/ladder
 		checkSnakeLadder(current.getPosition());
 
-		// if position = 100/ 0,0 showMessageDialog-"We have a winner"
+		// TODO if position = 100/ 0,0 showMessageDialog-"We have a winner"
 
 		// move the player to correct location
-		// ???????????
+		Image image = current.getImage();
 
-		// change the player
-		current = current == player1 ? player2 : player1;
+		return image;
 	}
 
 	public int rollDice() {
@@ -75,6 +75,10 @@ public class PlayTheGame {
 		int val = random.nextInt(6) + 1;
 		return val;
 
+	}
+	
+	public void switchPlayer(){
+		current = current == player1 ? player2 : player1;
 	}
 
 	private void setUpMaps() {

@@ -3,6 +3,7 @@ package chutesAndLadders;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -37,18 +38,22 @@ public class Board extends JPanel {
 			for (int col = 0; col < boardSlots[row].length; col++) {
 				boardSlots[row][col] = new BoardSquare();
 				boardSlots[row][col].setBackground(new Color(0, 0, 0, 0));
-				boardSlots[row][col].setBorder(BorderFactory
-						.createLineBorder(Color.WHITE));
 				add(boardSlots[row][col]);
 			}
 		}
 
 	}
+	
+	public void addImage(Image img, int row, int col){
+		boardSlots[row][col].addPlayer(img);
+		boardSlots[row][col].repaint();
+	}
+	
+	
 
-	public void setIconPieces(int row, int column) {
-		boardSlots[row][column].repaint();
-		// boardSlots[row][col].setBorder(BorderFactory.createLineBorder(Color.WHITE));
-		add(boardSlots[row][column]);
+	public void removeImage(Image img, int row, int col) {
+		boardSlots[row][col].removePlayer(img);
+		//boardSlots[row][col].repaint();
 	}
 
 	@Override
