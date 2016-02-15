@@ -148,4 +148,15 @@ public class ChutesAndLadders extends JFrame {
 
 	}
 
+	/*
+	 * public void music() throws UnsupportedAudioFileException, IOException {
+	 * 
+	 * File file = new File("cheering.mp3"); AudioInputStream audioIn =
+	 * AudioSystem.getAudioInputStream(file); Clip clip = null; try { clip =
+	 * AudioSystem.getClip(); } catch (LineUnavailableException e) {
+	 * 
+	 * } try { clip.open(audioIn); } catch (LineUnavailableException e) {
+	 * 
+	 * } clip.start(); }*
+	 */
 }
