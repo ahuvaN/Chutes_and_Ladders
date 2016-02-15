@@ -66,6 +66,7 @@ public class ChooseNumPlayers extends JFrame {
 
 		public void actionPerformed(ActionEvent event) {
 			new PlayerInfo(2).setVisible(true);
+			dispose();
 		}
 	};
 
@@ -73,6 +74,7 @@ public class ChooseNumPlayers extends JFrame {
 
 		public void actionPerformed(ActionEvent event) {
 			new PlayerInfo(3).setVisible(true);
+			dispose();
 		}
 	};
 
@@ -80,6 +82,7 @@ public class ChooseNumPlayers extends JFrame {
 
 		public void actionPerformed(ActionEvent event) {
 			new PlayerInfo(4).setVisible(true);
+			dispose();
 		}
 	};
 
@@ -87,6 +90,7 @@ public class ChooseNumPlayers extends JFrame {
 		public void actionPerformed(ActionEvent event) {
 
 			new PlayerInfo(5).setVisible(true);
+			dispose();
 		}
 	};
 
@@ -94,6 +98,7 @@ public class ChooseNumPlayers extends JFrame {
 
 		public void actionPerformed(ActionEvent event) {
 			new PlayerInfo(6).setVisible(true);
+			dispose();
 		}
 	};
 

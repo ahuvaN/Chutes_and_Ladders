@@ -34,6 +34,12 @@ public class PlayTheGame {
 			boolean even = row % 2 == 0 ? true : false;
 
 			if (even) {
+				if (row == 0 && col < 6) {
+					if (col - moves < 0) {
+						current.changePosition(0, 0);
+						return current.getImage();
+					}
+				}
 				if (col == 0) {
 					row -= 1;
 					current.changePosition(row, col);
@@ -80,13 +86,6 @@ public class PlayTheGame {
 		Image image = current.getImage();
 
 		return image;
-	}
-
-	public int rollDice() {
-		Random random = new Random();
-		int val = random.nextInt(6) + 1;
-		return val;
-
 	}
 
 	public Player switchPlayer() {

@@ -48,8 +48,8 @@ public class ChutesAndLadders extends JFrame {
 				"#5.png", "#6.png" };
 
 		add(spinButton, BorderLayout.LINE_START);
-		BufferedImage img = ImageIO.read(new File("redPiece.png"));
-		BufferedImage img2 = ImageIO.read(new File("bluePiece.jpg"));
+		BufferedImage img = ImageIO.read(new File("red.png"));
+		BufferedImage img2 = ImageIO.read(new File("blue.png"));
 		current = new Player(playerOneName, 1, img);
 
 		logic = new PlayTheGame(current, new Player(PlayerTwoName, 2, img2));
@@ -59,7 +59,7 @@ public class ChutesAndLadders extends JFrame {
 
 		public void actionPerformed(ActionEvent event) {
 
-			int value = rollDice(); // why 2?
+			int value = rollDice(); 
 			spinButton.setIcon(new ImageIcon(photos[value - 1]));
 			if (current.getPosition().getCol() != -1) {
 				board.removeImage(current.getImage(), logic.getCurrent()
@@ -68,14 +68,14 @@ public class ChutesAndLadders extends JFrame {
 			}
 			img = logic.turn(value);
 
+			board.addImage(img, logic.getCurrent().getPosition().getRow(),
+					logic.getCurrent().getPosition().getCol());
+			checkBoard();
+			
 			if (logic.getCurrent().getPosition().getRow() <= 0
 					&& logic.getCurrent().getPosition().getCol() <= 0) {
 				displayWinner();
 			}
-
-			board.addImage(img, logic.getCurrent().getPosition().getRow(),
-					logic.getCurrent().getPosition().getCol());
-			checkBoard();
 
 			current = logic.switchPlayer();
 		}
@@ -92,7 +92,7 @@ public class ChutesAndLadders extends JFrame {
 	}
 
 	private void displayWinner() {
-		board.addImage(img, 0, 0);
+		//board.addImage(img, 0, 0);
 
 		int again = JOptionPane.showConfirmDialog(this, "CONGRAGULATIONS! "
 				+ current.getName() + " WINS!!!! \nDo you want to play again?",
@@ -111,34 +111,28 @@ public class ChutesAndLadders extends JFrame {
 
 	private void checkBoard() {
 		boolean found = false;
+		int row = current.getPosition().getRow();
+		int col = current.getPosition().getCol();
 		logic.checkSnakeLadder(current.getPosition());
 
 		if (logic.isSnake() == true) {
 			displaySnakeMessage();
 			logic.setSnake(false);
 
-			board.removeImage(current.getImage(), logic.getCurrent()
-					.getPosition().getRow(), logic.getCurrent().getPosition()
-					.getCol());
+			board.removeImage(current.getImage(), row, col);
 			found = true;
 
 		} else if (logic.isLadder() == true) {
 			displayLadderMessage();
 			logic.setLadder(false);
 
-			board.removeImage(current.getImage(), logic.getCurrent()
-					.getPosition().getRow(), logic.getCurrent().getPosition()
-					.getCol());
+			board.removeImage(current.getImage(), row, col);
 			found = true;
 		}
 
 		// repaint piece
-		if (found == true) {
-			found = false;
-			if (logic.getCurrent().getPosition().getRow() == 0
-					&& logic.getCurrent().getPosition().getCol() == 0) {
-				displayWinner();
-			}
+		if (found) {
+			
 			board.addImage(img, logic.getCurrent().getPosition().getRow(),
 					logic.getCurrent().getPosition().getCol());
 
