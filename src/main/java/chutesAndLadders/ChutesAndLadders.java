@@ -48,8 +48,8 @@ public class ChutesAndLadders extends JFrame {
 				"#5.png", "#6.png" };
 
 		add(spinButton, BorderLayout.LINE_START);
-		BufferedImage img = ImageIO.read(new File("redPiece.png"));
-		BufferedImage img2 = ImageIO.read(new File("bluePiece.jpg"));
+		BufferedImage img = ImageIO.read(new File("red.png"));
+		BufferedImage img2 = ImageIO.read(new File("blue.png"));
 		current = new Player(playerOneName, 1, img);
 
 		logic = new PlayTheGame(current, new Player(PlayerTwoName, 2, img2));
@@ -68,13 +68,14 @@ public class ChutesAndLadders extends JFrame {
 			}
 			img = logic.turn(value);
 
+			board.addImage(img, logic.getCurrent().getPosition().getRow(),
+					logic.getCurrent().getPosition().getCol());
+			checkBoard();
+
 			if (logic.getCurrent().getPosition().getRow() <= 0
 					&& logic.getCurrent().getPosition().getCol() <= 0) {
 				displayWinner();
 			}
-
-			board.addImage(img, logic.getCurrent().getPosition().getRow(),
-					logic.getCurrent().getPosition().getCol());
 
 			checkBoard();
 
@@ -93,7 +94,6 @@ public class ChutesAndLadders extends JFrame {
 	}
 
 	private void displayWinner() {
-		board.addImage(img, 0, 0);
 
 		int again = JOptionPane.showConfirmDialog(this, "CONGRAGULATIONS! "
 				+ current.getName() + " WINS!!!! \nDo you want to play again?",
@@ -133,12 +133,8 @@ public class ChutesAndLadders extends JFrame {
 		}
 
 		// repaint piece
-		if (found == true) {
 
-			if (logic.getCurrent().getPosition().getRow() == 0
-					&& logic.getCurrent().getPosition().getCol() == 0) {
-				displayWinner();
-			}
+		if (found) {
 			board.addImage(img, logic.getCurrent().getPosition().getRow(),
 					logic.getCurrent().getPosition().getCol());
 

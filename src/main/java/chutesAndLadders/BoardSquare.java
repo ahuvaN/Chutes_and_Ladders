@@ -11,7 +11,6 @@ import javax.swing.JComponent;
 public class BoardSquare extends JComponent {
 
 	private ArrayList<Image> players;
-	//private int size;
 	
 	public BoardSquare(){
 		players = new ArrayList<Image>();
@@ -35,7 +34,7 @@ public class BoardSquare extends JComponent {
 		super.paintComponent(g);
 
 		for (int i = 0; i < players.size(); i++) {
-			g.drawImage(players.get(i), i * 10, 0, null);
+			g.drawImage(players.get(i), i * 20, 0, null);
 		}
 
 	}
