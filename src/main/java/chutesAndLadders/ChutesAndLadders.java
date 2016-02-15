@@ -84,7 +84,6 @@ public class ChutesAndLadders extends JFrame {
 			board.addImage(img, logic.getCurrent().getPosition().getRow(),
 					logic.getCurrent().getPosition().getCol());
 			current = logic.switchPlayer();
-
 		}
 	};
 

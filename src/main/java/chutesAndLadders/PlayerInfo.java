@@ -45,11 +45,10 @@ public class PlayerInfo extends JFrame {
 		p1.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(p1);
 
-		p1Name = new JTextField("Enter Name");
+		p1Name = new HintTextField("Enter Name");
 		p1Name.setFont(font);
 		p1Name.setMaximumSize(new Dimension(300, 35));
 		p1Name.setAlignmentX(Component.CENTER_ALIGNMENT);
-		//p1Name.addFocusListener(listener);
 		add(p1Name);
 
 		p2 = new JLabel("Player 2:");
@@ -57,11 +56,10 @@ public class PlayerInfo extends JFrame {
 		p2.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(p2);
 
-		p2Name = new JTextField("Enter Name");
+		p2Name = new HintTextField("Enter Name");
 		p2Name.setFont(font);
 		p2Name.setMaximumSize(new Dimension(300, 35));
 		p2Name.setAlignmentX(Component.CENTER_ALIGNMENT);
-		//p2Name.addFocusListener(listener);
 		add(p2Name);
 
 		submit = new JButton("PLAY");
@@ -83,37 +81,12 @@ public class PlayerInfo extends JFrame {
 					gameBoard.setVisible(true);
 					dispose();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 			}
-
 		});
 
 	}
-
-	/* TODO
-	 * FocusListener listener = new FocusListener() {
-	 *
-
-		@Override
-		public void focusGained(FocusEvent e) {
-			if (this.getText().isEmpty()) {
-				super.setText("");
-				// showingHint = false;
-			}
-		}
-
-		@Override
-		public void focusLost(FocusEvent e) {
-			if (this.getText().isEmpty()) {
-				super.setText("Enter name");
-				// showingHint = true;
-			}
-
-		}
-	};*/
 
 	public static void main(String[] args) {
 		new PlayerInfo().setVisible(true);
