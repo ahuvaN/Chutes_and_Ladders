@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class ChutesAndLadders extends JFrame {
 
@@ -58,7 +59,7 @@ public class ChutesAndLadders extends JFrame {
 
 		public void actionPerformed(ActionEvent event) {
 
-			int value = rollDice();
+			int value = rollDice(); // why 2?
 			spinButton.setIcon(new ImageIcon(photos[value - 1]));
 			if (current.getPosition().getCol() != -1) {
 				board.removeImage(current.getImage(), logic.getCurrent()
@@ -66,12 +67,52 @@ public class ChutesAndLadders extends JFrame {
 						.getPosition().getCol());
 			}
 			img = logic.turn(value);
+
+			if (logic.isSnake() == true) {
+				displaySnakeMessage();
+				logic.setSnake(false);
+			} else if (logic.isLadder() == true) {
+				logic.setLadder(false);
+				displayLadderMessage();
+			}
+
+			if (logic.getCurrent().getPosition().getRow() <= 0
+					&& logic.getCurrent().getPosition().getCol() <= 0) {
+				displayWinner();
+			}
+
 			board.addImage(img, logic.getCurrent().getPosition().getRow(),
 					logic.getCurrent().getPosition().getCol());
 			current = logic.switchPlayer();
 
 		}
 	};
+
+	private void displaySnakeMessage() {
+		JOptionPane.showMessageDialog(this,
+				"OH NO! YOU HIT A SNAKE - GOING DOWN...!");
+	}
+
+	private void displayLadderMessage() {
+		JOptionPane.showMessageDialog(this,
+				"YAY! YOU HIT A LADDER - GOING UP...!");
+	}
+
+	private void displayWinner() {
+		int again = JOptionPane.showConfirmDialog(this, "CONGRAGULATIONS! "
+				+ current.getName() + "WINS!!!! \nDo you want to play again?",
+				"Chutes and Ladders", JOptionPane.YES_NO_OPTION);
+
+		if (again == JOptionPane.YES_OPTION) {
+			dispose();
+			new PlayerInfo().setVisible(true);
+
+		} else {
+			JOptionPane.showMessageDialog(this,
+					"HAVE A GOOD DAY! \nTHANK YOU FOR PLAYING");
+			dispose(); // close the window
+		}
+	}
 
 	public int rollDice() {
 		Random random = new Random();

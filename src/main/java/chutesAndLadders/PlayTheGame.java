@@ -11,6 +11,8 @@ public class PlayTheGame {
 	private int[][] board;
 	private HashMap<Position, Position> snakes;
 	private HashMap<Position, Position> ladders;
+	private boolean snake;
+	private boolean ladder;
 
 	public PlayTheGame(Player one, Player two) {
 		player1 = current = one;
@@ -18,6 +20,8 @@ public class PlayTheGame {
 		board = new int[10][10];
 		snakes = new HashMap<Position, Position>();
 		ladders = new HashMap<Position, Position>();
+		snake = false;
+		ladder = false;
 		setUpMaps();
 	}
 
@@ -31,7 +35,7 @@ public class PlayTheGame {
 
 			if (even) {
 				if (col == 0) {
-					row -=1;
+					row -= 1;
 					current.changePosition(row, col);
 					moves--;
 				} else if (col >= moves) { // enough room to stay on same row
@@ -116,14 +120,32 @@ public class PlayTheGame {
 
 	private void checkSnakeLadder(Position pos) {
 		if (snakes.containsKey(pos)) {
+			snake = true;
 			current.changePosition(snakes.get(pos).getRow(), snakes.get(pos)
 					.getCol());
 		}
 
 		else if (ladders.containsKey(pos)) {
+			ladder = true;
 			current.changePosition(ladders.get(pos).getRow(), ladders.get(pos)
 					.getCol());
 		}
+	}
+
+	public boolean isSnake() {
+		return snake;
+	}
+
+	public void setSnake(boolean snake) {
+		this.snake = snake;
+	}
+
+	public void setLadder(boolean ladder) {
+		this.ladder = ladder;
+	}
+
+	public boolean isLadder() {
+		return ladder;
 	}
 
 	public Player getCurrent() {
