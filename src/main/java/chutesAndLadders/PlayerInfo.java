@@ -7,8 +7,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.io.IOException;
 
 import javax.swing.BoxLayout;
@@ -27,7 +25,7 @@ public class PlayerInfo extends JFrame {
 	private JButton submit;
 	private JLabel logo;
 
-	public PlayerInfo() {
+	public PlayerInfo(int num) {
 		setTitle("CHUTES AND LADDERS");
 		setSize(400, 400);
 		setResizable(false);
@@ -89,7 +87,7 @@ public class PlayerInfo extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		new PlayerInfo().setVisible(true);
+		new PlayerInfo(0).setVisible(true);
 
 	}
 

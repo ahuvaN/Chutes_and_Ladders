@@ -68,14 +68,6 @@ public class ChutesAndLadders extends JFrame {
 			}
 			img = logic.turn(value);
 
-			if (logic.isSnake() == true) {
-				displaySnakeMessage();
-				logic.setSnake(false);
-			} else if (logic.isLadder() == true) {
-				logic.setLadder(false);
-				displayLadderMessage();
-			}
-
 			if (logic.getCurrent().getPosition().getRow() <= 0
 					&& logic.getCurrent().getPosition().getCol() <= 0) {
 				displayWinner();
@@ -83,6 +75,8 @@ public class ChutesAndLadders extends JFrame {
 
 			board.addImage(img, logic.getCurrent().getPosition().getRow(),
 					logic.getCurrent().getPosition().getCol());
+			checkBoard();
+
 			current = logic.switchPlayer();
 		}
 	};
@@ -98,18 +92,56 @@ public class ChutesAndLadders extends JFrame {
 	}
 
 	private void displayWinner() {
+		board.addImage(img, 0, 0);
+
 		int again = JOptionPane.showConfirmDialog(this, "CONGRAGULATIONS! "
-				+ current.getName() + "WINS!!!! \nDo you want to play again?",
+				+ current.getName() + " WINS!!!! \nDo you want to play again?",
 				"Chutes and Ladders", JOptionPane.YES_NO_OPTION);
 
 		if (again == JOptionPane.YES_OPTION) {
 			dispose();
-			new PlayerInfo().setVisible(true);
+			new ChooseNumPlayers().setVisible(true);
 
 		} else {
 			JOptionPane.showMessageDialog(this,
 					"HAVE A GOOD DAY! \nTHANK YOU FOR PLAYING");
 			dispose(); // close the window
+		}
+	}
+
+	private void checkBoard() {
+		boolean found = false;
+		logic.checkSnakeLadder(current.getPosition());
+
+		if (logic.isSnake() == true) {
+			displaySnakeMessage();
+			logic.setSnake(false);
+
+			board.removeImage(current.getImage(), logic.getCurrent()
+					.getPosition().getRow(), logic.getCurrent().getPosition()
+					.getCol());
+			found = true;
+
+		} else if (logic.isLadder() == true) {
+			displayLadderMessage();
+			logic.setLadder(false);
+
+			board.removeImage(current.getImage(), logic.getCurrent()
+					.getPosition().getRow(), logic.getCurrent().getPosition()
+					.getCol());
+			found = true;
+		}
+
+		// repaint piece
+		if (found == true) {
+			found = false;
+			if (logic.getCurrent().getPosition().getRow() == 0
+					&& logic.getCurrent().getPosition().getCol() == 0) {
+				displayWinner();
+			}
+			board.addImage(img, logic.getCurrent().getPosition().getRow(),
+					logic.getCurrent().getPosition().getCol());
+
 		}
 	}
 

@@ -72,13 +72,9 @@ public class PlayTheGame {
 			}
 
 		} while (moves != 0);
-		System.out.println(current.getName() + " spun: " + value + " "
-				+ current.getPosition().getRow() + ", "
-				+ current.getPosition().getCol());
-		// check for snake/ladder
-		checkSnakeLadder(current.getPosition());
 
-		// TODO if position = 100/ 0,0 showMessageDialog-"We have a winner"
+		// check for snake/ladder
+		// checkSnakeLadder(current.getPosition());
 
 		// move the player to correct location
 		Image image = current.getImage();
@@ -118,7 +114,7 @@ public class PlayTheGame {
 		snakes.put(new Position(8, 3), new Position(9, 6));
 	}
 
-	private void checkSnakeLadder(Position pos) {
+	public void checkSnakeLadder(Position pos) {
 		if (snakes.containsKey(pos)) {
 			snake = true;
 			current.changePosition(snakes.get(pos).getRow(), snakes.get(pos)
