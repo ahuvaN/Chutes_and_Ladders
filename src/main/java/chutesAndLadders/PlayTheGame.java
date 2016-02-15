@@ -2,7 +2,6 @@ package chutesAndLadders;
 
 import java.awt.Image;
 import java.util.HashMap;
-import java.util.Random;
 
 public class PlayTheGame {
 	private Player player1;
@@ -72,21 +71,9 @@ public class PlayTheGame {
 			}
 
 		} while (moves != 0);
-
-		// check for snake/ladder
-		// checkSnakeLadder(current.getPosition());
-
-		// move the player to correct location
 		Image image = current.getImage();
 
 		return image;
-	}
-
-	public int rollDice() {
-		Random random = new Random();
-		int val = random.nextInt(6) + 1;
-		return val;
-
 	}
 
 	public Player switchPlayer() {

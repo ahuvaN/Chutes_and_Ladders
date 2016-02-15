@@ -59,7 +59,7 @@ public class ChutesAndLadders extends JFrame {
 
 		public void actionPerformed(ActionEvent event) {
 
-			int value = rollDice(); // why 2?
+			int value = rollDice();
 			spinButton.setIcon(new ImageIcon(photos[value - 1]));
 			if (current.getPosition().getCol() != -1) {
 				board.removeImage(current.getImage(), logic.getCurrent()
@@ -75,6 +75,7 @@ public class ChutesAndLadders extends JFrame {
 
 			board.addImage(img, logic.getCurrent().getPosition().getRow(),
 					logic.getCurrent().getPosition().getCol());
+
 			checkBoard();
 
 			current = logic.switchPlayer();
@@ -111,30 +112,29 @@ public class ChutesAndLadders extends JFrame {
 
 	private void checkBoard() {
 		boolean found = false;
+		int row = current.getPosition().getRow();
+		int col = current.getPosition().getCol();
+
 		logic.checkSnakeLadder(current.getPosition());
 
 		if (logic.isSnake() == true) {
 			displaySnakeMessage();
 			logic.setSnake(false);
 
-			board.removeImage(current.getImage(), logic.getCurrent()
-					.getPosition().getRow(), logic.getCurrent().getPosition()
-					.getCol());
+			board.removeImage(current.getImage(), row, col);
 			found = true;
 
 		} else if (logic.isLadder() == true) {
 			displayLadderMessage();
 			logic.setLadder(false);
 
-			board.removeImage(current.getImage(), logic.getCurrent()
-					.getPosition().getRow(), logic.getCurrent().getPosition()
-					.getCol());
+			board.removeImage(current.getImage(), row, col);
 			found = true;
 		}
 
 		// repaint piece
 		if (found == true) {
-			found = false;
+
 			if (logic.getCurrent().getPosition().getRow() == 0
 					&& logic.getCurrent().getPosition().getCol() == 0) {
 				displayWinner();
@@ -145,7 +145,7 @@ public class ChutesAndLadders extends JFrame {
 		}
 	}
 
-	public int rollDice() {
+	private int rollDice() {
 		Random random = new Random();
 		int val = random.nextInt(6) + 1;
 		return val;
