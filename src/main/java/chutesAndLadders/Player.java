@@ -8,9 +8,9 @@ public class Player {
 	private Position position;
 	private Image image;
 	private int num;
-	
+
 	private static int numbr = 0;
-	
+
 	public Player(String name, Image img) {
 		this.name = name;
 		position = new Position();
@@ -29,22 +29,21 @@ public class Player {
 	public Position getPosition() {
 		return position;
 	}
-	
-	public int getRow(){
+
+	public int getRow() {
 		return position.getRow();
 	}
-	
-	public int getCol(){
+
+	public int getCol() {
 		return position.getCol();
 	}
-	
-	public Image getImage(){
+
+	public Image getImage() {
 		return image;
 	}
-	
-	public int getNum(){
+
+	public int getNum() {
 		return num;
 	}
-	
 
 }
