@@ -1,6 +1,10 @@
 package chutesAndLadders;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,10 +13,13 @@ import java.io.IOException;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 public class ChutesAndLadders extends JFrame {
 
@@ -22,6 +29,10 @@ public class ChutesAndLadders extends JFrame {
 	private PlayTheGame logic;
 	private Player[] players;
 	private Player current;
+	private Image img;
+	private JLabel playersTurn;
+	private JLabel playersImg;
+	private JPanel panel;
 	private Image[] pieces;
 
 	public ChutesAndLadders(String[] playerNames) throws IOException {
@@ -34,19 +45,36 @@ public class ChutesAndLadders extends JFrame {
 		BorderLayout bLayout = new BorderLayout();
 		setLayout(bLayout);
 
+		panel = new JPanel();
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		// panel.setLayout(new BorderLayout());
+		panel.setBackground(Color.BLACK);
+		panel.setPreferredSize(new Dimension(230, 400));
+
+		Font font = new Font("Arial", Font.BOLD, 30);
 		board = new Board();
 		add(board, BorderLayout.CENTER);
 
-		board = new Board();
-		add(board, BorderLayout.CENTER);
+		playersTurn = new JLabel();
+		playersTurn.setFont(font);
+		playersTurn.setForeground(Color.WHITE);
+		panel.add(playersTurn);
+
+		playersImg = new JLabel();
+		panel.add(playersImg);
 
 		spinButton = new JButton();
+		spinButton.setBorder(BorderFactory.createLineBorder(Color.black));
+		spinButton.setBackground(Color.BLACK);
 		spinButton.setIcon(new ImageIcon("ROLL.png"));
 		spinButton.addActionListener(buttonListen);
 		photos = new String[] { "#1.png", "#2.png", "#3.png", "#4.png",
 				"#5.png", "#6.png" };
 
-		add(spinButton, BorderLayout.LINE_START);
+		panel.add(spinButton);
+
+		add(panel, BorderLayout.LINE_START);
+
 		pieces = new Image[] { ImageIO.read(new File("red.png")),
 				ImageIO.read(new File("blue.png")),
 				ImageIO.read(new File("green.png")),
@@ -61,7 +89,12 @@ public class ChutesAndLadders extends JFrame {
 		}
 
 		current = players[0];
+
+		playersTurn.setText(current.getName() + "'s turn");
+		playersImg.setIcon(new ImageIcon(current.getImage()));
+
 		logic = new PlayTheGame(players);
+
 	}
 
 	ActionListener buttonListen = new ActionListener() {
@@ -85,6 +118,9 @@ public class ChutesAndLadders extends JFrame {
 			}
 
 			current = logic.switchPlayer();
+			playersImg.setIcon(new ImageIcon(current.getImage()));
+			playersTurn.setText(current.getName() + "'s turn");
+
 		}
 	};
 
@@ -114,8 +150,7 @@ public class ChutesAndLadders extends JFrame {
 			JOptionPane.showMessageDialog(this,
 					"OH NO! YOU HIT A SNAKE - GOING DOWN...!");
 			found = true;
-		} 
-		else if (logic.checkLadder(current.getPosition())) {
+		} else if (logic.checkLadder(current.getPosition())) {
 			JOptionPane.showMessageDialog(this,
 					"YAY! YOU HIT A LADDER - GOING UP...!");
 			found = true;

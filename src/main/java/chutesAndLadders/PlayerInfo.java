@@ -29,7 +29,7 @@ public class PlayerInfo extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		logo = new JLabel(new ImageIcon("logoTransparent.png"));
+		logo = new JLabel(new ImageIcon("logo.png"));
 		setContentPane(logo);
 
 		// use grid layout
@@ -41,20 +41,22 @@ public class PlayerInfo extends JFrame {
 		labels = new JLabel[num];
 		fields = new JTextField[num];
 		names = new String[num];
-		
-		for (int i = 1; i <= num; i++){
+
+		for (int i = 1; i <= num; i++) {
 			JLabel l = new JLabel("Player " + i);
 			l.setFont(font);
 			l.setAlignmentX(Component.CENTER_ALIGNMENT);
+			labels[i - 1] = l;
 			add(l);
-			
+
 			JTextField f = new HintTextField("Enter Name");
 			f.setFont(font);
 			f.setMaximumSize(new Dimension(300, 35));
 			f.setAlignmentX(Component.CENTER_ALIGNMENT);
+			fields[i - 1] = f;
 			add(f);
 		}
-		
+
 		submit = new JButton("PLAY");
 		submit.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(submit);
@@ -62,7 +64,7 @@ public class PlayerInfo extends JFrame {
 		submit.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				for (int i = 0; i < fields.length; i++){
+				for (int i = 0; i < fields.length; i++) {
 					names[i] = fields[i].getText();
 				}
 				try {
@@ -75,9 +77,5 @@ public class PlayerInfo extends JFrame {
 			}
 		});
 	}
-	
-	public static void main (String[] args) throws IOException{
-		new PlayerInfo(2).setVisible(true);
-	}
-	
+
 }
