@@ -1,6 +1,10 @@
 package chutesAndLadders;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,10 +14,13 @@ import java.io.IOException;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 public class ChutesAndLadders extends JFrame {
 
@@ -23,6 +30,9 @@ public class ChutesAndLadders extends JFrame {
 	private PlayTheGame logic;
 	private Player current;
 	private Image img;
+	private JLabel playersTurn;
+	private JLabel playersImg;
+	private JPanel panel;
 
 	public ChutesAndLadders(String playerOneName, String PlayerTwoName)
 			throws IOException {
@@ -35,24 +45,46 @@ public class ChutesAndLadders extends JFrame {
 		BorderLayout bLayout = new BorderLayout();
 		setLayout(bLayout);
 
+		panel = new JPanel();
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panel.setBackground(Color.BLACK);
+		panel.setPreferredSize(new Dimension(230, 400));
+
+		Font font = new Font("Arial", Font.BOLD, 30);
 		board = new Board();
 		add(board, BorderLayout.CENTER);
 
 		board = new Board();
 		add(board, BorderLayout.CENTER);
+
+		BufferedImage img = ImageIO.read(new File("red.png"));
+		BufferedImage img2 = ImageIO.read(new File("blue.png"));
+
+		current = new Player(playerOneName, 1, img);
+		logic = new PlayTheGame(current, new Player(PlayerTwoName, 2, img2));
+
+		playersTurn = new JLabel();
+		playersTurn.setFont(font);
+		playersTurn.setForeground(Color.WHITE);
+		playersTurn.setText(current.getName() + "'s turn");
+		panel.add(playersTurn);
+
+		playersImg = new JLabel();
+		playersImg.setIcon(new ImageIcon(current.getImage()));
+		panel.add(playersImg);
 
 		spinButton = new JButton();
+		spinButton.setBorder(BorderFactory.createLineBorder(Color.black));
+		spinButton.setBackground(Color.BLACK);
 		spinButton.setIcon(new ImageIcon("ROLL.png"));
 		spinButton.addActionListener(buttonListen);
 		photos = new String[] { "#1.png", "#2.png", "#3.png", "#4.png",
 				"#5.png", "#6.png" };
 
-		add(spinButton, BorderLayout.LINE_START);
-		BufferedImage img = ImageIO.read(new File("red.png"));
-		BufferedImage img2 = ImageIO.read(new File("blue.png"));
-		current = new Player(playerOneName, 1, img);
+		panel.add(spinButton);
 
-		logic = new PlayTheGame(current, new Player(PlayerTwoName, 2, img2));
+		add(panel, BorderLayout.LINE_START);
+
 	}
 
 	ActionListener buttonListen = new ActionListener() {
@@ -80,6 +112,9 @@ public class ChutesAndLadders extends JFrame {
 			checkBoard();
 
 			current = logic.switchPlayer();
+			playersImg.setIcon(new ImageIcon(current.getImage()));
+			playersTurn.setText(current.getName() + "'s turn");
+
 		}
 	};
 
