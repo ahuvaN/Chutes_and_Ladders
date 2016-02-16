@@ -35,38 +35,23 @@ public class ChooseNumPlayers extends JFrame {
 		center.add(logo);
 		add(center, BorderLayout.CENTER);
 
-		Font font = new Font("Arial", Font.BOLD, 33);
-		Dimension d = new Dimension(300, 100);
+		
 
 		Container buttons = new Container();
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
 		add(buttons, BorderLayout.WEST);
 
 		two = new JButton("2");
-		two.setPreferredSize(d);
-		two.setBackground(Color.RED);
-		two.setFont(font);
-		two.addActionListener(twoListen);
 		three = new JButton("3");
-		three.setPreferredSize(d);
-		three.setBackground(Color.BLUE);
-		three.setFont(font);
-		three.addActionListener(threeListen);
 		four = new JButton("4");
-		four.setFont(font);
-		four.setBackground(Color.ORANGE);
-		four.setPreferredSize(d);
-		four.addActionListener(fourListen);
 		five = new JButton("5");
-		five.setFont(font);
-		five.setPreferredSize(d);
-		five.setBackground(Color.GREEN);
-		five.addActionListener(fiveListen);
 		six = new JButton("6");
-		six.setFont(font);
-		six.setBackground(Color.MAGENTA);
-		six.addActionListener(sixListen);
-		six.setPreferredSize(d);
+
+		modify(two, Color.RED, twoListen);
+		modify(three, Color.BLUE, threeListen);
+		modify(four, Color.ORANGE, fourListen);
+		modify(five, Color.GREEN, fiveListen);
+		modify(six, Color.MAGENTA, sixListen);
 
 		JPanel p2 = new JPanel();
 		p2.add(two);
@@ -88,6 +73,16 @@ public class ChooseNumPlayers extends JFrame {
 		p6.add(six);
 		buttons.add(p6);
 
+	}
+
+	private void modify(JButton button, Color c,
+			ActionListener event) {
+		
+		button.setPreferredSize(new Dimension(300, 100));
+		button.setBackground(c);
+		button.setFont(new Font("Arial", Font.BOLD, 33));
+		button.addActionListener(event);
+		
 	}
 
 	ActionListener twoListen = new ActionListener() {
