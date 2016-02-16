@@ -5,29 +5,21 @@ import java.awt.Image;
 public class Player {
 
 	private String name;
-	private String color;
-	private int num;
 	private Position position;
 	private Image image;
+	private int num;
 	
-	public Player(String name, int nmbr, Image img) {
+	private static int numbr = 0;
+	
+	public Player(String name, Image img) {
 		this.name = name;
-		this.num = nmbr == 1 ? 1 : 2;
-		color = num == 1 ? "red" : "blue";
 		position = new Position();
 		image = img;
+		num = numbr++;
 	}
 
 	public String getName() {
 		return name;
-	}
-
-	public String getColor() {
-		return color;
-	}
-
-	public int getNum() {
-		return num;
 	}
 
 	public void changePosition(int row, int col) {
@@ -38,8 +30,21 @@ public class Player {
 		return position;
 	}
 	
+	public int getRow(){
+		return position.getRow();
+	}
+	
+	public int getCol(){
+		return position.getCol();
+	}
+	
 	public Image getImage(){
 		return image;
 	}
+	
+	public int getNum(){
+		return num;
+	}
+	
 
 }

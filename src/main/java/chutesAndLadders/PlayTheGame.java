@@ -1,31 +1,23 @@
 package chutesAndLadders;
 
-import java.awt.Image;
 import java.util.HashMap;
 
 public class PlayTheGame {
-	private Player player1;
-	private Player player2;
+	private Player[] players;
 	private Player current;
-	private int[][] board;
 	private HashMap<Position, Position> snakes;
 	private HashMap<Position, Position> ladders;
-	private boolean snake;
-	private boolean ladder;
 
-	public PlayTheGame(Player one, Player two) {
-		player1 = current = one;
-		player2 = two;
-		board = new int[10][10];
+	public PlayTheGame(Player[] allPlayers) {
+		players = allPlayers;// = current = one;
+		current = players[0];
 		snakes = new HashMap<Position, Position>();
 		ladders = new HashMap<Position, Position>();
-		snake = false;
-		ladder = false;
+
 		setUpMaps();
 	}
 
-	public Image turn(int value) {
-		int moves = value;
+	public void turn(int moves) {
 		int row = current.getPosition().getRow();
 		int col = current.getPosition().getCol();
 
@@ -36,7 +28,6 @@ public class PlayTheGame {
 				if (row == 0 && col < 6) {
 					if (col - moves < 0) {
 						current.changePosition(0, 0);
-						return current.getImage();
 					}
 				}
 				if (col == 0) {
@@ -73,17 +64,16 @@ public class PlayTheGame {
 					row = current.getPosition().getRow();
 					col = current.getPosition().getCol();
 				}
-
 			}
-
 		} while (moves != 0);
-		Image image = current.getImage();
-
-		return image;
 	}
 
 	public Player switchPlayer() {
-		current = current == player1 ? player2 : player1;
+		if (current.getNum() + 1 < players.length) {
+			current = players[current.getNum() + 1];
+		} else {
+			current = players[0];
+		}
 		return current;
 	}
 
@@ -107,38 +97,21 @@ public class PlayTheGame {
 		snakes.put(new Position(8, 3), new Position(9, 6));
 	}
 
-	public void checkSnakeLadder(Position pos) {
+	public boolean checkSnake(Position pos) {
 		if (snakes.containsKey(pos)) {
-			snake = true;
 			current.changePosition(snakes.get(pos).getRow(), snakes.get(pos)
 					.getCol());
+			return true;
 		}
+		return false;
+	}
 
-		else if (ladders.containsKey(pos)) {
-			ladder = true;
+	public boolean checkLadder(Position pos) {
+		if (ladders.containsKey(pos)) {
 			current.changePosition(ladders.get(pos).getRow(), ladders.get(pos)
 					.getCol());
+			return true;
 		}
+		return false;
 	}
-
-	public boolean isSnake() {
-		return snake;
-	}
-
-	public void setSnake(boolean snake) {
-		this.snake = snake;
-	}
-
-	public void setLadder(boolean ladder) {
-		this.ladder = ladder;
-	}
-
-	public boolean isLadder() {
-		return ladder;
-	}
-
-	public Player getCurrent() {
-		return current;
-	}
-
 }

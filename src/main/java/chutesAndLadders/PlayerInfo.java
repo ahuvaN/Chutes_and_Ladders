@@ -18,10 +18,13 @@ import javax.swing.JTextField;
 
 public class PlayerInfo extends JFrame {
 
-	private JLabel p1;
+	private JLabel[] labels;
+	private JTextField[] fields;
+	private String[] names;
+	/*private JLabel p1;
 	private JLabel p2;
 	private JTextField p1Name;
-	private JTextField p2Name;
+	private JTextField p2Name;*/
 	private JButton submit;
 	private JLabel logo;
 
@@ -30,6 +33,12 @@ public class PlayerInfo extends JFrame {
 		setSize(400, 400);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
+		logo = new JLabel(new ImageIcon("logo.png"));
+		logo.setBounds(0,0, getWidth(), getHeight());
+		
+		setContentPane(logo);
+		
 
 		// use grid layout
 		Container container = getContentPane();
@@ -38,44 +47,35 @@ public class PlayerInfo extends JFrame {
 
 		Font font = new Font("Arial", Font.BOLD, 25);
 
-		p1 = new JLabel("Player 1: ");
-		p1.setFont(font);
-		p1.setAlignmentX(Component.CENTER_ALIGNMENT);
-		add(p1);
-
-		p1Name = new HintTextField("Enter Name");
-		p1Name.setFont(font);
-		p1Name.setMaximumSize(new Dimension(300, 35));
-		p1Name.setAlignmentX(Component.CENTER_ALIGNMENT);
-		add(p1Name);
-
-		p2 = new JLabel("Player 2:");
-		p2.setFont(font);
-		p2.setAlignmentX(Component.CENTER_ALIGNMENT);
-		add(p2);
-
-		p2Name = new HintTextField("Enter Name");
-		p2Name.setFont(font);
-		p2Name.setMaximumSize(new Dimension(300, 35));
-		p2Name.setAlignmentX(Component.CENTER_ALIGNMENT);
-		add(p2Name);
-
+		labels = new JLabel[num];
+		fields = new JTextField[num];
+		names = new String[num];
+		
+		for (int i = 1; i <= num; i++){
+			JLabel l = new JLabel("Player " + i);
+			l.setFont(font);
+			l.setAlignmentX(Component.CENTER_ALIGNMENT);
+			add(l);
+			
+			JTextField f = new HintTextField("Enter Name of player");
+			f.setFont(font);
+			f.setMaximumSize(new Dimension(300, 35));
+			f.setAlignmentX(Component.CENTER_ALIGNMENT);
+			add(f);
+		}
+		
 		submit = new JButton("PLAY");
 		submit.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(submit);
 
-		logo = new JLabel();
-		logo.setAlignmentX(Component.CENTER_ALIGNMENT);
-		logo.setIcon(new ImageIcon("logo.png"));
-		add(logo);
-
 		submit.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				ChutesAndLadders gameBoard;
+				for (int i = 0; i < fields.length; i++){
+					names[i] = fields[i].getText();
+				}
 				try {
-					gameBoard = new ChutesAndLadders(p1Name.getText(), p2Name
-							.getText());
+					ChutesAndLadders gameBoard = new ChutesAndLadders(names);
 					gameBoard.setVisible(true);
 					dispose();
 				} catch (IOException e) {
@@ -83,12 +83,9 @@ public class PlayerInfo extends JFrame {
 				}
 			}
 		});
-
 	}
-
-	public static void main(String[] args) {
-		new PlayerInfo(0).setVisible(true);
-
+	
+	public static void main(String[] args){
+		new PlayerInfo(3).setVisible(true);
 	}
-
 }
