@@ -1,13 +1,17 @@
 package chutesAndLadders;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class ChooseNumPlayers extends JFrame {
@@ -16,14 +20,25 @@ public class ChooseNumPlayers extends JFrame {
 
 	public ChooseNumPlayers() {
 		setTitle("How many players");
-		setSize(400, 500);
+		setSize(800, 600);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-		Container c = getContentPane();
-		c.setLayout(new BoxLayout(c, BoxLayout.Y_AXIS));
+		BorderLayout layout = new BorderLayout();
+		setLayout(layout);
+		
+		Container center = new Container();
+		JLabel logo = new JLabel(new ImageIcon("logo.png"));
+		center.setLayout(new FlowLayout());
+		center.add(logo);
+		add(center, BorderLayout.CENTER);
 
-		Dimension d = new Dimension(400, 100);
+		
+		Container buttons = new Container();
+		buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
+		add(buttons, BorderLayout.WEST);
+
+		Dimension d = new Dimension(300, 100);
 		two = new JButton("2");
 		two.setPreferredSize(d);
 		two.addActionListener(twoListen);
@@ -42,23 +57,23 @@ public class ChooseNumPlayers extends JFrame {
 
 		JPanel p2 = new JPanel();
 		p2.add(two);
-		c.add(p2);
+		buttons.add(p2);
 
 		JPanel p3 = new JPanel();
 		p3.add(three);
-		c.add(p3);
+		buttons.add(p3);
 
 		JPanel p4 = new JPanel();
 		p4.add(four);
-		c.add(p4);
+		buttons.add(p4);
 
 		JPanel p5 = new JPanel();
 		p5.add(five);
-		c.add(p5);
+		buttons.add(p5);
 
 		JPanel p6 = new JPanel();
 		p6.add(six);
-		c.add(p6);
+		buttons.add(p6);
 
 	}
 

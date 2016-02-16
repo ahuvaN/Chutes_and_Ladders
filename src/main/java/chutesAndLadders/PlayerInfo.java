@@ -1,8 +1,10 @@
 package chutesAndLadders;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class PlayerInfo extends JFrame {
 
@@ -25,16 +28,22 @@ public class PlayerInfo extends JFrame {
 
 	public PlayerInfo(int num) {
 		setTitle("CHUTES AND LADDERS");
-		setSize(400, 400);
+		setSize(800, 600);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		logo = new JLabel(new ImageIcon("logo.png"));
-		setContentPane(logo);
+		BorderLayout layout = new BorderLayout();
+		setLayout(layout);
+		
+		Container center = new Container();
+		JLabel logo = new JLabel(new ImageIcon("logo.png"));
+		center.setLayout(new FlowLayout());
+		center.add(logo);
+		add(center, BorderLayout.CENTER);
 
-		// use grid layout
-		Container container = getContentPane();
-		setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+		Container players = new Container();
+		players.setLayout(new BoxLayout(players, BoxLayout.PAGE_AXIS));
+		add(players, BorderLayout.WEST);
 
 		Font font = new Font("Arial", Font.BOLD, 20);
 
@@ -46,20 +55,22 @@ public class PlayerInfo extends JFrame {
 			JLabel l = new JLabel("Player " + i);
 			l.setFont(font);
 			l.setAlignmentX(Component.CENTER_ALIGNMENT);
+			l.setVerticalAlignment(JLabel.CENTER);
 			labels[i - 1] = l;
-			add(l);
+			players.add(l);
 
-			JTextField f = new HintTextField("Enter Name");
+			JTextField f = new HintTextField("Enter Name                             ");
 			f.setFont(font);
 			f.setMaximumSize(new Dimension(300, 35));
 			f.setAlignmentX(Component.CENTER_ALIGNMENT);
+			l.setVerticalAlignment(JLabel.CENTER);
 			fields[i - 1] = f;
-			add(f);
+			players.add(f);
 		}
 
 		submit = new JButton("PLAY");
 		submit.setAlignmentX(Component.CENTER_ALIGNMENT);
-		add(submit);
+		players.add(submit);
 
 		submit.addActionListener(new ActionListener() {
 

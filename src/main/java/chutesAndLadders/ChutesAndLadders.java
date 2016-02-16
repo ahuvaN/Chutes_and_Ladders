@@ -3,8 +3,8 @@ package chutesAndLadders;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,7 +29,6 @@ public class ChutesAndLadders extends JFrame {
 	private PlayTheGame logic;
 	private Player[] players;
 	private Player current;
-	private Image img;
 	private JLabel playersTurn;
 	private JLabel playersImg;
 	private JPanel panel;
@@ -46,8 +45,7 @@ public class ChutesAndLadders extends JFrame {
 		setLayout(bLayout);
 
 		panel = new JPanel();
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		// panel.setLayout(new BorderLayout());
+		panel.setLayout(new GridLayout(3, 0, 7, 7));
 		panel.setBackground(Color.BLACK);
 		panel.setPreferredSize(new Dimension(230, 400));
 
@@ -56,11 +54,13 @@ public class ChutesAndLadders extends JFrame {
 		add(board, BorderLayout.CENTER);
 
 		playersTurn = new JLabel();
+		playersTurn.setHorizontalAlignment(JLabel.CENTER);
 		playersTurn.setFont(font);
 		playersTurn.setForeground(Color.WHITE);
 		panel.add(playersTurn);
 
 		playersImg = new JLabel();
+		playersImg.setHorizontalAlignment(JLabel.CENTER);
 		panel.add(playersImg);
 
 		spinButton = new JButton();
@@ -90,7 +90,8 @@ public class ChutesAndLadders extends JFrame {
 
 		current = players[0];
 
-		playersTurn.setText(current.getName() + "'s turn");
+		playersTurn.setText("<html><div style=\"text-align: center;\">"
+				+ current.getName() + "'s<br> turn</html>");
 		playersImg.setIcon(new ImageIcon(current.getImage()));
 
 		logic = new PlayTheGame(players);
@@ -119,7 +120,8 @@ public class ChutesAndLadders extends JFrame {
 
 			current = logic.switchPlayer();
 			playersImg.setIcon(new ImageIcon(current.getImage()));
-			playersTurn.setText(current.getName() + "'s turn");
+			playersTurn.setText("<html><div style=\"text-align: center;\">"
+					+ current.getName() + "'s<br> turn</html>");
 
 		}
 	};
