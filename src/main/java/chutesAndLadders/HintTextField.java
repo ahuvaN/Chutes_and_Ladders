@@ -18,9 +18,7 @@ public class HintTextField extends JTextField implements FocusListener {
 	public void focusGained(FocusEvent e) {
 		if (this.getText().equals(hint)) {
 			super.setText("");
-
 		}
-
 	}
 
 	public void focusLost(FocusEvent e) {

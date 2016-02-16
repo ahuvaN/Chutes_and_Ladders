@@ -53,7 +53,6 @@ public class ChutesAndLadders extends JFrame {
 		board = new Board();
 		add(board, BorderLayout.CENTER);
 
-			
 		playersTurn = new JLabel();
 		playersTurn.setHorizontalAlignment(JLabel.CENTER);
 		playersTurn.setFont(font);

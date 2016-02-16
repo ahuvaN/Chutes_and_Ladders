@@ -23,7 +23,6 @@ public class PlayerInfo extends JFrame {
 	private JTextField[] fields;
 	private String[] names;
 	private JButton submit;
-	private JLabel logo;
 
 	public PlayerInfo(int num) {
 		setTitle("CHUTES AND LADDERS");
