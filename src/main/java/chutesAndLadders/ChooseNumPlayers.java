@@ -19,6 +19,8 @@ import javax.swing.JPanel;
 public class ChooseNumPlayers extends JFrame {
 
 	private JButton two, three, four, five, six;
+	private JLabel select;
+	private JLabel logo;
 
 	public ChooseNumPlayers() {
 		setTitle("CHUTES AND LADDERS");
@@ -30,12 +32,14 @@ public class ChooseNumPlayers extends JFrame {
 		setLayout(layout);
 
 		Container center = new Container();
-		JLabel logo = new JLabel(new ImageIcon("logo.png"));
+		logo = new JLabel(new ImageIcon("logo.png"));
 		center.setLayout(new FlowLayout());
 		center.add(logo);
 		add(center, BorderLayout.CENTER);
 
-		
+		select = new JLabel();
+		select.setText("  SELECT HOW MANY PLAYERS WOULD LIKE TO PLAY");
+		add(select, BorderLayout.PAGE_START);
 
 		Container buttons = new Container();
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
@@ -75,14 +79,13 @@ public class ChooseNumPlayers extends JFrame {
 
 	}
 
-	private void modify(JButton button, Color c,
-			ActionListener event) {
-		
+	private void modify(JButton button, Color c, ActionListener event) {
+
 		button.setPreferredSize(new Dimension(300, 100));
 		button.setBackground(c);
 		button.setFont(new Font("Arial", Font.BOLD, 33));
 		button.addActionListener(event);
-		
+
 	}
 
 	ActionListener twoListen = new ActionListener() {

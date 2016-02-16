@@ -28,6 +28,7 @@ public class PlayTheGame {
 				if (row == 0 && col < 6) {
 					if (col - moves < 0) {
 						current.changePosition(0, 0);
+						break;
 					}
 				}
 				if (col == 0) {

@@ -1,5 +1,7 @@
 package chutesAndLadders;
 
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -129,10 +132,11 @@ public class ChutesAndLadders extends JFrame {
 	};
 
 	private void displayWinner() {
-
+		// music();
 		int again = JOptionPane.showConfirmDialog(this, "CONGRAGULATIONS! "
 				+ current.getName() + " WINS!!!! \nDo you want to play again?",
-				"Chutes and Ladders", JOptionPane.YES_NO_OPTION);
+				"Chutes and Ladders", JOptionPane.YES_NO_OPTION,
+				JOptionPane.PLAIN_MESSAGE, new ImageIcon("smile.jpeg"));
 
 		if (again == JOptionPane.YES_OPTION) {
 			dispose();
@@ -140,7 +144,9 @@ public class ChutesAndLadders extends JFrame {
 
 		} else {
 			JOptionPane.showMessageDialog(this,
-					"HAVE A GOOD DAY! \nTHANK YOU FOR PLAYING");
+					"HAVE A GOOD DAY! \nTHANK YOU FOR PLAYING",
+					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
+					new ImageIcon("bye.png"));
 			dispose(); // close the window
 		}
 	}
@@ -152,11 +158,15 @@ public class ChutesAndLadders extends JFrame {
 
 		if (logic.checkSnake(current.getPosition())) {
 			JOptionPane.showMessageDialog(this,
-					"OH NO! YOU HIT A SNAKE - GOING DOWN...!");
+					"OH NO! YOU HIT A SNAKE - GOING DOWN...!",
+					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
+					new ImageIcon("snake.gif"));
 			found = true;
 		} else if (logic.checkLadder(current.getPosition())) {
 			JOptionPane.showMessageDialog(this,
-					"YAY! YOU HIT A LADDER - GOING UP...!");
+					"YAY! YOU HIT A LADDER - GOING UP...!",
+					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
+					new ImageIcon("ladder.jpe"));
 			found = true;
 		}
 
@@ -177,15 +187,10 @@ public class ChutesAndLadders extends JFrame {
 
 	}
 
-	/*
-	 * public void music() throws UnsupportedAudioFileException, IOException {
-	 * 
-	 * File file = new File("cheering.mp3"); AudioInputStream audioIn =
-	 * AudioSystem.getAudioInputStream(file); Clip clip = null; try { clip =
-	 * AudioSystem.getClip(); } catch (LineUnavailableException e) {
-	 * 
-	 * } try { clip.open(audioIn); } catch (LineUnavailableException e) {
-	 * 
-	 * } clip.start(); }*
-	 */
+	public void music() {
+
+		URL url = getClass().getResource("cheering.wav");
+		AudioClip clip = Applet.newAudioClip(url);
+		clip.play();
+	}
 }
