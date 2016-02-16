@@ -21,16 +21,12 @@ public class PlayerInfo extends JFrame {
 	private JLabel[] labels;
 	private JTextField[] fields;
 	private String[] names;
-	/*
-	 * private JLabel p1; private JLabel p2; private JTextField p1Name; private
-	 * JTextField p2Name;
-	 */
 	private JButton submit;
 	private JLabel logo;
 
 	public PlayerInfo(int num) {
 		setTitle("CHUTES AND LADDERS");
-		setSize(400, 400);
+		setSize(400, 500);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 

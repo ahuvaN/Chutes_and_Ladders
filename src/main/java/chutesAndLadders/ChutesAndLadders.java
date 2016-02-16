@@ -34,6 +34,7 @@ public class ChutesAndLadders extends JFrame {
 	private JLabel playersImg;
 	private JPanel panel;
 	private Image[] pieces;
+	private JLabel logo;
 
 	public ChutesAndLadders(String[] playerNames) throws IOException {
 
@@ -46,7 +47,7 @@ public class ChutesAndLadders extends JFrame {
 		setLayout(bLayout);
 
 		panel = new JPanel();
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 20));
 		// panel.setLayout(new BorderLayout());
 		panel.setBackground(Color.BLACK);
 		panel.setPreferredSize(new Dimension(230, 400));
@@ -55,6 +56,9 @@ public class ChutesAndLadders extends JFrame {
 		board = new Board();
 		add(board, BorderLayout.CENTER);
 
+		logo = new JLabel();
+		logo.setIcon(new ImageIcon("logo.png"));
+		panel.add(logo);
 		playersTurn = new JLabel();
 		playersTurn.setFont(font);
 		playersTurn.setForeground(Color.WHITE);
@@ -90,7 +94,7 @@ public class ChutesAndLadders extends JFrame {
 
 		current = players[0];
 
-		playersTurn.setText(current.getName() + "'s turn");
+		playersTurn.setText(current.getName() + "'s \nturn");
 		playersImg.setIcon(new ImageIcon(current.getImage()));
 
 		logic = new PlayTheGame(players);
@@ -119,7 +123,7 @@ public class ChutesAndLadders extends JFrame {
 
 			current = logic.switchPlayer();
 			playersImg.setIcon(new ImageIcon(current.getImage()));
-			playersTurn.setText(current.getName() + "'s turn");
+			playersTurn.setText(current.getName() + "'s \nturn");
 
 		}
 	};
