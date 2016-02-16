@@ -33,7 +33,6 @@ public class ChutesAndLadders extends JFrame {
 	private JLabel playersImg;
 	private JPanel panel;
 	private Image[] pieces;
-	private JLabel logo;
 
 	public ChutesAndLadders(String[] playerNames) throws IOException {
 
