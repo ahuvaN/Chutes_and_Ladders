@@ -19,7 +19,6 @@ import javax.swing.JPanel;
 public class ChooseNumPlayers extends JFrame {
 
 	private JButton two, three, four, five, six;
-	private JLabel howMany;
 
 	public ChooseNumPlayers() {
 		setTitle("CHUTES AND LADDERS");
@@ -36,18 +35,8 @@ public class ChooseNumPlayers extends JFrame {
 		center.add(logo);
 		add(center, BorderLayout.CENTER);
 
-		Container c = getContentPane();
-		c.setLayout(new BoxLayout(c, BoxLayout.Y_AXIS));
-
 		Font font = new Font("Arial", Font.BOLD, 33);
-		Font font2 = new Font("Arial", Font.BOLD, 13);
-		Dimension d = new Dimension(400, 100);
-
-		howMany = new JLabel();
-		howMany.setPreferredSize(d);
-		howMany.setFont(font2);
-		howMany.setText("SELECT HOW MANY PLAYERS WOULD LIKE TO PLAY");
-		c.add(howMany);
+		Dimension d = new Dimension(300, 100);
 
 		Container buttons = new Container();
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
@@ -143,6 +132,5 @@ public class ChooseNumPlayers extends JFrame {
 
 	public static void main(String[] args) {
 		new ChooseNumPlayers().setVisible(true);
-		;
 	}
 }
