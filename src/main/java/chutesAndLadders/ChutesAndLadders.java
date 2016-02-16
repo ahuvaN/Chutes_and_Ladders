@@ -8,7 +8,6 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
@@ -28,14 +27,15 @@ public class ChutesAndLadders extends JFrame {
 	private String[] photos;
 	private Board board;
 	private PlayTheGame logic;
+	private Player[] players;
 	private Player current;
 	private Image img;
 	private JLabel playersTurn;
 	private JLabel playersImg;
 	private JPanel panel;
+	private Image[] pieces;
 
-	public ChutesAndLadders(String playerOneName, String PlayerTwoName)
-			throws IOException {
+	public ChutesAndLadders(String[] playerNames) throws IOException {
 
 		setTitle("CHUTES AND LADDERS");
 		setSize(1100, 1000);
@@ -47,6 +47,7 @@ public class ChutesAndLadders extends JFrame {
 
 		panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		// panel.setLayout(new BorderLayout());
 		panel.setBackground(Color.BLACK);
 		panel.setPreferredSize(new Dimension(230, 400));
 
@@ -54,23 +55,12 @@ public class ChutesAndLadders extends JFrame {
 		board = new Board();
 		add(board, BorderLayout.CENTER);
 
-		board = new Board();
-		add(board, BorderLayout.CENTER);
-
-		BufferedImage img = ImageIO.read(new File("red.png"));
-		BufferedImage img2 = ImageIO.read(new File("blue.png"));
-
-		current = new Player(playerOneName, 1, img);
-		logic = new PlayTheGame(current, new Player(PlayerTwoName, 2, img2));
-
 		playersTurn = new JLabel();
 		playersTurn.setFont(font);
 		playersTurn.setForeground(Color.WHITE);
-		playersTurn.setText(current.getName() + "'s turn");
 		panel.add(playersTurn);
 
 		playersImg = new JLabel();
-		playersImg.setIcon(new ImageIcon(current.getImage()));
 		panel.add(playersImg);
 
 		spinButton = new JButton();
@@ -85,6 +75,26 @@ public class ChutesAndLadders extends JFrame {
 
 		add(panel, BorderLayout.LINE_START);
 
+		pieces = new Image[] { ImageIO.read(new File("red.png")),
+				ImageIO.read(new File("blue.png")),
+				ImageIO.read(new File("green.png")),
+				ImageIO.read(new File("yellow.png")),
+				ImageIO.read(new File("orange.png")),
+				ImageIO.read(new File("purple.png")) };
+
+		players = new Player[playerNames.length];
+
+		for (int i = 0; i < playerNames.length; i++) {
+			players[i] = new Player(playerNames[i], pieces[i]);
+		}
+
+		current = players[0];
+
+		playersTurn.setText(current.getName() + "'s turn");
+		playersImg.setIcon(new ImageIcon(current.getImage()));
+
+		logic = new PlayTheGame(players);
+
 	}
 
 	ActionListener buttonListen = new ActionListener() {
@@ -93,23 +103,19 @@ public class ChutesAndLadders extends JFrame {
 
 			int value = rollDice();
 			spinButton.setIcon(new ImageIcon(photos[value - 1]));
-			if (current.getPosition().getCol() != -1) {
-				board.removeImage(current.getImage(), logic.getCurrent()
-						.getPosition().getRow(), logic.getCurrent()
-						.getPosition().getCol());
+			if (current.getCol() != -1) {
+				board.removeImage(current.getImage(), current.getRow(),
+						current.getCol());
 			}
-			img = logic.turn(value);
+			logic.turn(value);
 
-			board.addImage(img, logic.getCurrent().getPosition().getRow(),
-					logic.getCurrent().getPosition().getCol());
+			board.addImage(pieces[current.getNum()], current.getRow(),
+					current.getCol());
 			checkBoard();
 
-			if (logic.getCurrent().getPosition().getRow() <= 0
-					&& logic.getCurrent().getPosition().getCol() <= 0) {
+			if (current.getRow() <= 0 && current.getCol() <= 0) {
 				displayWinner();
 			}
-
-			checkBoard();
 
 			current = logic.switchPlayer();
 			playersImg.setIcon(new ImageIcon(current.getImage()));
@@ -117,16 +123,6 @@ public class ChutesAndLadders extends JFrame {
 
 		}
 	};
-
-	private void displaySnakeMessage() {
-		JOptionPane.showMessageDialog(this,
-				"OH NO! YOU HIT A SNAKE - GOING DOWN...!");
-	}
-
-	private void displayLadderMessage() {
-		JOptionPane.showMessageDialog(this,
-				"YAY! YOU HIT A LADDER - GOING UP...!");
-	}
 
 	private void displayWinner() {
 
@@ -147,32 +143,26 @@ public class ChutesAndLadders extends JFrame {
 
 	private void checkBoard() {
 		boolean found = false;
-		int row = current.getPosition().getRow();
-		int col = current.getPosition().getCol();
+		int row = current.getRow();
+		int col = current.getCol();
 
-		logic.checkSnakeLadder(current.getPosition());
-
-		if (logic.isSnake() == true) {
-			displaySnakeMessage();
-			logic.setSnake(false);
-
-			board.removeImage(current.getImage(), row, col);
+		if (logic.checkSnake(current.getPosition())) {
+			JOptionPane.showMessageDialog(this,
+					"OH NO! YOU HIT A SNAKE - GOING DOWN...!");
 			found = true;
-
-		} else if (logic.isLadder() == true) {
-			displayLadderMessage();
-			logic.setLadder(false);
-
-			board.removeImage(current.getImage(), row, col);
+		} else if (logic.checkLadder(current.getPosition())) {
+			JOptionPane.showMessageDialog(this,
+					"YAY! YOU HIT A LADDER - GOING UP...!");
 			found = true;
 		}
 
 		// repaint piece
 
 		if (found) {
-			board.addImage(img, logic.getCurrent().getPosition().getRow(),
-					logic.getCurrent().getPosition().getCol());
+			board.removeImage(current.getImage(), row, col);
 
+			board.addImage(current.getImage(), current.getRow(),
+					current.getCol());
 		}
 	}
 
