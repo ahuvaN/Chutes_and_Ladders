@@ -1,6 +1,5 @@
 package chutesAndLadders;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -21,10 +20,6 @@ public class PlayerInfo extends JFrame {
 	private JLabel[] labels;
 	private JTextField[] fields;
 	private String[] names;
-	/*private JLabel p1;
-	private JLabel p2;
-	private JTextField p1Name;
-	private JTextField p2Name;*/
 	private JButton submit;
 	private JLabel logo;
 
@@ -34,18 +29,14 @@ public class PlayerInfo extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		logo = new JLabel(new ImageIcon("logo.png"));
-		logo.setBounds(0,0, getWidth(), getHeight());
-		
+		logo = new JLabel(new ImageIcon("logoTransparent.png"));
 		setContentPane(logo);
-		
 
 		// use grid layout
 		Container container = getContentPane();
-		container.setBackground(Color.CYAN);
 		setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 
-		Font font = new Font("Arial", Font.BOLD, 25);
+		Font font = new Font("Arial", Font.BOLD, 20);
 
 		labels = new JLabel[num];
 		fields = new JTextField[num];
@@ -57,7 +48,7 @@ public class PlayerInfo extends JFrame {
 			l.setAlignmentX(Component.CENTER_ALIGNMENT);
 			add(l);
 			
-			JTextField f = new HintTextField("Enter Name of player");
+			JTextField f = new HintTextField("Enter Name");
 			f.setFont(font);
 			f.setMaximumSize(new Dimension(300, 35));
 			f.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -85,7 +76,8 @@ public class PlayerInfo extends JFrame {
 		});
 	}
 	
-	public static void main(String[] args){
-		new PlayerInfo(3).setVisible(true);
+	public static void main (String[] args) throws IOException{
+		new PlayerInfo(2).setVisible(true);
 	}
+	
 }
