@@ -34,7 +34,6 @@ public class Board extends JPanel {
 				add(boardSlots[row][col]);
 			}
 		}
-
 	}
 
 	public void addImage(Image img, int row, int col) {
@@ -45,7 +44,6 @@ public class Board extends JPanel {
 	public void removeImage(Image img, int row, int col) {
 		boardSlots[row][col].removePlayer(img);
 		boardSlots[row][col].repaint();
-
 	}
 
 	public BoardSquare getSquare(int row, int col) {

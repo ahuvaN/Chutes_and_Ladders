@@ -36,7 +36,6 @@ public class ChutesAndLadders extends JFrame {
 	private Image[] pieces;
 
 	public ChutesAndLadders(String[] playerNames) throws IOException {
-
 		setTitle("CHUTES AND LADDERS");
 		setSize(1100, 1000);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -126,7 +125,6 @@ public class ChutesAndLadders extends JFrame {
 
 			playersTurn.setText("<html><div style=\"text-align: center;\">"
 					+ current.getName() + "'s<br> turn</html>");
-
 		}
 	};
 
@@ -181,9 +179,7 @@ public class ChutesAndLadders extends JFrame {
 
 	private int rollDice() {
 		Random random = new Random();
-		int val = random.nextInt(6) + 1;
-		return val;
-
+		return random.nextInt(6) + 1;
 	}
 
 	public void playSound(final String file) {

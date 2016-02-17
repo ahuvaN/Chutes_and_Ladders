@@ -80,12 +80,10 @@ public class ChooseNumPlayers extends JFrame {
 	}
 
 	private void modify(JButton button, Color c, ActionListener event) {
-
 		button.setPreferredSize(new Dimension(300, 100));
 		button.setBackground(c);
 		button.setFont(new Font("Arial", Font.BOLD, 33));
 		button.addActionListener(event);
-
 	}
 
 	ActionListener twoListen = new ActionListener() {
