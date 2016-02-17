@@ -85,8 +85,9 @@ public class ChutesAndLadders extends JFrame {
 
 		players = new Player[playerNames.length];
 
+		int x = 0;
 		for (int i = 0; i < playerNames.length; i++) {
-			players[i] = new Player(playerNames[i], pieces[i]);
+			players[i] = new Player(playerNames[i], pieces[i], x++);
 		}
 
 		current = players[0];

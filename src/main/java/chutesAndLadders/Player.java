@@ -8,13 +8,13 @@ public class Player {
 	private Position position;
 	private Image image;
 	private int num;
-	private static int numbr = 0;
+	//private static int numbr = 0;
 
-	public Player(String name, Image img) {
+	public Player(String name, Image img, int value) {
 		this.name = name;
 		position = new Position();
 		image = img;
-		num = numbr++;
+		num = value;
 	}
 
 	public String getName() {
