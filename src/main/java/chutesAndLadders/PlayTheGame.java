@@ -9,7 +9,7 @@ public class PlayTheGame {
 	private HashMap<Position, Position> ladders;
 
 	public PlayTheGame(Player[] allPlayers) {
-		players = allPlayers;// = current = one;
+		players = allPlayers;
 		current = players[0];
 		snakes = new HashMap<Position, Position>();
 		ladders = new HashMap<Position, Position>();
