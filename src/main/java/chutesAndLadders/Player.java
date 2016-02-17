@@ -8,7 +8,6 @@ public class Player {
 	private Position position;
 	private Image image;
 	private int num;
-
 	private static int numbr = 0;
 
 	public Player(String name, Image img) {

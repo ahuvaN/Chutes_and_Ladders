@@ -1,7 +1,6 @@
 package chutesAndLadders;
 
 import java.applet.Applet;
-import java.applet.AudioClip;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -132,7 +130,7 @@ public class ChutesAndLadders extends JFrame {
 	};
 
 	private void displayWinner() {
-		// music();
+		playSound("sound.wav");
 		int again = JOptionPane.showConfirmDialog(this, "CONGRAGULATIONS! "
 				+ current.getName() + " WINS!!!! \nDo you want to play again?",
 				"Chutes and Ladders", JOptionPane.YES_NO_OPTION,
@@ -187,10 +185,13 @@ public class ChutesAndLadders extends JFrame {
 
 	}
 
-	public void music() {
+	public void playSound(final String file) {
+		new Thread(new Runnable() {
 
-		URL url = getClass().getResource("cheering.wav");
-		AudioClip clip = Applet.newAudioClip(url);
-		clip.play();
+			public void run() {
+				Applet.newAudioClip(getClass().getResource(file)).play();
+			}
+		}).start();
 	}
+
 }
