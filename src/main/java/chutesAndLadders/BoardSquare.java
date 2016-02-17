@@ -32,7 +32,6 @@ public class BoardSquare extends JComponent {
 		super.paintComponent(g);
 
 		for (int i = 0; i < players.size(); i++) {
-
 			g.drawImage(players.get(i), i * 10 + 2, i * 10 + 2, null);
 		}
 
