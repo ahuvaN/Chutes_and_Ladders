@@ -16,13 +16,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class ChooseNumPlayers extends JFrame {
+public class GameMenu extends JFrame {
 
 	private JButton two, three, four, five, six;
 	private JLabel select;
 	private JLabel logo;
 
-	public ChooseNumPlayers() {
+	public GameMenu() {
 		setTitle("CHUTES AND LADDERS");
 		setSize(800, 600);
 		setResizable(false);
@@ -32,7 +32,7 @@ public class ChooseNumPlayers extends JFrame {
 		setLayout(layout);
 
 		Container center = new Container();
-		logo = new JLabel(new ImageIcon("logo.png"));
+		logo = new JLabel(new ImageIcon(this.getClass().getResource("/logo.png")));
 		center.setLayout(new FlowLayout());
 		center.add(logo);
 		add(center, BorderLayout.CENTER);
@@ -127,6 +127,6 @@ public class ChooseNumPlayers extends JFrame {
 	};
 
 	public static void main(String[] args) {
-		new ChooseNumPlayers().setVisible(true);
+		new GameMenu().setVisible(true);
 	}
 }

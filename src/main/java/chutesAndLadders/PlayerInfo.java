@@ -21,7 +21,6 @@ public class PlayerInfo extends JFrame {
 
 	private JLabel[] labels;
 	private JTextField[] fields;
-	private String[] names;
 	private JButton submit;
 
 	public PlayerInfo(int num) {
@@ -34,7 +33,8 @@ public class PlayerInfo extends JFrame {
 		setLayout(layout);
 
 		Container center = new Container();
-		JLabel logo = new JLabel(new ImageIcon("logo.png"));
+		JLabel logo = new JLabel(new ImageIcon(this.getClass().getResource(
+				"/logo.png")));
 		center.setLayout(new FlowLayout());
 		center.add(logo);
 		add(center, BorderLayout.CENTER);
@@ -47,7 +47,6 @@ public class PlayerInfo extends JFrame {
 
 		labels = new JLabel[num];
 		fields = new JTextField[num];
-		names = new String[num];
 
 		for (int i = 1; i <= num; i++) {
 			JLabel l = new JLabel("Player " + i);
@@ -57,10 +56,13 @@ public class PlayerInfo extends JFrame {
 			labels[i - 1] = l;
 			players.add(l);
 
-			JTextField f = new HintTextField(
-					"Enter Name                             ");
+			Dimension d = new Dimension(300, 35);
+
+			JTextField f = new JTextField();
 			f.setFont(font);
-			f.setMaximumSize(new Dimension(300, 35));
+			f.setPreferredSize(d);
+			f.setMinimumSize(d);
+			f.setMaximumSize(d);
 			f.setAlignmentX(Component.CENTER_ALIGNMENT);
 			l.setVerticalAlignment(JLabel.CENTER);
 			fields[i - 1] = f;
@@ -74,6 +76,7 @@ public class PlayerInfo extends JFrame {
 		submit.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
+				String[] names = new String[fields.length];
 				for (int i = 0; i < fields.length; i++) {
 					names[i] = fields[i].getText();
 				}

@@ -6,14 +6,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,7 +30,7 @@ public class ChutesAndLadders extends JFrame {
 	private JLabel playersTurn;
 	private JLabel playersImg;
 	private JPanel panel;
-	private Image[] pieces;
+	private ImageIcon[] pieces;
 
 	public ChutesAndLadders(String[] playerNames) throws IOException {
 		setTitle("CHUTES AND LADDERS");
@@ -53,11 +50,21 @@ public class ChutesAndLadders extends JFrame {
 		board = new Board();
 		add(board, BorderLayout.CENTER);
 
-		playersTurn = new JLabel();
-		playersTurn.setHorizontalAlignment(JLabel.CENTER);
+		JPanel playerPanel = new JPanel(new GridLayout(2,1));
+		playerPanel.setBackground(Color.BLACK);
+		playersTurn = new JLabel("",JLabel.CENTER);
 		playersTurn.setFont(font);
 		playersTurn.setForeground(Color.WHITE);
-		panel.add(playersTurn);
+		playersTurn.setVerticalAlignment(JLabel.BOTTOM);
+		playerPanel.add(playersTurn);
+
+		JLabel turn = new JLabel("turn", JLabel.CENTER);
+		turn.setFont(font);
+		turn.setForeground(Color.WHITE);
+		turn.setVerticalAlignment(JLabel.TOP);
+		playerPanel.add(turn);
+
+		panel.add(playerPanel);
 
 		playersImg = new JLabel();
 		playersImg.setHorizontalAlignment(JLabel.CENTER);
@@ -66,33 +73,32 @@ public class ChutesAndLadders extends JFrame {
 		spinButton = new JButton();
 		spinButton.setBorder(BorderFactory.createLineBorder(Color.black));
 		spinButton.setBackground(Color.BLACK);
-		spinButton.setIcon(new ImageIcon("ROLL.png"));
+		spinButton.setIcon(new ImageIcon(getClass().getResource("/ROLL.png")));
 		spinButton.addActionListener(buttonListen);
-		photos = new String[] { "#1.png", "#2.png", "#3.png", "#4.png",
-				"#5.png", "#6.png" };
+		photos = new String[] { "/#1.png", "/#2.png", "/#3.png", "/#4.png",
+				"/#5.png", "/#6.png" };
 
 		panel.add(spinButton);
 
 		add(panel, BorderLayout.LINE_START);
 
-		pieces = new Image[] { ImageIO.read(new File("red.png")),
-				ImageIO.read(new File("blue.png")),
-				ImageIO.read(new File("green.png")),
-				ImageIO.read(new File("yellow.png")),
-				ImageIO.read(new File("orange.png")),
-				ImageIO.read(new File("purple.png")) };
+		pieces = new ImageIcon[] { new ImageIcon(getClass().getResource("/red.png")),
+				new ImageIcon(getClass().getResource("/blue.png")),
+				new ImageIcon(getClass().getResource("/green.png")),
+				new ImageIcon(getClass().getResource("/yellow.png")),
+				new ImageIcon(getClass().getResource("/orange.png")),
+				new ImageIcon(getClass().getResource("/purple.png")) };
 
 		players = new Player[playerNames.length];
 
 		int x = 0;
 		for (int i = 0; i < playerNames.length; i++) {
-			players[i] = new Player(playerNames[i], pieces[i], x++);
+			players[i] = new Player(playerNames[i], pieces[i].getImage(), x++);
 		}
 
 		current = players[0];
 
-		playersTurn.setText("<html><div style=\"text-align: center;\">"
-				+ current.getName() + "'s<br> turn</html>");
+		playersTurn.setText(current.getName() + "'s");
 
 		playersImg.setIcon(new ImageIcon(current.getImage()));
 
@@ -105,14 +111,14 @@ public class ChutesAndLadders extends JFrame {
 		public void actionPerformed(ActionEvent event) {
 
 			int value = rollDice();
-			spinButton.setIcon(new ImageIcon(photos[value - 1]));
+			spinButton.setIcon(new ImageIcon(getClass().getResource(photos[value - 1])));
 			if (current.getCol() != -1) {
 				board.removeImage(current.getImage(), current.getRow(),
 						current.getCol());
 			}
 			logic.turn(value);
 
-			board.addImage(pieces[current.getNum()], current.getRow(),
+			board.addImage(pieces[current.getNum()].getImage(), current.getRow(),
 					current.getCol());
 			checkBoard();
 
@@ -122,9 +128,7 @@ public class ChutesAndLadders extends JFrame {
 
 			current = logic.switchPlayer();
 			playersImg.setIcon(new ImageIcon(current.getImage()));
-
-			playersTurn.setText("<html><div style=\"text-align: center;\">"
-					+ current.getName() + "'s<br> turn</html>");
+			playersTurn.setText(current.getName() + "'s");
 		}
 	};
 
@@ -137,7 +141,7 @@ public class ChutesAndLadders extends JFrame {
 
 		if (again == JOptionPane.YES_OPTION) {
 			dispose();
-			new ChooseNumPlayers().setVisible(true);
+			new GameMenu().setVisible(true);
 
 		} else {
 			JOptionPane.showMessageDialog(this,

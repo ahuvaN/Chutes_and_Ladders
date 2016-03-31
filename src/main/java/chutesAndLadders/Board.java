@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -18,7 +17,7 @@ public class Board extends JPanel {
 
 	public Board() {
 		try {
-			image = ImageIO.read(new File("board.jpg"));
+			image = ImageIO.read(getClass().getResource("/board.jpg"));
 		} catch (IOException e) {
 
 		}
