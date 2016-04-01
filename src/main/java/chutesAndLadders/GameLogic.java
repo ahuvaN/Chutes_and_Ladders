@@ -2,13 +2,13 @@ package chutesAndLadders;
 
 import java.util.HashMap;
 
-public class PlayTheGame {
+public class GameLogic {
 	private Player[] players;
 	private Player current;
 	private HashMap<Position, Position> snakes;
 	private HashMap<Position, Position> ladders;
 
-	public PlayTheGame(Player[] allPlayers) {
+	public GameLogic(Player[] allPlayers) {
 		players = allPlayers;
 		current = players[0];
 		snakes = new HashMap<Position, Position>();
