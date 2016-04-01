@@ -4,13 +4,18 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
 
+import javax.inject.Inject;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
 public class GameMenu extends JFrame {
 
-	public GameMenu() {
+	@Inject
+	public GameMenu(ButtonsPanel buttonsPanel) {
 		setTitle("CHUTES AND LADDERS");
 		setSize(800, 600);
 		setResizable(false);
@@ -30,9 +35,13 @@ public class GameMenu extends JFrame {
 		add(buttons, BorderLayout.WEST);
 		add(center, BorderLayout.CENTER);
 
+		setVisible(true);
 	}
 
 	public static void main(String[] args) {
-		new GameMenu().setVisible(true);
+		Injector injector = Guice.createInjector(new GameModule());
+		GameMenu frame = injector.getInstance(GameMenu.class);
+
+		//new GameMenu().setVisible(true);
 	}
 }

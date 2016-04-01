@@ -4,11 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 
+import javax.inject.Inject;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class ButtonsPanel extends JPanel{
 
+	@Inject
 	public ButtonsPanel(){
 		setLayout(new BorderLayout());
 
