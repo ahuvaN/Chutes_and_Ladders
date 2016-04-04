@@ -24,7 +24,7 @@ public class ChutesAndLadders extends JFrame {
 	private JButton spinButton;
 	private String[] photos;
 	private Board board;
-	private PlayTheGame logic;
+	private GameLogic logic;
 	private Player[] players;
 	private Player current;
 	private JLabel playersTurn;
@@ -102,7 +102,7 @@ public class ChutesAndLadders extends JFrame {
 
 		playersImg.setIcon(new ImageIcon(current.getImage()));
 
-		logic = new PlayTheGame(players);
+		logic = new GameLogic(players);
 
 	}
 
