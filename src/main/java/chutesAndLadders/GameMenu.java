@@ -69,6 +69,7 @@ public class GameMenu extends JFrame {
 		p4.add(four);
 		buttons.add(p4);
 
+		buttons.add(four);
 		JPanel p5 = new JPanel();
 		p5.add(five);
 		buttons.add(p5);
