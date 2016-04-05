@@ -2,53 +2,66 @@ package chutesAndLadders;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
+import javax.inject.Inject;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class PlayerInfo extends JFrame {
+public class PlayerInfo extends JPanel {
 
 	private JLabel[] labels;
 	private JTextField[] fields;
 	private JButton submit;
+	private JPanel players;
 
-	public PlayerInfo(int num) {
-		setTitle("CHUTES AND LADDERS");
-		setSize(800, 600);
-		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	@Inject
+	public PlayerInfo() {
+		setLayout(new BorderLayout());
 
-		BorderLayout layout = new BorderLayout();
-		setLayout(layout);
+		players = new JPanel();
+		players.setLayout(new GridLayout(5, 1));
 
-		Container center = new Container();
-		JLabel logo = new JLabel(new ImageIcon(this.getClass().getResource(
-				"/logo.png")));
-		center.setLayout(new FlowLayout());
-		center.add(logo);
-		add(center, BorderLayout.CENTER);
+		submit = new JButton("PLAY");
+		submit.setAlignmentX(Component.CENTER_ALIGNMENT);
+		submit.addActionListener(new ActionListener() {
 
-		Container players = new Container();
-		players.setLayout(new BoxLayout(players, BoxLayout.PAGE_AXIS));
-		add(players, BorderLayout.WEST);
+			public void actionPerformed(ActionEvent arg0) {
+				String[] names = new String[fields.length];
+				for (int i = 0; i < fields.length; i++) {
+					names[i] = fields[i].getText();
+				}
+				try {
+					ChutesAndLadders gameBoard = new ChutesAndLadders();
+					gameBoard.setVisible(true);
+					//	menu.dispose();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 
-		Font font = new Font("Arial", Font.BOLD, 20);
 
+		add(players, BorderLayout.CENTER);
+		add(submit, BorderLayout.SOUTH);
+
+
+	}
+
+	public void setNumPlayers(int num){
 		labels = new JLabel[num];
 		fields = new JTextField[num];
+		Font font = new Font("Arial", Font.BOLD, 20);
 
 		for (int i = 1; i <= num; i++) {
+
 			JLabel l = new JLabel("Player " + i);
 			l.setFont(font);
 			l.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -68,27 +81,6 @@ public class PlayerInfo extends JFrame {
 			fields[i - 1] = f;
 			players.add(f);
 		}
-
-		submit = new JButton("PLAY");
-		submit.setAlignmentX(Component.CENTER_ALIGNMENT);
-		players.add(submit);
-
-		submit.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent arg0) {
-				String[] names = new String[fields.length];
-				for (int i = 0; i < fields.length; i++) {
-					names[i] = fields[i].getText();
-				}
-				try {
-					ChutesAndLadders gameBoard = new ChutesAndLadders(names);
-					gameBoard.setVisible(true);
-					dispose();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		});
 	}
 
 }
