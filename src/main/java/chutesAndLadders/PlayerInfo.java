@@ -21,7 +21,8 @@ public class PlayerInfo extends JPanel {
 	private JTextField[] fields;
 	private JButton submit;
 	private JPanel players;
-
+	private String[] playerNames;
+	
 	@Inject
 	public PlayerInfo() {
 		setLayout(new BorderLayout());
@@ -34,13 +35,14 @@ public class PlayerInfo extends JPanel {
 		submit.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				String[] names = new String[fields.length];
+				playerNames = new String[fields.length];
 				for (int i = 0; i < fields.length; i++) {
-					names[i] = fields[i].getText();
+					playerNames[i] = fields[i].getText();
 				}
 				try {
 					ChutesAndLadders gameBoard = new ChutesAndLadders();
 					gameBoard.setVisible(true);
+					gameBoard.setPlayers(playerNames);
 					//	menu.dispose();
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -69,7 +71,7 @@ public class PlayerInfo extends JPanel {
 			labels[i - 1] = l;
 			players.add(l);
 
-			Dimension d = new Dimension(300, 35);
+			Dimension d = new Dimension(100, 35);
 
 			JTextField f = new JTextField();
 			f.setFont(font);

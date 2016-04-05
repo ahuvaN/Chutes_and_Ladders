@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.google.inject.Guice;
@@ -21,12 +22,13 @@ public class GameMenu extends JFrame {
 	private PlayerInfo playerInfo;
 
 	@Inject
-	public GameMenu(ButtonsPanel buttonsPanel, final PlayerInfo playerInfo) {
+	public GameMenu(ButtonsPanel buttonsPanel, PlayerInfo playersInfo) {
 		setTitle("CHUTES AND LADDERS");
 		setSize(800, 600);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+		this.playerInfo = playersInfo;
 		Container container = new Container();
 		container.setLayout(new BorderLayout());
 
@@ -35,31 +37,55 @@ public class GameMenu extends JFrame {
 				"/logo.png")));
 		center.add(logo);
 
-		this.playerInfo = playerInfo;
-		buttons = buttonsPanel;
-		buttons.addPropertyChangeListener(new PropertyChangeListener() {
-
-			public void propertyChange(PropertyChangeEvent e) {
-				if (e.getPropertyName().equals("buttonClicked")) {
-					remove(buttons);
-					add(playerInfo, BorderLayout.WEST);
-					buttons.setButtonClicked(false);
-				}
-
-			}
-
-		});
-		// while(buttons.isButtonClicked()){
-		// playerInfo.setNumPlayers(buttons.getNumPlayers());
-		// this.remove(buttons);
-		// this.add(playerInfo, BorderLayout.WEST);
-		// buttons.setButtonClicked(false);
+		//this.playerInfo = playerInfo;
+		 buttons = buttonsPanel;
+		 buttons.setMenu(this);
+		// buttons.addPropertyChangeListener("buttonClicked",
+		// new PropertyChangeListener() {
+		//
+		// public void propertyChange(PropertyChangeEvent e) {
+		// resetContainer();
+		//
 		// }
-
+		//
+		// });
+		
 		add(buttons, BorderLayout.WEST);
 		add(center, BorderLayout.CENTER);
 
 		setVisible(true);
+		
+		/*
+		while (!buttons.isButtonClicked()) {
+			if(buttons.isButtonClicked()){
+				break;
+			}
+		}
+
+		playerInfo.setNumPlayers(buttons.getNumPlayers());
+		JOptionPane.showMessageDialog(null, "Set players");
+		this.remove(buttons);
+		this.add(playerInfo, BorderLayout.WEST);
+		buttons.setButtonClicked(false);
+		*/
+		
+	}
+
+	public void setPlayers(int num){
+		playerInfo.setNumPlayers(num);
+		//JOptionPane.showMessageDialog(null, "Set players");
+		this.remove(buttons);
+		this.add(playerInfo, BorderLayout.WEST);
+		revalidate();
+		repaint();
+	}
+	
+	private void resetContainer() {
+		remove(buttons);
+		add(playerInfo, BorderLayout.WEST);
+		buttons.setButtonClicked(false);
+		revalidate();
+		repaint();
 	}
 
 	public static void main(String[] args) {

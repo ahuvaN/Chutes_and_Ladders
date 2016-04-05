@@ -25,7 +25,7 @@ public class ButtonsPanel extends JPanel implements ActionListener {
 
 		JLabel select = new JLabel();
 		select.setText("SELECT HOW MANY PLAYERS WOULD LIKE TO PLAY");
-
+		
 		GameButton two, three, four, five, six;
 		two = new GameButton("2", Color.RED);
 		three = new GameButton("3", Color.BLUE);
@@ -54,7 +54,7 @@ public class ButtonsPanel extends JPanel implements ActionListener {
 		GameButton g = (GameButton) event.getSource();
 		numPlayers = Integer.parseInt(g.getText());
 		setButtonClicked(true);
-
+		menu.setPlayers(numPlayers);
 		//remove player number choice
 
 		// //add player info display to type in player names
@@ -86,6 +86,8 @@ public class ButtonsPanel extends JPanel implements ActionListener {
 		this.numPlayers = numPlayers;
 	}
 
-
+	public void setMenu(GameMenu menu){
+		this.menu = menu;
+	}
 
 }
