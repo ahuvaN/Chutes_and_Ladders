@@ -31,6 +31,7 @@ public class ChutesAndLadders extends JFrame {
 	private JLabel playersImg;
 	private JPanel panel;
 	private ImageIcon[] pieces;
+	private VideoPlayer player;
 
 	public ChutesAndLadders(String[] playerNames) throws IOException {
 		setTitle("CHUTES AND LADDERS");
@@ -103,6 +104,8 @@ public class ChutesAndLadders extends JFrame {
 		playersImg.setIcon(new ImageIcon(current.getImage()));
 
 		logic = new GameLogic(players);
+		
+		player = new VideoPlayer();
 
 	}
 
@@ -120,7 +123,12 @@ public class ChutesAndLadders extends JFrame {
 
 			board.addImage(pieces[current.getNum()].getImage(), current.getRow(),
 					current.getCol());
-			checkBoard();
+			try {
+				checkBoard();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			if (current.getRow() <= 0 && current.getCol() <= 0) {
 				displayWinner();
@@ -152,7 +160,7 @@ public class ChutesAndLadders extends JFrame {
 		}
 	}
 
-	private void checkBoard() {
+	private void checkBoard() throws IOException {
 		boolean found = false;
 		int row = current.getRow();
 		int col = current.getCol();
@@ -162,12 +170,16 @@ public class ChutesAndLadders extends JFrame {
 					"OH NO! YOU HIT A SNAKE - GOING DOWN...!",
 					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
 					new ImageIcon("snake.gif"));
+			player.setVisible(true);
+			player.playVideo();
 			found = true;
 		} else if (logic.checkLadder(current.getPosition())) {
 			JOptionPane.showMessageDialog(this,
 					"YAY! YOU HIT A LADDER - GOING UP...!",
 					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
 					new ImageIcon("ladder.jpe"));
+			player.setVisible(true);
+			player.playVideo();
 			found = true;
 		}
 

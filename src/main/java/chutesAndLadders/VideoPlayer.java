@@ -1,12 +1,13 @@
 package chutesAndLadders;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -24,37 +25,65 @@ public class VideoPlayer extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private MediaPlayer mediaPlayer;
 
 	public VideoPlayer() throws IOException {
 		setLayout(new BorderLayout());
-		this.setTitle("Swing and JavaFX");
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(1024, 768);
+		this.setTitle("Video");
+		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		this.setSize(640, 400);
 
-		// file you want to play
-		// URL mediaURL = new URL("[Scrubs] Bloopers.flv");// Whatever
-		// create the media player with the media url
 		Group root = new Group();
 		SceneBuilder<?> sb = SceneBuilder.create().width(640).height(400)
 				.root(root);
 		String mediaString = "ChutesAndLaddersSong.mp4";
 		JFXPanel fxPanel = new JFXPanel();
 		Media media = new Media(new File(mediaString).toURI().toString());
-		MediaPlayer mediaPlayer = new MediaPlayer(media);
-		
+		mediaPlayer = new MediaPlayer(media);
+
 		MediaView view = new MediaView(mediaPlayer);
-		mediaPlayer.setAutoPlay(true);
-		mediaPlayer.play();
+		// mediaPlayer.setAutoPlay(true);
 
 		root.getChildren().add(view);
 		Scene scene = sb.build();
 
 		fxPanel.setScene(scene);
-		this.getContentPane().add(fxPanel);
+		//add(fxPanel, BorderLayout.CENTER);
+		//this.getContentPane().add(fxPanel);
+		add(fxPanel, BorderLayout.CENTER);
+		JButton close = new JButton("Close");
+		close.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+				mediaPlayer.stop();
+			}
+
+		});
+		close.setPreferredSize(new Dimension(100, 30));
+		
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setSize(new Dimension(100, 30));
+		buttonPanel.add(close);
+		add(buttonPanel, BorderLayout.SOUTH);
 		this.setVisible(true);
+
 	}
-	
-	public static void main(String[] args) throws IOException{
+
+	public void playVideo() {
+		mediaPlayer.play();
+		this.setAlwaysOnTop(true);
+	}
+
+	/*
+	 * @Override public void setDefaultCloseOperation(int operation) {
+	 * mediaPlayer.stop();
+	 * 
+	 * //this.setVisible(false);
+	 * 
+	 * }
+	 */
+	public static void main(String[] args) throws IOException {
 		new VideoPlayer().setVisible(true);
 	}
 }
