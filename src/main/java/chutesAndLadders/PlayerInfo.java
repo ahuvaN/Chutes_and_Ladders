@@ -22,13 +22,18 @@ public class PlayerInfo extends JPanel {
 	private JButton submit;
 	private JPanel players;
 	private String[] playerNames;
-	
+
 	@Inject
 	public PlayerInfo() {
 		setLayout(new BorderLayout());
 
+		Dimension d = new Dimension(300, 600);
+		setPreferredSize(d);
+		setMinimumSize(d);
+		setMaximumSize(d);
+
 		players = new JPanel();
-		players.setLayout(new GridLayout(5, 1));
+		players.setLayout(new GridLayout(6, 1));
 
 		submit = new JButton("PLAY");
 		submit.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -43,45 +48,50 @@ public class PlayerInfo extends JPanel {
 					ChutesAndLadders gameBoard = new ChutesAndLadders();
 					gameBoard.setVisible(true);
 					gameBoard.setPlayers(playerNames);
-					//	menu.dispose();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
 		});
 
+		JLabel instructions = new JLabel("ENTER PLAYER NAMES", JLabel.CENTER);
+		instructions.setFont(new Font("Arial", Font.BOLD, 20));
+		d = new Dimension(300, 100);
+		instructions.setPreferredSize(d);
+		instructions.setMinimumSize(d);
+		instructions.setMaximumSize(d);
 
 		add(players, BorderLayout.CENTER);
 		add(submit, BorderLayout.SOUTH);
-
+		add(instructions, BorderLayout.NORTH);
 
 	}
 
-	public void setNumPlayers(int num){
+	public void setNumPlayers(int num) {
 		labels = new JLabel[num];
 		fields = new JTextField[num];
+
 		Font font = new Font("Arial", Font.BOLD, 20);
-
 		for (int i = 1; i <= num; i++) {
-
+			JPanel player = new JPanel();
 			JLabel l = new JLabel("Player " + i);
 			l.setFont(font);
-			l.setAlignmentX(Component.CENTER_ALIGNMENT);
-			l.setVerticalAlignment(JLabel.CENTER);
+			l.setVerticalAlignment(JLabel.BOTTOM);
 			labels[i - 1] = l;
-			players.add(l);
+			player.add(l);
 
-			Dimension d = new Dimension(100, 35);
+			Dimension d = new Dimension(200, 35);
 
 			JTextField f = new JTextField();
 			f.setFont(font);
 			f.setPreferredSize(d);
 			f.setMinimumSize(d);
 			f.setMaximumSize(d);
-			f.setAlignmentX(Component.CENTER_ALIGNMENT);
-			l.setVerticalAlignment(JLabel.CENTER);
+			//f.setAlignmentX(Component.CENTER_ALIGNMENT);
+			//l.setVerticalAlignment(JLabel.CENTER);
 			fields[i - 1] = f;
-			players.add(f);
+			player.add(f);
+			players.add(player);
 		}
 	}
 

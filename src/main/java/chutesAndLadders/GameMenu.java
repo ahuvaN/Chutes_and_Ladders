@@ -2,14 +2,11 @@ package chutesAndLadders;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.inject.Inject;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.google.inject.Guice;
@@ -38,8 +35,8 @@ public class GameMenu extends JFrame {
 		center.add(logo);
 
 		//this.playerInfo = playerInfo;
-		 buttons = buttonsPanel;
-		 buttons.setMenu(this);
+		buttons = buttonsPanel;
+		buttons.setMenu(this);
 		// buttons.addPropertyChangeListener("buttonClicked",
 		// new PropertyChangeListener() {
 		//
@@ -49,12 +46,12 @@ public class GameMenu extends JFrame {
 		// }
 		//
 		// });
-		
+
 		add(buttons, BorderLayout.WEST);
 		add(center, BorderLayout.CENTER);
 
 		setVisible(true);
-		
+
 		/*
 		while (!buttons.isButtonClicked()) {
 			if(buttons.isButtonClicked()){
@@ -67,8 +64,8 @@ public class GameMenu extends JFrame {
 		this.remove(buttons);
 		this.add(playerInfo, BorderLayout.WEST);
 		buttons.setButtonClicked(false);
-		*/
-		
+		 */
+
 	}
 
 	public void setPlayers(int num){
@@ -77,9 +74,8 @@ public class GameMenu extends JFrame {
 		this.remove(buttons);
 		this.add(playerInfo, BorderLayout.WEST);
 		revalidate();
-		repaint();
 	}
-	
+
 	private void resetContainer() {
 		remove(buttons);
 		add(playerInfo, BorderLayout.WEST);
