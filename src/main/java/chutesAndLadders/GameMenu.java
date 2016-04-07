@@ -52,19 +52,7 @@ public class GameMenu extends JFrame {
 
 		setVisible(true);
 
-		/*
-		while (!buttons.isButtonClicked()) {
-			if(buttons.isButtonClicked()){
-				break;
-			}
-		}
 
-		playerInfo.setNumPlayers(buttons.getNumPlayers());
-		JOptionPane.showMessageDialog(null, "Set players");
-		this.remove(buttons);
-		this.add(playerInfo, BorderLayout.WEST);
-		buttons.setButtonClicked(false);
-		 */
 
 	}
 
@@ -76,13 +64,13 @@ public class GameMenu extends JFrame {
 		revalidate();
 	}
 
-	private void resetContainer() {
-		remove(buttons);
-		add(playerInfo, BorderLayout.WEST);
-		buttons.setButtonClicked(false);
-		revalidate();
-		repaint();
-	}
+	//	private void resetContainer() {
+	//		remove(buttons);
+	//		add(playerInfo, BorderLayout.WEST);
+	//		buttons.setButtonClicked(false);
+	//		revalidate();
+	//		repaint();
+	//	}
 
 	public static void main(String[] args) {
 		Injector injector = Guice.createInjector(new GameModule());

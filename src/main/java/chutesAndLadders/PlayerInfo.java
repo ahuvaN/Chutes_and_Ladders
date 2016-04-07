@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 
 public class PlayerInfo extends JPanel {
 
+	private static final long serialVersionUID = 1L;
 	private JLabel[] labels;
 	private JTextField[] fields;
 	private JButton submit;

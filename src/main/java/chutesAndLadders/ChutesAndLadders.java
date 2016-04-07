@@ -17,11 +17,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
-public class ChutesAndLadders extends JFrame implements ActionListener{
+public class ChutesAndLadders extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private JButton spinButton;
-	private String[] photos;
+	private ImageIcon[] photos;
 	private Board board;
 	private GameLogic logic;
 	private Player[] players;
@@ -30,6 +31,7 @@ public class ChutesAndLadders extends JFrame implements ActionListener{
 	private JLabel playersImg;
 	private JPanel panel;
 	private ImageIcon[] pieces;
+	private Random random;
 
 	public ChutesAndLadders() throws IOException {
 		setTitle("CHUTES AND LADDERS");
@@ -74,8 +76,13 @@ public class ChutesAndLadders extends JFrame implements ActionListener{
 		spinButton.setBackground(Color.BLACK);
 		spinButton.setIcon(new ImageIcon(getClass().getResource("/ROLL.png")));
 		spinButton.addActionListener(this);
-		photos = new String[] { "/#1.png", "/#2.png", "/#3.png", "/#4.png",
-				"/#5.png", "/#6.png" };
+		photos = new ImageIcon[] {
+				new ImageIcon(getClass().getResource("/#1.png")),
+				new ImageIcon(getClass().getResource("/#2.png")),
+				new ImageIcon(getClass().getResource("/#3.png")),
+				new ImageIcon(getClass().getResource("/#4.png")),
+				new ImageIcon(getClass().getResource("/#5.png")),
+				new ImageIcon(getClass().getResource("/#6.png")) };
 
 		panel.add(spinButton);
 
@@ -108,9 +115,8 @@ public class ChutesAndLadders extends JFrame implements ActionListener{
 		logic = new GameLogic(players);
 	}
 
-
 	private void displayWinner() {
-		//		playSound("sound.wav");
+		// playSound("sound.wav");
 		int again = JOptionPane.showConfirmDialog(this, "CONGRAGULATIONS! "
 				+ current.getName() + " WINS!!!! \nDo you want to play again?",
 				"Chutes and Ladders", JOptionPane.YES_NO_OPTION,
@@ -118,7 +124,8 @@ public class ChutesAndLadders extends JFrame implements ActionListener{
 
 		if (again == JOptionPane.YES_OPTION) {
 			dispose();
-			// new GameMenu().setVisible(true); -------------NEED TO FIX THIS-------------
+			// new GameMenu().setVisible(true); -------------NEED TO FIX
+			// THIS-------------
 
 		} else {
 			JOptionPane.showMessageDialog(this,
@@ -159,31 +166,39 @@ public class ChutesAndLadders extends JFrame implements ActionListener{
 	}
 
 	private int rollDice() {
-		Random random = new Random();
+		random = new Random();
+		Timer timer = new Timer(3000, new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				spinButton.setIcon(photos[random.nextInt(7)]);
+			}
+
+		});
+
 		return random.nextInt(6) + 1;
+
 	}
 
-	//	public void playSound(final String file) {
-	//		new Thread(new Runnable() {
+	// public void playSound(final String file) {
+	// new Thread(new Runnable() {
 	//
-	//			public void run() {
-	//				Applet.newAudioClip(getClass().getResource(file)).play();
-	//			}
-	//		}).start();
-	//	}
+	// public void run() {
+	// Applet.newAudioClip(getClass().getResource(file)).play();
+	// }
+	// }).start();
+	// }
 
 	public void actionPerformed(ActionEvent e) {
 		int value = rollDice();
-		spinButton.setIcon(new ImageIcon(getClass().getResource(
-				photos[value - 1])));
+		spinButton.setIcon(photos[value - 1]);
 		if (current.getCol() != -1) {
 			board.removeImage(current.getImage(), current.getRow(),
 					current.getCol());
 		}
 		logic.turn(value);
 
-		board.addImage(pieces[current.getNum()].getImage(),
-				current.getRow(), current.getCol());
+		board.addImage(pieces[current.getNum()].getImage(), current.getRow(),
+				current.getCol());
 		checkBoard();
 
 		if (current.getRow() <= 0 && current.getCol() <= 0) {
