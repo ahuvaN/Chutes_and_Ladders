@@ -74,6 +74,7 @@ public class GameMenu extends JFrame {
 		this.remove(buttons);
 		this.add(playerInfo, BorderLayout.WEST);
 		revalidate();
+		
 	}
 
 	private void resetContainer() {
