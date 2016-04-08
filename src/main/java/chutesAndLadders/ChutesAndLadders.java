@@ -106,7 +106,6 @@ public class ChutesAndLadders extends JFrame {
 		logic = new GameLogic(players);
 		
 		player = new VideoPlayer();
-
 	}
 
 	ActionListener buttonListen = new ActionListener() {
