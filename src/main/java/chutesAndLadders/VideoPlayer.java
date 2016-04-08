@@ -15,6 +15,7 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.SceneBuilder;
+import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -33,9 +34,7 @@ public class VideoPlayer extends JFrame {
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		this.setSize(640, 400);
 
-		Group root = new Group();
-		SceneBuilder<?> sb = SceneBuilder.create().width(640).height(400)
-				.root(root);
+		StackPane root = new StackPane();
 		String mediaString = "ChutesAndLaddersSong.mp4";
 		JFXPanel fxPanel = new JFXPanel();
 		Media media = new Media(new File(mediaString).toURI().toString());
@@ -45,7 +44,7 @@ public class VideoPlayer extends JFrame {
 		// mediaPlayer.setAutoPlay(true);
 
 		root.getChildren().add(view);
-		Scene scene = sb.build();
+		Scene scene = new Scene(root, 600, 800);
 
 		fxPanel.setScene(scene);
 		//add(fxPanel, BorderLayout.CENTER);
