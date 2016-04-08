@@ -18,7 +18,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class ChutesAndLadders extends JFrame implements ActionListener{
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
+public class ChutesAndLadders extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private JButton spinButton;
 	private String[] photos;
@@ -105,20 +108,22 @@ public class ChutesAndLadders extends JFrame implements ActionListener{
 
 		playersImg.setIcon(new ImageIcon(current.getImage()));
 
-		logic = new GameLogic(players);
+		logic = new GameLogic(players, board);
 	}
 
-
 	private void displayWinner() {
-		//		playSound("sound.wav");
+		// playSound("sound.wav");
 		int again = JOptionPane.showConfirmDialog(this, "CONGRAGULATIONS! "
 				+ current.getName() + " WINS!!!! \nDo you want to play again?",
 				"Chutes and Ladders", JOptionPane.YES_NO_OPTION,
 				JOptionPane.PLAIN_MESSAGE, new ImageIcon("smile.jpeg"));
 
 		if (again == JOptionPane.YES_OPTION) {
+			Injector injector = Guice.createInjector(new GameModule());
+			injector.getInstance(GameMenu.class);
 			dispose();
-			// new GameMenu().setVisible(true); -------------NEED TO FIX THIS-------------
+			// new GameMenu().setVisible(true); -------------NEED TO FIX
+			// THIS-------------
 
 		} else {
 			JOptionPane.showMessageDialog(this,
@@ -144,7 +149,7 @@ public class ChutesAndLadders extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(this,
 					"YAY! YOU HIT A LADDER - GOING UP...!",
 					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
-					new ImageIcon("ladder.jpe"));
+					new ImageIcon("ladder.jpeg"));
 			found = true;
 		}
 
@@ -163,27 +168,57 @@ public class ChutesAndLadders extends JFrame implements ActionListener{
 		return random.nextInt(6) + 1;
 	}
 
-	//	public void playSound(final String file) {
-	//		new Thread(new Runnable() {
+	// public void playSound(final String file) {
+	// new Thread(new Runnable() {
 	//
-	//			public void run() {
-	//				Applet.newAudioClip(getClass().getResource(file)).play();
-	//			}
-	//		}).start();
-	//	}
+	// public void run() {
+	// Applet.newAudioClip(getClass().getResource(file)).play();
+	// }
+	// }).start();
+	// }
 
 	public void actionPerformed(ActionEvent e) {
 		int value = rollDice();
 		spinButton.setIcon(new ImageIcon(getClass().getResource(
 				photos[value - 1])));
-		if (current.getCol() != -1) {
-			board.removeImage(current.getImage(), current.getRow(),
-					current.getCol());
-		}
-		logic.turn(value);
 
-		board.addImage(pieces[current.getNum()].getImage(),
-				current.getRow(), current.getCol());
+		// for (int i = 0; i < value; i++) {
+		// if (current.getCol() != -1) {
+		// board.removeImage(current.getImage(), current.getRow(),
+		// current.getCol());
+		// }
+		// board.addImage(pieces[current.getNum()].getImage(),
+		// current.getRow() - (i + 1), current.getCol() - (i + 1));
+		// // repaint();
+		// try {
+		// Thread.sleep(1000);
+		// } catch (InterruptedException e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// }
+		//
+		// }
+		int count = 0;
+		while (count < value) {
+			if (current.getCol() != -1) {
+				board.removeImage(current.getImage(), current.getRow(),
+						current.getCol());
+			}
+			logic.turn(1);
+			
+			board.addImage(current.getImage(),
+					current.getRow(), current.getCol());
+			repaint();
+//			try {
+//				Thread.sleep(1000);
+//			} catch (InterruptedException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+
+			count++;
+		}
+
 		checkBoard();
 
 		if (current.getRow() <= 0 && current.getCol() <= 0) {
@@ -195,5 +230,4 @@ public class ChutesAndLadders extends JFrame implements ActionListener{
 		playersTurn.setText(current.getName() + "'s");
 
 	}
-
 }
