@@ -1,6 +1,5 @@
 package chutesAndLadders;
 
-import java.applet.Applet;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -104,7 +103,7 @@ public class ChutesAndLadders extends JFrame {
 		playersImg.setIcon(new ImageIcon(current.getImage()));
 
 		logic = new GameLogic(players);
-		
+
 		player = new VideoPlayer();
 	}
 
@@ -140,7 +139,7 @@ public class ChutesAndLadders extends JFrame {
 	};
 
 	private void displayWinner() {
-		playSound("sound.wav");
+		//playSound("sound.wav");
 		int again = JOptionPane.showConfirmDialog(this, "CONGRAGULATIONS! "
 				+ current.getName() + " WINS!!!! \nDo you want to play again?",
 				"Chutes and Ladders", JOptionPane.YES_NO_OPTION,
@@ -197,13 +196,13 @@ public class ChutesAndLadders extends JFrame {
 		return random.nextInt(6) + 1;
 	}
 
-	public void playSound(final String file) {
-		new Thread(new Runnable() {
-
-			public void run() {
-				Applet.newAudioClip(getClass().getResource(file)).play();
-			}
-		}).start();
-	}
+	//	public void playSound(final String file) {
+	//		new Thread(new Runnable() {
+	//
+	//			public void run() {
+	//				Applet.newAudioClip(getClass().getResource(file)).play();
+	//			}
+	//		}).start();
+	//	}
 
 }
