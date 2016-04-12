@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Random;
 
 import javax.inject.Inject;
@@ -32,7 +34,8 @@ public class ChutesAndLadders extends JPanel {
 	private Timer timer;
 	private int number;
 	private JLabel playersImg;
-	private GameFrame game;
+
+	private GameMenu gameMenu;
 
 	@Inject
 	public ChutesAndLadders() {
@@ -78,6 +81,35 @@ public class ChutesAndLadders extends JPanel {
 
 			public void actionPerformed(ActionEvent event) {
 				rollDice();
+			}
+
+		});
+
+		spinButton.addMouseListener(new MouseListener(){
+
+			public void mouseClicked(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+
+			}
+
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			public void mousePressed(MouseEvent e) {
+				JButton b = (JButton) e.getSource();
+				b.setContentAreaFilled(false);
+			}
+
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+
 			}
 
 		});
@@ -129,10 +161,17 @@ public class ChutesAndLadders extends JPanel {
 				JOptionPane.PLAIN_MESSAGE, new ImageIcon("smile.jpeg"));
 
 		if (again == JOptionPane.YES_OPTION) {
-			game.removeAll();
+
+			gameMenu.newGame();
+			gameMenu.revalidate();
+			//game.remove(menu);
 			//	game.revalidate();
 			//game.repaint();
 			//menu.newGame();
+
+
+			//game.add(menu);
+
 
 
 		} else {
@@ -141,7 +180,7 @@ public class ChutesAndLadders extends JPanel {
 					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
 					new ImageIcon("bye.png"));
 			// close the window
-			game.dispose();
+			//gameMenu.dispose();
 		}
 	}
 
@@ -232,8 +271,10 @@ public class ChutesAndLadders extends JPanel {
 	// }).start();
 	// }
 
-	public void setGame(GameFrame game){
-		this.game = game;
+
+	public void setMenu(GameMenu gameMenu) {
+		this.gameMenu = gameMenu;
+
 	}
 
 }

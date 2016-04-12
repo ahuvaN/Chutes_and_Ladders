@@ -18,6 +18,7 @@ public class GameFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		add(this.gameMenu = gameMenu);
+		this.gameMenu.setFrame(this);
 
 		setVisible(true);
 	}
@@ -27,5 +28,10 @@ public class GameFrame extends JFrame {
 		injector.getInstance(GameFrame.class);
 
 	}
+
+	//	public GameMenu getMenu(){
+	//		return gameMenu;
+	//	}
+
 
 }

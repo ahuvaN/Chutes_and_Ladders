@@ -8,6 +8,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
 @Singleton
 public class GameMenu extends JPanel {
 
@@ -16,6 +19,7 @@ public class GameMenu extends JPanel {
 	private PlayerInfo playerInfo;
 	private ChutesAndLadders gameBoard;
 	private JLabel logo;
+	private GameFrame frame;
 
 	@Inject
 	public GameMenu(ButtonsPanel buttonsPanel, PlayerInfo pInfo,
@@ -26,23 +30,16 @@ public class GameMenu extends JPanel {
 		playerInfo = pInfo;
 		playerInfo.setGameMenu(this);
 
-		logo = new JLabel(new ImageIcon(this.getClass().getResource(
-				"/logo.png")));
+		logo = new JLabel(new ImageIcon(this.getClass()
+				.getResource("/logo.png")));
 
-		// this.playerInfo = playerInfo;
 		buttons = buttonsPanel;
 		buttons.setMenu(this);
 
 		gameBoard = game;
-		// buttons.addPropertyChangeListener("buttonClicked",
-		// new PropertyChangeListener() {
-		//
-		// public void propertyChange(PropertyChangeEvent e) {
-		// resetContainer();
-		//
-		// }
-		//
-		// });
+		game.setMenu(this);
+
+
 
 		add(buttons, BorderLayout.EAST);
 		add(logo, BorderLayout.CENTER);
@@ -68,17 +65,17 @@ public class GameMenu extends JPanel {
 
 	public void newGame() {
 
-		playerInfo = new PlayerInfo();
-		playerInfo.setGameMenu(this);
+		frame.remove(this);
+		Injector injector = Guice.createInjector(new GameModule());
+		frame.add(injector.getInstance(GameMenu.class));
+		frame.revalidate();
 
 
-		buttons = new ButtonsPanel();
-		buttons.setMenu(this);
 
-		gameBoard = new ChutesAndLadders();
+	}
 
-		add(buttons, BorderLayout.WEST);
-		add(logo, BorderLayout.CENTER);
+	public void setFrame(GameFrame gameFrame) {
+		frame = gameFrame;
 
 	}
 
