@@ -1,6 +1,5 @@
 package chutesAndLadders;
 
-import java.applet.Applet;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,9 +17,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
-public class ChutesAndLadders extends JFrame {
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
+public class ChutesAndLadders extends JFrame implements ActionListener {
+	private static final long serialVersionUID = 1L;
 	private JButton spinButton;
 	private String[] photos;
 	private Board board;
@@ -31,8 +34,9 @@ public class ChutesAndLadders extends JFrame {
 	private JLabel playersImg;
 	private JPanel panel;
 	private ImageIcon[] pieces;
+	private Timer pieceTimer;
 
-	public ChutesAndLadders(String[] playerNames) throws IOException {
+	public ChutesAndLadders() throws IOException {
 		setTitle("CHUTES AND LADDERS");
 		setSize(1100, 1000);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,9 +54,9 @@ public class ChutesAndLadders extends JFrame {
 		board = new Board();
 		add(board, BorderLayout.CENTER);
 
-		JPanel playerPanel = new JPanel(new GridLayout(2,1));
+		JPanel playerPanel = new JPanel(new GridLayout(2, 1));
 		playerPanel.setBackground(Color.BLACK);
-		playersTurn = new JLabel("",JLabel.CENTER);
+		playersTurn = new JLabel("", JLabel.CENTER);
 		playersTurn.setFont(font);
 		playersTurn.setForeground(Color.WHITE);
 		playersTurn.setVerticalAlignment(JLabel.BOTTOM);
@@ -74,7 +78,7 @@ public class ChutesAndLadders extends JFrame {
 		spinButton.setBorder(BorderFactory.createLineBorder(Color.black));
 		spinButton.setBackground(Color.BLACK);
 		spinButton.setIcon(new ImageIcon(getClass().getResource("/ROLL.png")));
-		spinButton.addActionListener(buttonListen);
+		spinButton.addActionListener(this);
 		photos = new String[] { "/#1.png", "/#2.png", "/#3.png", "/#4.png",
 				"/#5.png", "/#6.png" };
 
@@ -82,13 +86,17 @@ public class ChutesAndLadders extends JFrame {
 
 		add(panel, BorderLayout.LINE_START);
 
-		pieces = new ImageIcon[] { new ImageIcon(getClass().getResource("/red.png")),
+		pieces = new ImageIcon[] {
+				new ImageIcon(getClass().getResource("/red.png")),
 				new ImageIcon(getClass().getResource("/blue.png")),
 				new ImageIcon(getClass().getResource("/green.png")),
 				new ImageIcon(getClass().getResource("/yellow.png")),
 				new ImageIcon(getClass().getResource("/orange.png")),
 				new ImageIcon(getClass().getResource("/purple.png")) };
 
+	}
+
+	public void setPlayers(String[] playerNames) {
 		players = new Player[playerNames.length];
 
 		int x = 0;
@@ -102,46 +110,22 @@ public class ChutesAndLadders extends JFrame {
 
 		playersImg.setIcon(new ImageIcon(current.getImage()));
 
-		logic = new GameLogic(players);
-
+		logic = new GameLogic(players, board);
 	}
 
-	ActionListener buttonListen = new ActionListener() {
-
-		public void actionPerformed(ActionEvent event) {
-
-			int value = rollDice();
-			spinButton.setIcon(new ImageIcon(getClass().getResource(photos[value - 1])));
-			if (current.getCol() != -1) {
-				board.removeImage(current.getImage(), current.getRow(),
-						current.getCol());
-			}
-			logic.turn(value);
-
-			board.addImage(pieces[current.getNum()].getImage(), current.getRow(),
-					current.getCol());
-			checkBoard();
-
-			if (current.getRow() <= 0 && current.getCol() <= 0) {
-				displayWinner();
-			}
-
-			current = logic.switchPlayer();
-			playersImg.setIcon(new ImageIcon(current.getImage()));
-			playersTurn.setText(current.getName() + "'s");
-		}
-	};
-
 	private void displayWinner() {
-		playSound("sound.wav");
+		// playSound("sound.wav");
 		int again = JOptionPane.showConfirmDialog(this, "CONGRAGULATIONS! "
 				+ current.getName() + " WINS!!!! \nDo you want to play again?",
 				"Chutes and Ladders", JOptionPane.YES_NO_OPTION,
 				JOptionPane.PLAIN_MESSAGE, new ImageIcon("smile.jpeg"));
 
 		if (again == JOptionPane.YES_OPTION) {
+			Injector injector = Guice.createInjector(new GameModule());
+			injector.getInstance(GameMenu.class);
 			dispose();
-			new GameMenu().setVisible(true);
+			// new GameMenu().setVisible(true); -------------NEED TO FIX
+			// THIS-------------
 
 		} else {
 			JOptionPane.showMessageDialog(this,
@@ -167,7 +151,7 @@ public class ChutesAndLadders extends JFrame {
 			JOptionPane.showMessageDialog(this,
 					"YAY! YOU HIT A LADDER - GOING UP...!",
 					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
-					new ImageIcon("ladder.jpe"));
+					new ImageIcon("ladder.jpeg"));
 			found = true;
 		}
 
@@ -186,13 +170,96 @@ public class ChutesAndLadders extends JFrame {
 		return random.nextInt(6) + 1;
 	}
 
-	public void playSound(final String file) {
-		new Thread(new Runnable() {
+	// public void playSound(final String file) {
+	// new Thread(new Runnable() {
+	//
+	// public void run() {
+	// Applet.newAudioClip(getClass().getResource(file)).play();
+	// }
+	// }).start();
+	// }
 
-			public void run() {
-				Applet.newAudioClip(getClass().getResource(file)).play();
+	public void actionPerformed(ActionEvent e) {
+		final int value = rollDice();
+		spinButton.setIcon(new ImageIcon(getClass().getResource(
+				photos[value - 1])));
+
+		// for (int i = 0; i < value; i++) {
+		// if (current.getCol() != -1) {
+		// board.removeImage(current.getImage(), current.getRow(),
+		// current.getCol());
+		// }
+		// board.addImage(pieces[current.getNum()].getImage(),
+		// current.getRow() - (i + 1), current.getCol() - (i + 1));
+		// // repaint();
+		// try {
+		// Thread.sleep(1000);
+		// } catch (InterruptedException e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// }
+		//
+		// }
+//		int count = 0;
+//		while (count < value) {
+//			if (current.getCol() != -1) {
+//				board.removeImage(current.getImage(), current.getRow(),
+//						current.getCol());
+//			}
+//			logic.turn(1);
+//			
+//			board.addImage(current.getImage(),
+//					current.getRow(), current.getCol());
+//			repaint();
+////			try {
+////				Thread.sleep(1000);
+////			} catch (InterruptedException e1) {
+////				// TODO Auto-generated catch block
+////				e1.printStackTrace();
+////			}
+//
+//			count++;
+//		}
+		
+		pieceTimer = new Timer(500, new ActionListener(){
+			int count = 0;
+			
+			public void actionPerformed(ActionEvent e) {
+				if (current.getCol() != -1) {
+					board.removeImage(current.getImage(), current.getRow(),
+							current.getCol());
+				}
+				logic.turn(1);
+				
+				board.addImage(current.getImage(),
+						current.getRow(), current.getCol());
+				repaint();
+				
+				count++;
+				if(count == value){
+					pieceTimer.stop();
+					pieceTimer = null;
+					nextTurn();
+				}
 			}
-		}).start();
+			
+		});
+		
+		spinButton.setEnabled(false);
+		pieceTimer.start();
+		
 	}
+	
+	private void nextTurn(){
+		checkBoard();
 
+		if (current.getRow() <= 0 && current.getCol() <= 0) {
+			displayWinner();
+		}
+
+		current = logic.switchPlayer();
+		playersImg.setIcon(new ImageIcon(current.getImage()));
+		playersTurn.setText(current.getName() + "'s");
+		spinButton.setEnabled(true);
+	}
 }
