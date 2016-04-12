@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -33,6 +34,7 @@ public class ChutesAndLadders extends JFrame implements ActionListener {
 	private JLabel playersImg;
 	private JPanel panel;
 	private ImageIcon[] pieces;
+	private Timer pieceTimer;
 
 	public ChutesAndLadders() throws IOException {
 		setTitle("CHUTES AND LADDERS");
@@ -178,7 +180,7 @@ public class ChutesAndLadders extends JFrame implements ActionListener {
 	// }
 
 	public void actionPerformed(ActionEvent e) {
-		int value = rollDice();
+		final int value = rollDice();
 		spinButton.setIcon(new ImageIcon(getClass().getResource(
 				photos[value - 1])));
 
@@ -198,27 +200,57 @@ public class ChutesAndLadders extends JFrame implements ActionListener {
 		// }
 		//
 		// }
-		int count = 0;
-		while (count < value) {
-			if (current.getCol() != -1) {
-				board.removeImage(current.getImage(), current.getRow(),
-						current.getCol());
-			}
-			logic.turn(1);
-			
-			board.addImage(current.getImage(),
-					current.getRow(), current.getCol());
-			repaint();
-//			try {
-//				Thread.sleep(1000);
-//			} catch (InterruptedException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
+//		int count = 0;
+//		while (count < value) {
+//			if (current.getCol() != -1) {
+//				board.removeImage(current.getImage(), current.getRow(),
+//						current.getCol());
 //			}
-
-			count++;
-		}
-
+//			logic.turn(1);
+//			
+//			board.addImage(current.getImage(),
+//					current.getRow(), current.getCol());
+//			repaint();
+////			try {
+////				Thread.sleep(1000);
+////			} catch (InterruptedException e1) {
+////				// TODO Auto-generated catch block
+////				e1.printStackTrace();
+////			}
+//
+//			count++;
+//		}
+		
+		pieceTimer = new Timer(500, new ActionListener(){
+			int count = 0;
+			
+			public void actionPerformed(ActionEvent e) {
+				if (current.getCol() != -1) {
+					board.removeImage(current.getImage(), current.getRow(),
+							current.getCol());
+				}
+				logic.turn(1);
+				
+				board.addImage(current.getImage(),
+						current.getRow(), current.getCol());
+				repaint();
+				
+				count++;
+				if(count == value){
+					pieceTimer.stop();
+					pieceTimer = null;
+					nextTurn();
+				}
+			}
+			
+		});
+		
+		spinButton.setEnabled(false);
+		pieceTimer.start();
+		
+	}
+	
+	private void nextTurn(){
 		checkBoard();
 
 		if (current.getRow() <= 0 && current.getCol() <= 0) {
@@ -228,6 +260,6 @@ public class ChutesAndLadders extends JFrame implements ActionListener {
 		current = logic.switchPlayer();
 		playersImg.setIcon(new ImageIcon(current.getImage()));
 		playersTurn.setText(current.getName() + "'s");
-
+		spinButton.setEnabled(true);
 	}
 }
