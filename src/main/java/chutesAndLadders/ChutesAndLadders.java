@@ -40,7 +40,6 @@ public class ChutesAndLadders extends JPanel {
 	@Inject
 	public ChutesAndLadders() {
 
-
 		BorderLayout bLayout = new BorderLayout();
 		setLayout(bLayout);
 
@@ -85,7 +84,7 @@ public class ChutesAndLadders extends JPanel {
 
 		});
 
-		spinButton.addMouseListener(new MouseListener(){
+		spinButton.addMouseListener(new MouseListener() {
 
 			public void mouseClicked(MouseEvent arg0) {
 				// TODO Auto-generated method stub
@@ -164,15 +163,6 @@ public class ChutesAndLadders extends JPanel {
 
 			gameMenu.newGame();
 			gameMenu.revalidate();
-			//game.remove(menu);
-			//	game.revalidate();
-			//game.repaint();
-			//menu.newGame();
-
-
-			//game.add(menu);
-
-
 
 		} else {
 			JOptionPane.showMessageDialog(this,
@@ -180,7 +170,7 @@ public class ChutesAndLadders extends JPanel {
 					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
 					new ImageIcon("bye.png"));
 			// close the window
-			//gameMenu.dispose();
+			// gameMenu.dispose();
 		}
 	}
 
@@ -270,7 +260,6 @@ public class ChutesAndLadders extends JPanel {
 	// }
 	// }).start();
 	// }
-
 
 	public void setMenu(GameMenu gameMenu) {
 		this.gameMenu = gameMenu;
