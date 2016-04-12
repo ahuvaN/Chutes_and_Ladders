@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import javax.inject.Inject;
 import javax.swing.JButton;
@@ -17,11 +16,13 @@ import javax.swing.JTextField;
 
 public class PlayerInfo extends JPanel {
 
+	private static final long serialVersionUID = 1L;
 	private JLabel[] labels;
 	private JTextField[] fields;
 	private JButton submit;
 	private JPanel players;
 	private String[] playerNames;
+	private GameMenu menu;
 
 	@Inject
 	public PlayerInfo() {
@@ -44,13 +45,11 @@ public class PlayerInfo extends JPanel {
 				for (int i = 0; i < fields.length; i++) {
 					playerNames[i] = fields[i].getText();
 				}
-				try {
-					ChutesAndLadders gameBoard = new ChutesAndLadders();
-					gameBoard.setVisible(true);
-					gameBoard.setPlayers(playerNames);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+
+				menu.playGame(playerNames);
+
+
+
 			}
 		});
 
@@ -87,12 +86,16 @@ public class PlayerInfo extends JPanel {
 			f.setPreferredSize(d);
 			f.setMinimumSize(d);
 			f.setMaximumSize(d);
-			//f.setAlignmentX(Component.CENTER_ALIGNMENT);
-			//l.setVerticalAlignment(JLabel.CENTER);
+			// f.setAlignmentX(Component.CENTER_ALIGNMENT);
+			// l.setVerticalAlignment(JLabel.CENTER);
 			fields[i - 1] = f;
 			player.add(f);
 			players.add(player);
 		}
+	}
+
+	public void setGameMenu(GameMenu m) {
+		menu = m;
 	}
 
 }

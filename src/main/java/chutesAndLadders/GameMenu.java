@@ -1,79 +1,82 @@
 package chutesAndLadders;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-public class GameMenu extends JFrame {
+@Singleton
+public class GameMenu extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private ButtonsPanel buttons;
 	private PlayerInfo playerInfo;
+	private ChutesAndLadders gameBoard;
+	private JLabel logo;
+	private GameFrame frame;
 
 	@Inject
-	public GameMenu(ButtonsPanel buttonsPanel, PlayerInfo playersInfo) {
-		setTitle("CHUTES AND LADDERS");
-		setSize(800, 600);
-		setResizable(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	public GameMenu(ButtonsPanel buttonsPanel, PlayerInfo pInfo,
+			ChutesAndLadders game) {
 
-		this.playerInfo = playersInfo;
-		Container container = new Container();
-		container.setLayout(new BorderLayout());
+		setLayout(new BorderLayout());
 
-		JPanel center = new JPanel();
-		JLabel logo = new JLabel(new ImageIcon(this.getClass().getResource(
-				"/logo.png")));
-		center.add(logo);
+		playerInfo = pInfo;
+		playerInfo.setGameMenu(this);
 
-		//this.playerInfo = playerInfo;
+		logo = new JLabel(new ImageIcon(this.getClass()
+				.getResource("/logo.png")));
+
 		buttons = buttonsPanel;
 		buttons.setMenu(this);
-		// buttons.addPropertyChangeListener("buttonClicked",
-		// new PropertyChangeListener() {
-		//
-		// public void propertyChange(PropertyChangeEvent e) {
-		// resetContainer();
-		//
-		// }
-		//
-		// });
 
-		add(buttons, BorderLayout.WEST);
-		add(center, BorderLayout.CENTER);
+		gameBoard = game;
+		game.setMenu(this);
 
-		setVisible(true);
+
+
+		add(buttons, BorderLayout.EAST);
+		add(logo, BorderLayout.CENTER);
 
 	}
 
-	public void setPlayers(int num){
+	public void setPlayers(int num) {
 		playerInfo.setNumPlayers(num);
-		//JOptionPane.showMessageDialog(null, "Set players");
 		this.remove(buttons);
-		this.add(playerInfo, BorderLayout.WEST);
+		this.add(playerInfo, BorderLayout.EAST);
 		revalidate();
 		
 	}
 
-	private void resetContainer() {
-		remove(buttons);
-		add(playerInfo, BorderLayout.WEST);
-		buttons.setButtonClicked(false);
+	public void playGame(String[] players) {
+
+		gameBoard.setPlayers(players);
+		gameBoard.setVisible(true);
+
+		removeAll();
+		add(gameBoard, BorderLayout.CENTER);
 		revalidate();
-		repaint();
 	}
 
-	public static void main(String[] args) {
+	public void newGame() {
+
+		frame.remove(this);
 		Injector injector = Guice.createInjector(new GameModule());
-		injector.getInstance(GameMenu.class);
+		frame.add(injector.getInstance(GameMenu.class));
+		frame.revalidate();
+
+
+
+	}
+
+	public void setFrame(GameFrame gameFrame) {
+		frame = gameFrame;
 
 	}
 

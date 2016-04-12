@@ -54,7 +54,6 @@ public class ButtonsPanel extends JPanel implements ActionListener {
 		add(buttons, BorderLayout.CENTER);
 	}
 
-
 	private void setInstructions(JPanel instructions) {
 		Dimension d;
 		JLabel line1 = new JLabel("SELECT HOW MANY", JLabel.CENTER);
@@ -74,44 +73,30 @@ public class ButtonsPanel extends JPanel implements ActionListener {
 		instructions.add(line3);
 	}
 
-
 	public void actionPerformed(ActionEvent event) {
 		GameButton g = (GameButton) event.getSource();
 		numPlayers = Integer.parseInt(g.getText());
 		setButtonClicked(true);
 		menu.setPlayers(numPlayers);
-		//remove player number choice
-
-		// //add player info display to type in player names
-		// PlayerInfo playerInfo = new PlayerInfo();
-		// playerInfo.setNumPlayers(Integer.parseInt(g.getText()));
-		// menu.add(playerInfo, BorderLayout.WEST);
 	}
-
-
-
-
 
 	public boolean isButtonClicked() {
 		return buttonClicked;
 	}
 
-
 	public int getNumPlayers() {
 		return numPlayers;
 	}
-
 
 	public void setButtonClicked(boolean buttonClicked) {
 		this.buttonClicked = buttonClicked;
 	}
 
-
 	public void setNumPlayers(int numPlayers) {
 		this.numPlayers = numPlayers;
 	}
 
-	public void setMenu(GameMenu menu){
+	public void setMenu(GameMenu menu) {
 		this.menu = menu;
 	}
 

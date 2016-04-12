@@ -7,13 +7,14 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Random;
 
+import javax.inject.Inject;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -22,30 +23,31 @@ import javax.swing.Timer;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-public class ChutesAndLadders extends JFrame implements ActionListener {
+public class ChutesAndLadders extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JButton spinButton;
-	private String[] photos;
+	private ImageIcon[] diceFaces;
 	private Board board;
 	private GameLogic logic;
 	private Player[] players;
 	private Player current;
 	private JLabel playersTurn;
-	private JLabel playersImg;
-	private JPanel panel;
 	private ImageIcon[] pieces;
 	private Timer pieceTimer;
+	private Random random;
+	private Timer timer;
+	private int number;
+	private JLabel playersImg;
 
-	public ChutesAndLadders() throws IOException {
-		setTitle("CHUTES AND LADDERS");
-		setSize(1100, 1000);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setResizable(false);
+	private GameMenu gameMenu;
+
+	@Inject
+	public ChutesAndLadders() {
 
 		BorderLayout bLayout = new BorderLayout();
 		setLayout(bLayout);
 
-		panel = new JPanel();
+		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(3, 0, 7, 7));
 		panel.setBackground(Color.BLACK);
 		panel.setPreferredSize(new Dimension(230, 400));
@@ -78,9 +80,50 @@ public class ChutesAndLadders extends JFrame implements ActionListener {
 		spinButton.setBorder(BorderFactory.createLineBorder(Color.black));
 		spinButton.setBackground(Color.BLACK);
 		spinButton.setIcon(new ImageIcon(getClass().getResource("/ROLL.png")));
-		spinButton.addActionListener(this);
-		photos = new String[] { "/#1.png", "/#2.png", "/#3.png", "/#4.png",
-				"/#5.png", "/#6.png" };
+		spinButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent event) {
+				rollDice();
+			}
+
+		});
+
+		spinButton.addMouseListener(new MouseListener() {
+
+			public void mouseClicked(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+
+			}
+
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			public void mousePressed(MouseEvent e) {
+				JButton b = (JButton) e.getSource();
+				b.setContentAreaFilled(false);
+			}
+
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+		});
+
+		diceFaces = new ImageIcon[] {
+				new ImageIcon(getClass().getResource("/#1.png")),
+				new ImageIcon(getClass().getResource("/#2.png")),
+				new ImageIcon(getClass().getResource("/#3.png")),
+				new ImageIcon(getClass().getResource("/#4.png")),
+				new ImageIcon(getClass().getResource("/#5.png")),
+				new ImageIcon(getClass().getResource("/#6.png")) };
 
 		panel.add(spinButton);
 
@@ -121,18 +164,16 @@ public class ChutesAndLadders extends JFrame implements ActionListener {
 				JOptionPane.PLAIN_MESSAGE, new ImageIcon("smile.jpeg"));
 
 		if (again == JOptionPane.YES_OPTION) {
-			Injector injector = Guice.createInjector(new GameModule());
-			injector.getInstance(GameMenu.class);
-			dispose();
-			// new GameMenu().setVisible(true); -------------NEED TO FIX
-			// THIS-------------
+			gameMenu.newGame();
+			gameMenu.revalidate();
 
 		} else {
 			JOptionPane.showMessageDialog(this,
 					"HAVE A GOOD DAY! \nTHANK YOU FOR PLAYING",
 					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
 					new ImageIcon("bye.png"));
-			dispose(); // close the window
+			// close the window
+			// gameMenu.dispose();
 		}
 	}
 
@@ -165,9 +206,76 @@ public class ChutesAndLadders extends JFrame implements ActionListener {
 		}
 	}
 
-	private int rollDice() {
-		Random random = new Random();
-		return random.nextInt(6) + 1;
+	private void rollDice() {
+		random = new Random();
+		number = 0;
+
+		timer = new Timer(50, new ActionListener() {
+			int count = 1;
+
+			public void actionPerformed(ActionEvent evt) {
+
+				number = random.nextInt(6);
+				spinButton.setIcon(diceFaces[number]);
+				System.out.println("changed again");
+				repaint();
+				count++;
+
+				if (count == 6) {
+					timer.stop();
+					timer = null;
+					System.out.println(number + 1);
+					movePlayer(number + 1);
+
+				}
+			}
+
+		});
+		timer.start();
+
+	}
+
+	private void movePlayer(final int number) {
+		pieceTimer = new Timer(500, new ActionListener() {
+			int count = 0;
+
+			public void actionPerformed(ActionEvent e) {
+				if (current.getCol() != -1) {
+					board.removeImage(current.getImage(), current.getRow(),
+							current.getCol());
+				}
+				logic.turn(1);
+
+				board.addImage(current.getImage(), current.getRow(),
+						current.getCol());
+				repaint();
+
+				count++;
+				if (count == number) {
+					pieceTimer.stop();
+					pieceTimer = null;
+					nextTurn();
+				}
+			}
+
+		});
+
+		spinButton.setEnabled(false);
+		pieceTimer.start();
+
+	}
+
+	private void nextTurn() {
+		checkBoard();
+
+		if (current.getRow() <= 0 && current.getCol() <= 0) {
+			displayWinner();
+		}
+
+		current = logic.switchPlayer();
+		playersImg.setIcon(new ImageIcon(current.getImage()));
+		playersTurn.setText(current.getName() + "'s");
+		spinButton.setEnabled(true);
 	}
 
 	// public void playSound(final String file) {
@@ -179,87 +287,7 @@ public class ChutesAndLadders extends JFrame implements ActionListener {
 	// }).start();
 	// }
 
-	public void actionPerformed(ActionEvent e) {
-		final int value = rollDice();
-		spinButton.setIcon(new ImageIcon(getClass().getResource(
-				photos[value - 1])));
-
-		// for (int i = 0; i < value; i++) {
-		// if (current.getCol() != -1) {
-		// board.removeImage(current.getImage(), current.getRow(),
-		// current.getCol());
-		// }
-		// board.addImage(pieces[current.getNum()].getImage(),
-		// current.getRow() - (i + 1), current.getCol() - (i + 1));
-		// // repaint();
-		// try {
-		// Thread.sleep(1000);
-		// } catch (InterruptedException e1) {
-		// // TODO Auto-generated catch block
-		// e1.printStackTrace();
-		// }
-		//
-		// }
-//		int count = 0;
-//		while (count < value) {
-//			if (current.getCol() != -1) {
-//				board.removeImage(current.getImage(), current.getRow(),
-//						current.getCol());
-//			}
-//			logic.turn(1);
-//			
-//			board.addImage(current.getImage(),
-//					current.getRow(), current.getCol());
-//			repaint();
-////			try {
-////				Thread.sleep(1000);
-////			} catch (InterruptedException e1) {
-////				// TODO Auto-generated catch block
-////				e1.printStackTrace();
-////			}
-//
-//			count++;
-//		}
-		
-		pieceTimer = new Timer(500, new ActionListener(){
-			int count = 0;
-			
-			public void actionPerformed(ActionEvent e) {
-				if (current.getCol() != -1) {
-					board.removeImage(current.getImage(), current.getRow(),
-							current.getCol());
-				}
-				logic.turn(1);
-				
-				board.addImage(current.getImage(),
-						current.getRow(), current.getCol());
-				repaint();
-				
-				count++;
-				if(count == value){
-					pieceTimer.stop();
-					pieceTimer = null;
-					nextTurn();
-				}
-			}
-			
-		});
-		
-		spinButton.setEnabled(false);
-		pieceTimer.start();
-		
-	}
-	
-	private void nextTurn(){
-		checkBoard();
-
-		if (current.getRow() <= 0 && current.getCol() <= 0) {
-			displayWinner();
-		}
-
-		current = logic.switchPlayer();
-		playersImg.setIcon(new ImageIcon(current.getImage()));
-		playersTurn.setText(current.getName() + "'s");
-		spinButton.setEnabled(true);
+	public void setMenu(GameMenu gameMenu) {
+		this.gameMenu = gameMenu;
 	}
 }
