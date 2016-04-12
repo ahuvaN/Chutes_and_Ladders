@@ -52,20 +52,6 @@ public class GameMenu extends JFrame {
 
 		setVisible(true);
 
-		/*
-		while (!buttons.isButtonClicked()) {
-			if(buttons.isButtonClicked()){
-				break;
-			}
-		}
-
-		playerInfo.setNumPlayers(buttons.getNumPlayers());
-		JOptionPane.showMessageDialog(null, "Set players");
-		this.remove(buttons);
-		this.add(playerInfo, BorderLayout.WEST);
-		buttons.setButtonClicked(false);
-		 */
-
 	}
 
 	public void setPlayers(int num){
