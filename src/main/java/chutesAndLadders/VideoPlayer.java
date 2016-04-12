@@ -11,6 +11,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.xuggle.mediatool.IMediaReader;
+import com.xuggle.mediatool.IMediaViewer;
+import com.xuggle.mediatool.ToolFactory;
+
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -33,6 +37,7 @@ public class VideoPlayer extends JFrame {
 		this.setTitle("Video");
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		this.setSize(640, 400);
+		setVisible(true);
 
 		StackPane root = new StackPane();
 		String mediaString = "ChutesAndLaddersSong.mp4";
@@ -67,6 +72,12 @@ public class VideoPlayer extends JFrame {
 		add(buttonPanel, BorderLayout.SOUTH);
 		this.setVisible(true);
 
+//		IMediaReader mediaReader = ToolFactory.makeReader("ChutesAndLaddersSong.mp4");
+//        IMediaViewer mediaViewer = ToolFactory.makeViewer(false, JFrame.DISPOSE_ON_CLOSE);
+//        
+//        mediaReader.addListener(mediaViewer);
+//
+//        while (mediaReader.readPacket() == null) ;
 	}
 
 	public void playVideo() {
