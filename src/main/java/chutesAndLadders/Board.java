@@ -18,7 +18,7 @@ public class Board extends JPanel {
 
 	public Board() {
 		try {
-			image = ImageIO.read(getClass().getResource("/board.jpg"));
+			image = ImageIO.read(getClass().getResource("/game_board.png"));
 		} catch (IOException e) {
 
 		}
