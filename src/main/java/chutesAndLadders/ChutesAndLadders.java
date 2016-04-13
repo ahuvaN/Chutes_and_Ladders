@@ -30,7 +30,7 @@ public class ChutesAndLadders extends JFrame {
 	private JLabel playersImg;
 	private JPanel panel;
 	private ImageIcon[] pieces;
-	private VideoPlayer player;
+	private VideoPlayer videoPlayer;
 
 	public ChutesAndLadders(String[] playerNames) throws IOException {
 		setTitle("CHUTES AND LADDERS");
@@ -50,9 +50,9 @@ public class ChutesAndLadders extends JFrame {
 		board = new Board();
 		add(board, BorderLayout.CENTER);
 
-		JPanel playerPanel = new JPanel(new GridLayout(2,1));
+		JPanel playerPanel = new JPanel(new GridLayout(2, 1));
 		playerPanel.setBackground(Color.BLACK);
-		playersTurn = new JLabel("",JLabel.CENTER);
+		playersTurn = new JLabel("", JLabel.CENTER);
 		playersTurn.setFont(font);
 		playersTurn.setForeground(Color.WHITE);
 		playersTurn.setVerticalAlignment(JLabel.BOTTOM);
@@ -82,7 +82,8 @@ public class ChutesAndLadders extends JFrame {
 
 		add(panel, BorderLayout.LINE_START);
 
-		pieces = new ImageIcon[] { new ImageIcon(getClass().getResource("/red.png")),
+		pieces = new ImageIcon[] {
+				new ImageIcon(getClass().getResource("/red.png")),
 				new ImageIcon(getClass().getResource("/blue.png")),
 				new ImageIcon(getClass().getResource("/green.png")),
 				new ImageIcon(getClass().getResource("/yellow.png")),
@@ -104,7 +105,7 @@ public class ChutesAndLadders extends JFrame {
 
 		logic = new GameLogic(players);
 
-		player = new VideoPlayer();
+		videoPlayer = new VideoPlayer();
 	}
 
 	ActionListener buttonListen = new ActionListener() {
@@ -112,15 +113,16 @@ public class ChutesAndLadders extends JFrame {
 		public void actionPerformed(ActionEvent event) {
 
 			int value = rollDice();
-			spinButton.setIcon(new ImageIcon(getClass().getResource(photos[value - 1])));
+			spinButton.setIcon(new ImageIcon(getClass().getResource(
+					photos[value - 1])));
 			if (current.getCol() != -1) {
 				board.removeImage(current.getImage(), current.getRow(),
 						current.getCol());
 			}
 			logic.turn(value);
 
-			board.addImage(pieces[current.getNum()].getImage(), current.getRow(),
-					current.getCol());
+			board.addImage(pieces[current.getNum()].getImage(),
+					current.getRow(), current.getCol());
 			try {
 				checkBoard();
 			} catch (IOException e) {
@@ -139,7 +141,6 @@ public class ChutesAndLadders extends JFrame {
 	};
 
 	private void displayWinner() {
-		//playSound("sound.wav");
 		int again = JOptionPane.showConfirmDialog(this, "CONGRAGULATIONS! "
 				+ current.getName() + " WINS!!!! \nDo you want to play again?",
 				"Chutes and Ladders", JOptionPane.YES_NO_OPTION,
@@ -164,20 +165,28 @@ public class ChutesAndLadders extends JFrame {
 		int col = current.getCol();
 
 		if (logic.checkSnake(current.getPosition())) {
-			JOptionPane.showMessageDialog(this,
-					"OH NO! YOU HIT A SNAKE - GOING DOWN...!",
-					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
-					new ImageIcon("snake.gif"));
-			player.setVisible(true);
-			player.playVideo();
+			// JOptionPane.showMessageDialog(this,
+			// "OH NO! YOU HIT A SNAKE - GOING DOWN...!",
+			// "chutes and ladders", JOptionPane.PLAIN_MESSAGE,
+			// new ImageIcon("snake.gif"));
+			videoPlayer.setVisible(true);
+			videoPlayer.playVideo(1);
 			found = true;
 		} else if (logic.checkLadder(current.getPosition())) {
-			JOptionPane.showMessageDialog(this,
-					"YAY! YOU HIT A LADDER - GOING UP...!",
-					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
-					new ImageIcon("ladder.jpe"));
-			player.setVisible(true);
-			player.playVideo();
+			// JOptionPane.showMessageDialog(this,
+			// "YAY! YOU HIT A LADDER - GOING UP...!",
+			// "chutes and ladders", JOptionPane.PLAIN_MESSAGE,
+			// new ImageIcon("ladder.jpe"));
+
+			videoPlayer.setVisible(true);
+			videoPlayer.playVideo(0);
+
+			// while(videoPlayer.isShowing()){
+			// setEnabled(false);
+			// }
+
+			setEnabled(true);
+
 			found = true;
 		}
 
@@ -196,13 +205,5 @@ public class ChutesAndLadders extends JFrame {
 		return random.nextInt(6) + 1;
 	}
 
-	//	public void playSound(final String file) {
-	//		new Thread(new Runnable() {
-	//
-	//			public void run() {
-	//				Applet.newAudioClip(getClass().getResource(file)).play();
-	//			}
-	//		}).start();
-	//	}
 
 }

@@ -1,7 +1,9 @@
 package chutesAndLadders;
 
 import java.awt.BorderLayout;
-import java.awt.event.WindowAdapter;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -14,24 +16,29 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
-import com.sun.glass.events.WindowEvent;
-
-public class VideoPlayer extends JFrame {
+public class VideoPlayer extends JDialog implements WindowListener {
 
 	private static final long serialVersionUID = 1L;
 	private MediaPlayer mediaPlayer;
 	private Media media;
 	private MediaView view;
-	private WindowAdapter windowAdapter;
+	private String up, down;
+	private JLabel status;
 
 	public VideoPlayer() throws IOException {
 		setLayout(new BorderLayout());
 		this.setTitle("Video");
 		this.setSize(480, 390);
 		setVisible(true);
+		setResizable(false);
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(this);
 
 		final JFXPanel fxPanel = new JFXPanel();
 
@@ -46,56 +53,40 @@ public class VideoPlayer extends JFrame {
 			}
 
 		});
-		// this.setDefaultCloseOperation();
-		// JButton close = new JButton("Close");
-		// close.addActionListener(new ActionListener() {
-		//
-		// public void actionPerformed(ActionEvent arg0) {
-		// setVisible(false);
-		// mediaPlayer.stop();
-		// }
-		//
-		// });
-		// close.setPreferredSize(new Dimension(100, 30));
-		//
-		// JPanel buttonPanel = new JPanel();
-		// buttonPanel.setSize(new Dimension(100, 30));
-		// buttonPanel.add(close);
-		//
-		// add(buttonPanel, BorderLayout.SOUTH);
 
-		windowAdapter = new WindowAdapter() {
-			public void windowClosing(WindowEvent we) {
-				mediaPlayer.stop();
-				setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-			}
-		};
+		down = "CLIMBING UP";
+		up = "SLIDING DOWN";
+		status = new JLabel("", JLabel.CENTER);
+		status.setBackground(Color.BLACK);
+		status.setOpaque(true);
+		status.setForeground(Color.WHITE);
 
-		addWindowListener(windowAdapter);
+		Dimension d = new Dimension(480, 25);
 
+		status.setPreferredSize(d);
+		status.setMaximumSize(d);
+		status.setMinimumSize(d);
+
+		add(status, BorderLayout.SOUTH);
 		add(fxPanel, BorderLayout.CENTER);
 		this.setVisible(true);
 
 	}
 
 	private void initFX(JFXPanel fxPanel) throws URISyntaxException {
-		// StackPane root = new StackPane();
+
 		Group root = new Group();
-		// String mediaString = "/ChutesAndLaddersSong.mp4";
 		URL f = getClass().getResource("/ChutesAndLaddersSong.mp4");
-
-		// media = new Media(new File(mediaString).toURI().toString());
 		media = new Media(f.toURI().toString());
-		// media = new Media(mediaString);
-		mediaPlayer = new MediaPlayer(media);
-		// mediaPlayer.setAutoPlay(true);
 
+		mediaPlayer = new MediaPlayer(media);
 		mediaPlayer.setOnEndOfMedia(new Runnable() {
 
 			public void run() {
 				setVisible(false);
 			}
 		});
+
 		view = new MediaView(mediaPlayer);
 		root.getChildren().add(view);
 		Scene scene = new Scene(root, 600, 800);
@@ -104,22 +95,18 @@ public class VideoPlayer extends JFrame {
 
 	}
 
-	public void playVideo() {
+	public void playVideo(int position) {
+		if (position == 1) {
+			status.setText(up);
+
+		} else if (position == 0) {
+			status.setText(down);
+
+		}
 		this.setAlwaysOnTop(true);
 		mediaPlayer.play();
 
 	}
-
-	// public void setDefaultCloseOperation() {
-	// Platform.runLater(new Runnable() {
-	//
-	// public void run() {
-	// mediaPlayer.stop();
-	// setVisible(false);
-	// }
-	// });
-	//
-	// }
 
 	public static void main(String[] args) throws IOException {
 
@@ -132,7 +119,7 @@ public class VideoPlayer extends JFrame {
 					Platform.runLater(new Runnable() {
 
 						public void run() {
-							p.playVideo();
+							p.playVideo(1);
 						}
 					});
 
@@ -142,6 +129,36 @@ public class VideoPlayer extends JFrame {
 
 			}
 		});
+
+	}
+
+	public void windowActivated(java.awt.event.WindowEvent e) {
+
+	}
+
+	public void windowClosed(java.awt.event.WindowEvent e) {
+
+	}
+
+	public void windowClosing(java.awt.event.WindowEvent e) {
+		mediaPlayer.stop();
+		this.setVisible(false);
+
+	}
+
+	public void windowDeactivated(java.awt.event.WindowEvent e) {
+
+	}
+
+	public void windowDeiconified(java.awt.event.WindowEvent e) {
+
+	}
+
+	public void windowIconified(java.awt.event.WindowEvent e) {
+
+	}
+
+	public void windowOpened(java.awt.event.WindowEvent e) {
 
 	}
 }
