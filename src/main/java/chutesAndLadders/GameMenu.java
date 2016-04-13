@@ -39,8 +39,6 @@ public class GameMenu extends JPanel {
 		gameBoard = game;
 		game.setMenu(this);
 
-
-
 		add(buttons, BorderLayout.EAST);
 		add(logo, BorderLayout.CENTER);
 
@@ -71,8 +69,6 @@ public class GameMenu extends JPanel {
 		frame.add(injector.getInstance(GameMenu.class));
 		frame.revalidate();
 
-
-
 	}
 
 	public void setFrame(GameFrame gameFrame) {
@@ -80,7 +76,7 @@ public class GameMenu extends JPanel {
 
 	}
 
-	public GameFrame getFrame(){
+	public GameFrame getFrame() {
 		return frame;
 	}
 

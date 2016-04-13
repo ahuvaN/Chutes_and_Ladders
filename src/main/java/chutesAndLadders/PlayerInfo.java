@@ -48,8 +48,6 @@ public class PlayerInfo extends JPanel {
 
 				menu.playGame(playerNames);
 
-
-
 			}
 		});
 
@@ -86,8 +84,7 @@ public class PlayerInfo extends JPanel {
 			f.setPreferredSize(d);
 			f.setMinimumSize(d);
 			f.setMaximumSize(d);
-			// f.setAlignmentX(Component.CENTER_ALIGNMENT);
-			// l.setVerticalAlignment(JLabel.CENTER);
+
 			fields[i - 1] = f;
 			player.add(f);
 			players.add(player);

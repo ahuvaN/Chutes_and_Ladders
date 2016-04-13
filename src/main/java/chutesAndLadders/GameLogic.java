@@ -19,130 +19,6 @@ public class GameLogic {
 		setUpMaps();
 	}
 
-//	public void turn(int moves) {
-//		int row = current.getPosition().getRow();
-//		int col = current.getPosition().getCol();
-//
-//		do {
-//			boolean even = row % 2 == 0 ? true : false;
-//
-//			if (even) {
-//				if (row == 0 && col < 6) {
-//					if (col - moves < 0) {
-//						current.changePosition(0, 0);
-//						return;
-//					}
-//				}
-//				if (col == 0) {
-//					row -= 1;
-//					current.changePosition(row, col);
-//					board.addImage(current.getImage(), current.getRow(),
-//							current.getCol());
-//					board.repaint();
-//					try {
-//						Thread.sleep(1000);
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					board.removeImage(current.getImage(), current.getRow(),
-//							current.getCol());
-//					board.repaint();
-//					moves--;
-//				} else if (col >= moves) { // enough room to stay on same row
-//					col -= moves;
-//					current.changePosition(row, col);
-//					board.addImage(current.getImage(), current.getRow(),
-//							current.getCol());
-//					board.repaint();
-//					try {
-//						Thread.sleep(1000);
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					board.removeImage(current.getImage(), current.getRow(),
-//							current.getCol());
-//					board.repaint();
-//					moves = 0;
-//				} else if (col < moves) { // need to go up a row
-//					// calculate how many moves will be used to complete the row
-//					moves = moves - col;
-//					current.changePosition(row, 0);
-//					board.addImage(current.getImage(), current.getRow(),
-//							current.getCol());
-//					board.repaint();
-//					try {
-//						Thread.sleep(1000);
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					board.removeImage(current.getImage(), current.getRow(),
-//							current.getCol());
-//					board.repaint();
-//					row = current.getPosition().getRow();
-//					col = current.getPosition().getCol();
-//				}
-//
-//			} else {
-//				if (col == 9) {
-//					row -= 1;
-//					current.changePosition(row, col);
-//					board.addImage(current.getImage(), current.getRow(),
-//							current.getCol());
-//					board.repaint();
-//					try {
-//						Thread.sleep(1000);
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					board.removeImage(current.getImage(), current.getRow(),
-//							current.getCol());
-//					board.repaint();
-//					moves--;
-//				} else if (col + moves < 10) { // enough room to stay on same
-//					// row
-//					col += moves;
-//					current.changePosition(row, col);
-//					board.addImage(current.getImage(), current.getRow(),
-//							current.getCol());
-//					board.repaint();
-//					try {
-//						Thread.sleep(1000);
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					board.removeImage(current.getImage(), current.getRow(),
-//							current.getCol());
-//					board.repaint();
-//					moves = 0;
-//					break;
-//				} else if (col + moves >= 10) { // need to go up a row
-//					// calc how many moves left in this row
-//					moves = moves - (9 - col);
-//					current.changePosition(row, 9);
-//					board.addImage(current.getImage(), current.getRow(),
-//							current.getCol());
-//					board.repaint();
-//					try {
-//						Thread.sleep(1000);
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					board.removeImage(current.getImage(), current.getRow(),
-//							current.getCol());
-//					board.repaint();
-//					row = current.getPosition().getRow();
-//					col = current.getPosition().getCol();
-//				}
-//			}
-//		} while (moves != 0);
-//	}
-
 	public void turn(int moves) {
 		int row = current.getPosition().getRow();
 		int col = current.getPosition().getCol();
@@ -160,18 +36,18 @@ public class GameLogic {
 				if (col == 0) {
 					row -= 1;
 					current.changePosition(row, col);
-					
+
 					moves--;
 				} else if (col >= moves) { // enough room to stay on same row
 					col -= moves;
 					current.changePosition(row, col);
-					
+
 					moves = 0;
 				} else if (col < moves) { // need to go up a row
 					// calculate how many moves will be used to complete the row
 					moves = moves - col;
 					current.changePosition(row, 0);
-					
+
 					row = current.getPosition().getRow();
 					col = current.getPosition().getCol();
 				}
@@ -180,20 +56,20 @@ public class GameLogic {
 				if (col == 9) {
 					row -= 1;
 					current.changePosition(row, col);
-					
+
 					moves--;
 				} else if (col + moves < 10) { // enough room to stay on same
 					// row
 					col += moves;
 					current.changePosition(row, col);
-					
+
 					moves = 0;
 					break;
 				} else if (col + moves >= 10) { // need to go up a row
 					// calc how many moves left in this row
 					moves = moves - (9 - col);
 					current.changePosition(row, 9);
-					
+
 					row = current.getPosition().getRow();
 					col = current.getPosition().getCol();
 				}
@@ -201,7 +77,6 @@ public class GameLogic {
 		} while (moves != 0);
 	}
 
-	
 	public Player switchPlayer() {
 		if (current.getNum() + 1 < players.length) {
 			current = players[current.getNum() + 1];

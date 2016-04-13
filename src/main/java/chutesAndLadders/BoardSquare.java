@@ -6,7 +6,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-import javax.swing.JButton;
 import javax.swing.JComponent;
 
 public class BoardSquare extends JComponent {
@@ -16,22 +15,18 @@ public class BoardSquare extends JComponent {
 
 	public BoardSquare() {
 		players = new ArrayList<Image>();
-		//this.setBorderPainted(false);
-		this.addMouseListener(new MouseListener(){
+		this.addMouseListener(new MouseListener() {
 
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
+
 			}
 
 			public void mouseEntered(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
+
 			}
 
 			public void mouseExited(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
+
 			}
 
 			public void mousePressed(MouseEvent arg0) {
@@ -39,10 +34,9 @@ public class BoardSquare extends JComponent {
 			}
 
 			public void mouseReleased(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 		});
 	}
 

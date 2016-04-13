@@ -22,18 +22,15 @@ import javax.swing.Timer;
 public class ChutesAndLadders extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JButton spinButton;
-	private ImageIcon[] diceFaces;
+	private ImageIcon[] diceFaces, pieces;
 	private Board board;
 	private GameLogic logic;
 	private Player[] players;
 	private Player current;
-	private JLabel playersTurn;
-	private ImageIcon[] pieces;
-	private Timer pieceTimer;
+	private JLabel playersTurn, playersImg;
+	private Timer pieceTimer, diceTimer;
 	private Random random;
-	private Timer timer;
 	private int number;
-	private JLabel playersImg;
 
 	private GameMenu gameMenu;
 
@@ -211,7 +208,7 @@ public class ChutesAndLadders extends JPanel {
 		random = new Random();
 		number = 0;
 
-		timer = new Timer(50, new ActionListener() {
+		diceTimer = new Timer(50, new ActionListener() {
 			int count = 1;
 
 			public void actionPerformed(ActionEvent evt) {
@@ -222,15 +219,15 @@ public class ChutesAndLadders extends JPanel {
 				count++;
 
 				if (count == 6) {
-					timer.stop();
-					timer = null;
+					diceTimer.stop();
+					diceTimer = null;
 					movePlayer(number + 1);
 
 				}
 			}
 
 		});
-		timer.start();
+		diceTimer.start();
 
 	}
 

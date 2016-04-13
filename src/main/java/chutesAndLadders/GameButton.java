@@ -6,7 +6,7 @@ import java.awt.Font;
 
 import javax.swing.JButton;
 
-public class GameButton extends JButton{
+public class GameButton extends JButton {
 
 	public GameButton(String name, Color c) {
 		setText(name);
@@ -15,6 +15,5 @@ public class GameButton extends JButton{
 		setFont(new Font("Arial", Font.BOLD, 33));
 
 	}
-
 
 }
