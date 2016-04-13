@@ -12,16 +12,12 @@ import java.awt.event.MouseListener;
 import java.util.Random;
 
 import javax.inject.Inject;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 
 public class ChutesAndLadders extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -48,16 +44,20 @@ public class ChutesAndLadders extends JPanel {
 		setLayout(bLayout);
 
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(3, 0, 7, 7));
-		panel.setBackground(Color.BLACK);
+		panel.setLayout(new GridLayout(4, 0, 7, 7));
+		panel.setBackground(new Color(204, 204, 204));
 		panel.setPreferredSize(new Dimension(230, 400));
+
+		JLabel logo = new JLabel(new ImageIcon(getClass().getResource(
+				"/logo_small.png")));
+		panel.add(logo);
 
 		Font font = new Font("Arial", Font.BOLD, 30);
 		board = new Board();
 		add(board, BorderLayout.CENTER);
 
 		JPanel playerPanel = new JPanel(new GridLayout(2, 1));
-		playerPanel.setBackground(Color.BLACK);
+		playerPanel.setOpaque(false);
 		playersTurn = new JLabel("", JLabel.CENTER);
 		playersTurn.setFont(font);
 		playersTurn.setForeground(Color.WHITE);
@@ -77,8 +77,11 @@ public class ChutesAndLadders extends JPanel {
 		panel.add(playersImg);
 
 		spinButton = new JButton();
-		spinButton.setBorder(BorderFactory.createLineBorder(Color.black));
-		spinButton.setBackground(Color.BLACK);
+
+		spinButton.setOpaque(false);
+		spinButton.setContentAreaFilled(false);
+		spinButton.setBorderPainted(false);
+		spinButton.setDisabledIcon(spinButton.getIcon());
 		spinButton.setIcon(new ImageIcon(getClass().getResource("/ROLL.png")));
 		spinButton.addActionListener(new ActionListener() {
 
@@ -90,18 +93,17 @@ public class ChutesAndLadders extends JPanel {
 
 		spinButton.addMouseListener(new MouseListener() {
 
-			public void mouseClicked(MouseEvent arg0) {
-				// TODO Auto-generated method stub
+			public void mouseClicked(MouseEvent e) {
+				JButton b = (JButton) e.getSource();
+				b.setBorderPainted(false);
 
 			}
 
 			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
 			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
@@ -111,19 +113,18 @@ public class ChutesAndLadders extends JPanel {
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
 		});
 
 		diceFaces = new ImageIcon[] {
-				new ImageIcon(getClass().getResource("/#1.png")),
-				new ImageIcon(getClass().getResource("/#2.png")),
-				new ImageIcon(getClass().getResource("/#3.png")),
-				new ImageIcon(getClass().getResource("/#4.png")),
-				new ImageIcon(getClass().getResource("/#5.png")),
-				new ImageIcon(getClass().getResource("/#6.png")) };
+				new ImageIcon(getClass().getResource("/one.png")),
+				new ImageIcon(getClass().getResource("/two.png")),
+				new ImageIcon(getClass().getResource("/three.png")),
+				new ImageIcon(getClass().getResource("/four.png")),
+				new ImageIcon(getClass().getResource("/five.png")),
+				new ImageIcon(getClass().getResource("/six.png")) };
 
 		panel.add(spinButton);
 
@@ -172,8 +173,8 @@ public class ChutesAndLadders extends JPanel {
 					"HAVE A GOOD DAY! \nTHANK YOU FOR PLAYING",
 					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
 					new ImageIcon("bye.png"));
-			// close the window
-			// gameMenu.dispose();
+
+			gameMenu.getFrame().dispose();
 		}
 	}
 
@@ -217,14 +218,12 @@ public class ChutesAndLadders extends JPanel {
 
 				number = random.nextInt(6);
 				spinButton.setIcon(diceFaces[number]);
-				System.out.println("changed again");
 				repaint();
 				count++;
 
 				if (count == 6) {
 					timer.stop();
 					timer = null;
-					System.out.println(number + 1);
 					movePlayer(number + 1);
 
 				}
@@ -260,7 +259,9 @@ public class ChutesAndLadders extends JPanel {
 
 		});
 
+		spinButton.setDisabledIcon(spinButton.getIcon());
 		spinButton.setEnabled(false);
+
 		pieceTimer.start();
 
 	}
@@ -277,15 +278,6 @@ public class ChutesAndLadders extends JPanel {
 		playersTurn.setText(current.getName() + "'s");
 		spinButton.setEnabled(true);
 	}
-
-	// public void playSound(final String file) {
-	// new Thread(new Runnable() {
-	//
-	// public void run() {
-	// Applet.newAudioClip(getClass().getResource(file)).play();
-	// }
-	// }).start();
-	// }
 
 	public void setMenu(GameMenu gameMenu) {
 		this.gameMenu = gameMenu;

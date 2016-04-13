@@ -51,7 +51,7 @@ public class GameMenu extends JPanel {
 		this.remove(buttons);
 		this.add(playerInfo, BorderLayout.EAST);
 		revalidate();
-		
+
 	}
 
 	public void playGame(String[] players) {
@@ -78,6 +78,10 @@ public class GameMenu extends JPanel {
 	public void setFrame(GameFrame gameFrame) {
 		frame = gameFrame;
 
+	}
+
+	public GameFrame getFrame(){
+		return frame;
 	}
 
 }
