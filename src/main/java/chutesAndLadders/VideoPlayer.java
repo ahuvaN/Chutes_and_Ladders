@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.WindowListener;
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -19,7 +18,6 @@ import javafx.scene.media.MediaView;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
 
 public class VideoPlayer extends JDialog implements WindowListener {
 
@@ -30,15 +28,15 @@ public class VideoPlayer extends JDialog implements WindowListener {
 	private String up, down;
 	private JLabel status;
 
-	public VideoPlayer() throws IOException {
+	public VideoPlayer() {
 		setLayout(new BorderLayout());
 		this.setTitle("Video");
 		this.setSize(480, 390);
-		setVisible(true);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
+		setVisible(false);
 
 		final JFXPanel fxPanel = new JFXPanel();
 
@@ -69,7 +67,7 @@ public class VideoPlayer extends JDialog implements WindowListener {
 
 		add(status, BorderLayout.SOUTH);
 		add(fxPanel, BorderLayout.CENTER);
-		this.setVisible(true);
+
 
 	}
 
@@ -108,29 +106,6 @@ public class VideoPlayer extends JDialog implements WindowListener {
 
 	}
 
-	public static void main(String[] args) throws IOException {
-
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					final VideoPlayer p = new VideoPlayer();
-					p.setVisible(true);
-
-					Platform.runLater(new Runnable() {
-
-						public void run() {
-							p.playVideo(1);
-						}
-					});
-
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-			}
-		});
-
-	}
 
 	public void windowActivated(java.awt.event.WindowEvent e) {
 
