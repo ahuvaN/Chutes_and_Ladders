@@ -20,6 +20,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
 public class ChutesAndLadders extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JButton spinButton;
@@ -30,6 +33,7 @@ public class ChutesAndLadders extends JPanel {
 	private Player current;
 	private JLabel playersTurn;
 	private ImageIcon[] pieces;
+	private Timer pieceTimer;
 	private Random random;
 	private Timer timer;
 	private int number;
@@ -149,7 +153,7 @@ public class ChutesAndLadders extends JPanel {
 
 		playersImg.setIcon(new ImageIcon(current.getImage()));
 
-		logic = new GameLogic(players);
+		logic = new GameLogic(players, board);
 	}
 
 	private void displayWinner() {
@@ -160,7 +164,6 @@ public class ChutesAndLadders extends JPanel {
 				JOptionPane.PLAIN_MESSAGE, new ImageIcon("smile.jpeg"));
 
 		if (again == JOptionPane.YES_OPTION) {
-
 			gameMenu.newGame();
 			gameMenu.revalidate();
 
@@ -189,7 +192,7 @@ public class ChutesAndLadders extends JPanel {
 			JOptionPane.showMessageDialog(this,
 					"YAY! YOU HIT A LADDER - GOING UP...!",
 					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
-					new ImageIcon("ladder.jpe"));
+					new ImageIcon("ladder.jpeg"));
 			found = true;
 		}
 
@@ -222,7 +225,7 @@ public class ChutesAndLadders extends JPanel {
 					timer.stop();
 					timer = null;
 					System.out.println(number + 1);
-					movePlayer(number);
+					movePlayer(number + 1);
 
 				}
 			}
@@ -232,15 +235,37 @@ public class ChutesAndLadders extends JPanel {
 
 	}
 
-	private void movePlayer(int number) {
-		spinButton.setIcon(diceFaces[number]);
-		if (current.getCol() != -1) {
-			board.removeImage(current.getImage(), current.getRow(),
-					current.getCol());
-		}
-		logic.turn(number + 1);
-		board.addImage(pieces[current.getNum()].getImage(), current.getRow(),
-				current.getCol());
+	private void movePlayer(final int number) {
+		pieceTimer = new Timer(500, new ActionListener() {
+			int count = 0;
+
+			public void actionPerformed(ActionEvent e) {
+				if (current.getCol() != -1) {
+					board.removeImage(current.getImage(), current.getRow(),
+							current.getCol());
+				}
+				logic.turn(1);
+
+				board.addImage(current.getImage(), current.getRow(),
+						current.getCol());
+				repaint();
+
+				count++;
+				if (count == number) {
+					pieceTimer.stop();
+					pieceTimer = null;
+					nextTurn();
+				}
+			}
+
+		});
+
+		spinButton.setEnabled(false);
+		pieceTimer.start();
+
+	}
+
+	private void nextTurn() {
 		checkBoard();
 
 		if (current.getRow() <= 0 && current.getCol() <= 0) {
@@ -250,6 +275,7 @@ public class ChutesAndLadders extends JPanel {
 		current = logic.switchPlayer();
 		playersImg.setIcon(new ImageIcon(current.getImage()));
 		playersTurn.setText(current.getName() + "'s");
+		spinButton.setEnabled(true);
 	}
 
 	// public void playSound(final String file) {
@@ -263,7 +289,5 @@ public class ChutesAndLadders extends JPanel {
 
 	public void setMenu(GameMenu gameMenu) {
 		this.gameMenu = gameMenu;
-
 	}
-
 }

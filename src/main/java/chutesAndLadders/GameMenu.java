@@ -51,6 +51,7 @@ public class GameMenu extends JPanel {
 		this.remove(buttons);
 		this.add(playerInfo, BorderLayout.EAST);
 		revalidate();
+		
 	}
 
 	public void playGame(String[] players) {
