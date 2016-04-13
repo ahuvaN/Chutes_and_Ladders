@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -13,12 +12,13 @@ import javax.swing.JPanel;
 
 public class Board extends JPanel {
 
+	private static final long serialVersionUID = 1L;
 	private BoardSquare[][] boardSlots;
 	private BufferedImage image;
 
 	public Board() {
 		try {
-			image = ImageIO.read(new File("board.jpg"));
+			image = ImageIO.read(getClass().getResource("/game_board.png"));
 		} catch (IOException e) {
 
 		}
@@ -39,11 +39,13 @@ public class Board extends JPanel {
 	public void addImage(Image img, int row, int col) {
 		boardSlots[row][col].addPlayer(img);
 		boardSlots[row][col].repaint();
+		
 	}
 
 	public void removeImage(Image img, int row, int col) {
 		boardSlots[row][col].removePlayer(img);
 		boardSlots[row][col].repaint();
+		
 	}
 
 	public BoardSquare getSquare(int row, int col) {

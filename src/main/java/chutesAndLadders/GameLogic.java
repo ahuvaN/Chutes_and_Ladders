@@ -2,17 +2,19 @@ package chutesAndLadders;
 
 import java.util.HashMap;
 
-public class PlayTheGame {
+public class GameLogic {
 	private Player[] players;
 	private Player current;
 	private HashMap<Position, Position> snakes;
 	private HashMap<Position, Position> ladders;
+	private Board board;
 
-	public PlayTheGame(Player[] allPlayers) {
+	public GameLogic(Player[] allPlayers, Board board) {
 		players = allPlayers;
 		current = players[0];
 		snakes = new HashMap<Position, Position>();
 		ladders = new HashMap<Position, Position>();
+		this.board = board;
 
 		setUpMaps();
 	}
@@ -34,15 +36,18 @@ public class PlayTheGame {
 				if (col == 0) {
 					row -= 1;
 					current.changePosition(row, col);
+
 					moves--;
 				} else if (col >= moves) { // enough room to stay on same row
 					col -= moves;
 					current.changePosition(row, col);
+
 					moves = 0;
 				} else if (col < moves) { // need to go up a row
 					// calculate how many moves will be used to complete the row
 					moves = moves - col;
 					current.changePosition(row, 0);
+
 					row = current.getPosition().getRow();
 					col = current.getPosition().getCol();
 				}
@@ -51,17 +56,20 @@ public class PlayTheGame {
 				if (col == 9) {
 					row -= 1;
 					current.changePosition(row, col);
+
 					moves--;
 				} else if (col + moves < 10) { // enough room to stay on same
 					// row
 					col += moves;
 					current.changePosition(row, col);
+
 					moves = 0;
 					break;
 				} else if (col + moves >= 10) { // need to go up a row
 					// calc how many moves left in this row
 					moves = moves - (9 - col);
 					current.changePosition(row, 9);
+
 					row = current.getPosition().getRow();
 					col = current.getPosition().getCol();
 				}
