@@ -2,90 +2,97 @@ package chutesAndLadders;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
+import javax.inject.Inject;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class PlayerInfo extends JFrame {
+public class PlayerInfo extends JPanel {
 
+	private static final long serialVersionUID = 1L;
 	private JLabel[] labels;
 	private JTextField[] fields;
-	private String[] names;
 	private JButton submit;
+	private JPanel players;
+	private String[] playerNames;
+	private GameMenu menu;
 
-	public PlayerInfo(int num) {
-		setTitle("CHUTES AND LADDERS");
-		setSize(800, 600);
-		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	@Inject
+	public PlayerInfo() {
+		setLayout(new BorderLayout());
 
-		BorderLayout layout = new BorderLayout();
-		setLayout(layout);
+		Dimension d = new Dimension(300, 600);
+		setPreferredSize(d);
+		setMinimumSize(d);
+		setMaximumSize(d);
 
-		Container center = new Container();
-		JLabel logo = new JLabel(new ImageIcon("logo.png"));
-		center.setLayout(new FlowLayout());
-		center.add(logo);
-		add(center, BorderLayout.CENTER);
-
-		Container players = new Container();
-		players.setLayout(new BoxLayout(players, BoxLayout.PAGE_AXIS));
-		add(players, BorderLayout.WEST);
-
-		Font font = new Font("Arial", Font.BOLD, 20);
-
-		labels = new JLabel[num];
-		fields = new JTextField[num];
-		names = new String[num];
-
-		for (int i = 1; i <= num; i++) {
-			JLabel l = new JLabel("Player " + i);
-			l.setFont(font);
-			l.setAlignmentX(Component.CENTER_ALIGNMENT);
-			l.setVerticalAlignment(JLabel.CENTER);
-			labels[i - 1] = l;
-			players.add(l);
-
-			JTextField f = new HintTextField(
-					"Enter Name                             ");
-			f.setFont(font);
-			f.setMaximumSize(new Dimension(300, 35));
-			f.setAlignmentX(Component.CENTER_ALIGNMENT);
-			l.setVerticalAlignment(JLabel.CENTER);
-			fields[i - 1] = f;
-			players.add(f);
-		}
+		players = new JPanel();
+		players.setLayout(new GridLayout(6, 1));
 
 		submit = new JButton("PLAY");
 		submit.setAlignmentX(Component.CENTER_ALIGNMENT);
-		players.add(submit);
-
 		submit.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
+				playerNames = new String[fields.length];
 				for (int i = 0; i < fields.length; i++) {
-					names[i] = fields[i].getText();
+					playerNames[i] = fields[i].getText().toUpperCase();
 				}
-				try {
-					ChutesAndLadders gameBoard = new ChutesAndLadders(names);
-					gameBoard.setVisible(true);
-					dispose();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+
+				menu.playGame(playerNames);
+
 			}
 		});
+
+		JLabel instructions = new JLabel("ENTER PLAYER NAMES", JLabel.CENTER);
+		instructions.setFont(new Font("Arial", Font.BOLD, 20));
+		d = new Dimension(300, 100);
+		instructions.setPreferredSize(d);
+		instructions.setMinimumSize(d);
+		instructions.setMaximumSize(d);
+
+		add(players, BorderLayout.CENTER);
+		add(submit, BorderLayout.SOUTH);
+		add(instructions, BorderLayout.NORTH);
+
+	}
+
+	public void setNumPlayers(int num) {
+		labels = new JLabel[num];
+		fields = new JTextField[num];
+
+		Font font = new Font("Arial", Font.BOLD, 20);
+		for (int i = 1; i <= num; i++) {
+			JPanel player = new JPanel();
+			JLabel l = new JLabel("Player " + i);
+			l.setFont(font);
+			l.setVerticalAlignment(JLabel.BOTTOM);
+			labels[i - 1] = l;
+			player.add(l);
+
+			Dimension d = new Dimension(200, 35);
+
+			JTextField f = new JTextField();
+			f.setFont(font);
+			f.setPreferredSize(d);
+			f.setMinimumSize(d);
+			f.setMaximumSize(d);
+
+			fields[i - 1] = f;
+			player.add(f);
+			players.add(player);
+		}
+	}
+
+	public void setGameMenu(GameMenu m) {
+		menu = m;
 	}
 
 }
