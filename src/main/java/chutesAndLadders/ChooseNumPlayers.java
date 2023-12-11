@@ -23,6 +23,14 @@ public class ChooseNumPlayers extends JFrame {
 	private JLabel logo;
 
 	public ChooseNumPlayers() {
+		chooseNumPlayers();
+
+	}
+
+	/**
+	 * 
+	 */
+	public void chooseNumPlayers() {
 		setTitle("CHUTES AND LADDERS");
 		setSize(800, 600);
 		setResizable(false);
@@ -76,7 +84,6 @@ public class ChooseNumPlayers extends JFrame {
 		JPanel p6 = new JPanel();
 		p6.add(six);
 		buttons.add(p6);
-
 	}
 
 	private void modify(JButton button, Color c, ActionListener event) {
