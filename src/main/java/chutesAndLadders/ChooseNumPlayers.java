@@ -28,8 +28,6 @@ public class ChooseNumPlayers extends JFrame {
 		setupLayout();
 
 	}
-
-
 	public void setupLayout() {
 		BorderLayout layout = new BorderLayout();
 		setLayout(layout);
