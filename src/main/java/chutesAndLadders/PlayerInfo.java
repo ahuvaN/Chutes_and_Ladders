@@ -25,6 +25,34 @@ public class PlayerInfo extends JFrame {
 	private JButton submit;
 
 	public PlayerInfo(int num) {
+		Container players = playerInfoMethod(num);
+
+		submit = new JButton("PLAY");
+		submit.setAlignmentX(Component.CENTER_ALIGNMENT);
+		players.add(submit);
+
+		submit.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent arg0) {
+				for (int i = 0; i < fields.length; i++) {
+					names[i] = fields[i].getText();
+				}
+				try {
+					ChutesAndLadders gameBoard = new ChutesAndLadders(names);
+					gameBoard.setVisible(true);
+					dispose();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * @param num
+	 * @return
+	 */
+	public Container playerInfoMethod(int num) {
 		setTitle("CHUTES AND LADDERS");
 		setSize(800, 600);
 		setResizable(false);
@@ -66,26 +94,7 @@ public class PlayerInfo extends JFrame {
 			fields[i - 1] = f;
 			players.add(f);
 		}
-
-		submit = new JButton("PLAY");
-		submit.setAlignmentX(Component.CENTER_ALIGNMENT);
-		players.add(submit);
-
-		submit.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent arg0) {
-				for (int i = 0; i < fields.length; i++) {
-					names[i] = fields[i].getText();
-				}
-				try {
-					ChutesAndLadders gameBoard = new ChutesAndLadders(names);
-					gameBoard.setVisible(true);
-					dispose();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		return players;
 	}
 
 }
