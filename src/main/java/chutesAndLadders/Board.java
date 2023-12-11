@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Board extends JPanel {
@@ -54,5 +56,38 @@ public class Board extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+	}
+
+	/**
+	 * @param chutesAndLadders TODO
+	 * 
+	 */
+	public void checkBoardMethod(ChutesAndLadders chutesAndLadders) {
+		boolean found = false;
+		int row = chutesAndLadders.current.getRow();
+		int col = chutesAndLadders.current.getCol();
+	
+		if (chutesAndLadders.logic.checkSnake(chutesAndLadders.current.getPosition())) {
+			JOptionPane.showMessageDialog(chutesAndLadders,
+					"OH NO! YOU HIT A SNAKE - GOING DOWN...!",
+					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
+					new ImageIcon("snake.gif"));
+			found = true;
+		} else if (chutesAndLadders.logic.checkLadder(chutesAndLadders.current.getPosition())) {
+			JOptionPane.showMessageDialog(chutesAndLadders,
+					"YAY! YOU HIT A LADDER - GOING UP...!",
+					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
+					new ImageIcon("ladder.jpe"));
+			found = true;
+		}
+	
+		// repaint piece
+	
+		if (found) {
+			removeImage(chutesAndLadders.current.getImage(), row, col);
+	
+			addImage(chutesAndLadders.current.getImage(), chutesAndLadders.current.getRow(),
+					chutesAndLadders.current.getCol());
+		}
 	}
 }

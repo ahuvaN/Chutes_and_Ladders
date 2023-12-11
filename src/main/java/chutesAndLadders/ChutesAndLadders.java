@@ -26,10 +26,10 @@ public class ChutesAndLadders extends JFrame {
 
 	private JButton spinButton;
 	private String[] photos;
-	private Board board;
-	private PlayTheGame logic;
+	Board board;
+	PlayTheGame logic;
 	private Player[] players;
-	private Player current;
+	Player current;
 	private JLabel playersTurn;
 	private JLabel playersImg;
 	private JPanel panel;
@@ -110,7 +110,7 @@ public class ChutesAndLadders extends JFrame {
 				board.removeImage(current.getImage(), current.getRow(),
 						current.getCol());
 			}
-			logic.turn(value);
+			logic.current.turn(value);
 
 			board.addImage(pieces[current.getNum()], current.getRow(),
 					current.getCol());
@@ -149,32 +149,7 @@ public class ChutesAndLadders extends JFrame {
 	}
 
 	private void checkBoard() {
-		boolean found = false;
-		int row = current.getRow();
-		int col = current.getCol();
-
-		if (logic.checkSnake(current.getPosition())) {
-			JOptionPane.showMessageDialog(this,
-					"OH NO! YOU HIT A SNAKE - GOING DOWN...!",
-					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
-					new ImageIcon("snake.gif"));
-			found = true;
-		} else if (logic.checkLadder(current.getPosition())) {
-			JOptionPane.showMessageDialog(this,
-					"YAY! YOU HIT A LADDER - GOING UP...!",
-					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
-					new ImageIcon("ladder.jpe"));
-			found = true;
-		}
-
-		// repaint piece
-
-		if (found) {
-			board.removeImage(current.getImage(), row, col);
-
-			board.addImage(current.getImage(), current.getRow(),
-					current.getCol());
-		}
+		board.checkBoardMethod(this);
 	}
 
 	private int rollDice() {
