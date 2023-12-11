@@ -110,7 +110,7 @@ public class ChutesAndLadders extends JFrame {
 				board.removeImage(current.getImage(), current.getRow(),
 						current.getCol());
 			}
-			logic.turn(value);
+			logic.current.turn(value);
 
 			board.addImage(pieces[current.getNum()], current.getRow(),
 					current.getCol());
