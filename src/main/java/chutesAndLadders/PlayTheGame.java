@@ -2,6 +2,9 @@ package chutesAndLadders;
 
 import java.util.HashMap;
 
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 public class PlayTheGame {
 	private Player[] players;
 	Player current;
@@ -62,5 +65,34 @@ public class PlayTheGame {
 			return true;
 		}
 		return false;
+	}
+
+	void checkboardMethod(ChutesAndLadders chutesAndLadders) {
+		boolean found = false;
+		int row = chutesAndLadders.current.getRow();
+		int col = chutesAndLadders.current.getCol();
+	
+		if (checkSnake(chutesAndLadders.current.getPosition())) {
+			JOptionPane.showMessageDialog(chutesAndLadders,
+					"OH NO! YOU HIT A SNAKE - GOING DOWN...!",
+					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
+					new ImageIcon("snake.gif"));
+			found = true;
+		} else if (checkLadder(chutesAndLadders.current.getPosition())) {
+			JOptionPane.showMessageDialog(chutesAndLadders,
+					"YAY! YOU HIT A LADDER - GOING UP...!",
+					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
+					new ImageIcon("ladder.jpe"));
+			found = true;
+		}
+	
+		// repaint piece
+	
+		if (found) {
+			chutesAndLadders.board.removeImage(chutesAndLadders.current.getImage(), row, col);
+	
+			chutesAndLadders.board.addImage(chutesAndLadders.current.getImage(), chutesAndLadders.current.getRow(),
+					chutesAndLadders.current.getCol());
+		}
 	}
 }
