@@ -25,20 +25,35 @@ public class PlayerInfo extends JFrame {
 	private JButton submit;
 
 	public PlayerInfo(int num) {
-		setTitle("CHUTES AND LADDERS");
-		setSize(800, 600);
-		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		initializeWindow();
+		setLayout();
+		Container players = createPlayerInput(num);
+		setupPlayButton(players);
+	}
 
-		BorderLayout layout = new BorderLayout();
-		setLayout(layout);
+	private void setupPlayButton(Container players) {
+		submit = new JButton("PLAY");
+		submit.setAlignmentX(Component.CENTER_ALIGNMENT);
+		players.add(submit);
 
-		Container center = new Container();
-		JLabel logo = new JLabel(new ImageIcon("logo.png"));
-		center.setLayout(new FlowLayout());
-		center.add(logo);
-		add(center, BorderLayout.CENTER);
+		submit.addActionListener(new ActionListener() {
 
+			public void actionPerformed(ActionEvent arg0) {
+				for (int i = 0; i < fields.length; i++) {
+					names[i] = fields[i].getText();
+				}
+				try {
+					ChutesAndLadders gameBoard = new ChutesAndLadders(names);
+					gameBoard.setVisible(true);
+					dispose();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	private Container createPlayerInput(int num) {
 		Container players = new Container();
 		players.setLayout(new BoxLayout(players, BoxLayout.PAGE_AXIS));
 		add(players, BorderLayout.WEST);
@@ -66,26 +81,25 @@ public class PlayerInfo extends JFrame {
 			fields[i - 1] = f;
 			players.add(f);
 		}
+		return players;
+	}
 
-		submit = new JButton("PLAY");
-		submit.setAlignmentX(Component.CENTER_ALIGNMENT);
-		players.add(submit);
+	private void setLayout() {
+		BorderLayout layout = new BorderLayout();
+		setLayout(layout);
 
-		submit.addActionListener(new ActionListener() {
+		Container center = new Container();
+		JLabel logo = new JLabel(new ImageIcon("logo.png"));
+		center.setLayout(new FlowLayout());
+		center.add(logo);
+		add(center, BorderLayout.CENTER);
+	}
 
-			public void actionPerformed(ActionEvent arg0) {
-				for (int i = 0; i < fields.length; i++) {
-					names[i] = fields[i].getText();
-				}
-				try {
-					ChutesAndLadders gameBoard = new ChutesAndLadders(names);
-					gameBoard.setVisible(true);
-					dispose();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	private void initializeWindow() {
+		setTitle("CHUTES AND LADDERS");
+		setSize(800, 600);
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 }

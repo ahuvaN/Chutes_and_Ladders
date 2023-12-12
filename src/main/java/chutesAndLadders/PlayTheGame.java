@@ -2,9 +2,12 @@ package chutesAndLadders;
 
 import java.util.HashMap;
 
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 public class PlayTheGame {
 	private Player[] players;
-	private Player current;
+	Player current;
 	private HashMap<Position, Position> snakes;
 	private HashMap<Position, Position> ladders;
 
@@ -15,58 +18,6 @@ public class PlayTheGame {
 		ladders = new HashMap<Position, Position>();
 
 		setUpMaps();
-	}
-
-	public void turn(int moves) {
-		int row = current.getPosition().getRow();
-		int col = current.getPosition().getCol();
-
-		do {
-			boolean even = row % 2 == 0 ? true : false;
-
-			if (even) {
-				if (row == 0 && col < 6) {
-					if (col - moves < 0) {
-						current.changePosition(0, 0);
-						return;
-					}
-				}
-				if (col == 0) {
-					row -= 1;
-					current.changePosition(row, col);
-					moves--;
-				} else if (col >= moves) { // enough room to stay on same row
-					col -= moves;
-					current.changePosition(row, col);
-					moves = 0;
-				} else if (col < moves) { // need to go up a row
-					// calculate how many moves will be used to complete the row
-					moves = moves - col;
-					current.changePosition(row, 0);
-					row = current.getPosition().getRow();
-					col = current.getPosition().getCol();
-				}
-
-			} else {
-				if (col == 9) {
-					row -= 1;
-					current.changePosition(row, col);
-					moves--;
-				} else if (col + moves < 10) { // enough room to stay on same
-					// row
-					col += moves;
-					current.changePosition(row, col);
-					moves = 0;
-					break;
-				} else if (col + moves >= 10) { // need to go up a row
-					// calc how many moves left in this row
-					moves = moves - (9 - col);
-					current.changePosition(row, 9);
-					row = current.getPosition().getRow();
-					col = current.getPosition().getCol();
-				}
-			}
-		} while (moves != 0);
 	}
 
 	public Player switchPlayer() {
@@ -114,5 +65,34 @@ public class PlayTheGame {
 			return true;
 		}
 		return false;
+	}
+
+	void checkboardMethod(ChutesAndLadders chutesAndLadders) {
+		boolean found = false;
+		int row = chutesAndLadders.current.getRow();
+		int col = chutesAndLadders.current.getCol();
+	
+		if (checkSnake(chutesAndLadders.current.getPosition())) {
+			JOptionPane.showMessageDialog(chutesAndLadders,
+					"OH NO! YOU HIT A SNAKE - GOING DOWN...!",
+					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
+					new ImageIcon("snake.gif"));
+			found = true;
+		} else if (checkLadder(chutesAndLadders.current.getPosition())) {
+			JOptionPane.showMessageDialog(chutesAndLadders,
+					"YAY! YOU HIT A LADDER - GOING UP...!",
+					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
+					new ImageIcon("ladder.jpe"));
+			found = true;
+		}
+	
+		// repaint piece
+	
+		if (found) {
+			chutesAndLadders.board.removeImage(chutesAndLadders.current.getImage(), row, col);
+	
+			chutesAndLadders.board.addImage(chutesAndLadders.current.getImage(), chutesAndLadders.current.getRow(),
+					chutesAndLadders.current.getCol());
+		}
 	}
 }

@@ -26,43 +26,57 @@ public class ChutesAndLadders extends JFrame {
 
 	private JButton spinButton;
 	private String[] photos;
-	private Board board;
+	Board board;
 	private PlayTheGame logic;
 	private Player[] players;
-	private Player current;
+	Player current;
 	private JLabel playersTurn;
 	private JLabel playersImg;
 	private JPanel panel;
 	private Image[] pieces;
 
 	public ChutesAndLadders(String[] playerNames) throws IOException {
-		setTitle("CHUTES AND LADDERS");
-		setSize(1100, 1000);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setResizable(false);
+		initializeWindow();
+		Font font = setupPanel();
+		setupPlayersTurnLabel(font);
+		setupPlayersImageLabel();
+		setupSpinButton();
+		piecesImage();
+		initializePlayers(playerNames);
+		currentPlayerInfo();
 
-		BorderLayout bLayout = new BorderLayout();
-		setLayout(bLayout);
+	}
 
-		panel = new JPanel();
-		panel.setLayout(new GridLayout(3, 0, 7, 7));
-		panel.setBackground(Color.BLACK);
-		panel.setPreferredSize(new Dimension(230, 400));
+	private void currentPlayerInfo() {
+		current = players[0];
 
-		Font font = new Font("Arial", Font.BOLD, 30);
-		board = new Board();
-		add(board, BorderLayout.CENTER);
+		playersTurn.setText("<html><div style=\"text-align: center;\">"
+				+ current.getName() + "'s<br> turn</html>");
 
-		playersTurn = new JLabel();
-		playersTurn.setHorizontalAlignment(JLabel.CENTER);
-		playersTurn.setFont(font);
-		playersTurn.setForeground(Color.WHITE);
-		panel.add(playersTurn);
+		playersImg.setIcon(new ImageIcon(current.getImage()));
 
-		playersImg = new JLabel();
-		playersImg.setHorizontalAlignment(JLabel.CENTER);
-		panel.add(playersImg);
+		logic = new PlayTheGame(players);
+	}
 
+	private void initializePlayers(String[] playerNames) {
+		players = new Player[playerNames.length];
+
+		int x = 0;
+		for (int i = 0; i < playerNames.length; i++) {
+			players[i] = new Player(playerNames[i], pieces[i], x++);
+		}
+	}
+
+	private void piecesImage() throws IOException {
+		pieces = new Image[] { ImageIO.read(new File("red.png")),
+				ImageIO.read(new File("blue.png")),
+				ImageIO.read(new File("green.png")),
+				ImageIO.read(new File("yellow.png")),
+				ImageIO.read(new File("orange.png")),
+				ImageIO.read(new File("purple.png")) };
+	}
+
+	private void setupSpinButton() {
 		spinButton = new JButton();
 		spinButton.setBorder(BorderFactory.createLineBorder(Color.black));
 		spinButton.setBackground(Color.BLACK);
@@ -74,30 +88,42 @@ public class ChutesAndLadders extends JFrame {
 		panel.add(spinButton);
 
 		add(panel, BorderLayout.LINE_START);
+	}
 
-		pieces = new Image[] { ImageIO.read(new File("red.png")),
-				ImageIO.read(new File("blue.png")),
-				ImageIO.read(new File("green.png")),
-				ImageIO.read(new File("yellow.png")),
-				ImageIO.read(new File("orange.png")),
-				ImageIO.read(new File("purple.png")) };
+	private void setupPlayersImageLabel() {
+		playersImg = new JLabel();
+		playersImg.setHorizontalAlignment(JLabel.CENTER);
+		panel.add(playersImg);
+	}
 
-		players = new Player[playerNames.length];
+	private void setupPlayersTurnLabel(Font font) {
+		playersTurn = new JLabel();
+		playersTurn.setHorizontalAlignment(JLabel.CENTER);
+		playersTurn.setFont(font);
+		playersTurn.setForeground(Color.WHITE);
+		panel.add(playersTurn);
+	}
 
-		int x = 0;
-		for (int i = 0; i < playerNames.length; i++) {
-			players[i] = new Player(playerNames[i], pieces[i], x++);
-		}
+	private Font setupPanel() {
+		panel = new JPanel();
+		panel.setLayout(new GridLayout(3, 0, 7, 7));
+		panel.setBackground(Color.BLACK);
+		panel.setPreferredSize(new Dimension(230, 400));
 
-		current = players[0];
+		Font font = new Font("Arial", Font.BOLD, 30);
+		board = new Board();
+		add(board, BorderLayout.CENTER);
+		return font;
+	}
 
-		playersTurn.setText("<html><div style=\"text-align: center;\">"
-				+ current.getName() + "'s<br> turn</html>");
+	private void initializeWindow() {
+		setTitle("CHUTES AND LADDERS");
+		setSize(1100, 1000);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
 
-		playersImg.setIcon(new ImageIcon(current.getImage()));
-
-		logic = new PlayTheGame(players);
-
+		BorderLayout bLayout = new BorderLayout();
+		setLayout(bLayout);
 	}
 
 	ActionListener buttonListen = new ActionListener() {
@@ -110,7 +136,7 @@ public class ChutesAndLadders extends JFrame {
 				board.removeImage(current.getImage(), current.getRow(),
 						current.getCol());
 			}
-			logic.turn(value);
+			logic.current.turn(value);
 
 			board.addImage(pieces[current.getNum()], current.getRow(),
 					current.getCol());
@@ -149,32 +175,7 @@ public class ChutesAndLadders extends JFrame {
 	}
 
 	private void checkBoard() {
-		boolean found = false;
-		int row = current.getRow();
-		int col = current.getCol();
-
-		if (logic.checkSnake(current.getPosition())) {
-			JOptionPane.showMessageDialog(this,
-					"OH NO! YOU HIT A SNAKE - GOING DOWN...!",
-					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
-					new ImageIcon("snake.gif"));
-			found = true;
-		} else if (logic.checkLadder(current.getPosition())) {
-			JOptionPane.showMessageDialog(this,
-					"YAY! YOU HIT A LADDER - GOING UP...!",
-					"chutes and ladders", JOptionPane.PLAIN_MESSAGE,
-					new ImageIcon("ladder.jpe"));
-			found = true;
-		}
-
-		// repaint piece
-
-		if (found) {
-			board.removeImage(current.getImage(), row, col);
-
-			board.addImage(current.getImage(), current.getRow(),
-					current.getCol());
-		}
+		logic.checkboardMethod(this);
 	}
 
 	private int rollDice() {

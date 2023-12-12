@@ -23,11 +23,12 @@ public class ChooseNumPlayers extends JFrame {
 	private JLabel logo;
 
 	public ChooseNumPlayers() {
-		setTitle("CHUTES AND LADDERS");
-		setSize(800, 600);
-		setResizable(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		initializeFrame();
+		playerSelection();
+		setupLayout();
 
+	}
+	public void setupLayout() {
 		BorderLayout layout = new BorderLayout();
 		setLayout(layout);
 
@@ -37,9 +38,7 @@ public class ChooseNumPlayers extends JFrame {
 		center.add(logo);
 		add(center, BorderLayout.CENTER);
 
-		select = new JLabel();
-		select.setText("  SELECT HOW MANY PLAYERS WOULD LIKE TO PLAY");
-		add(select, BorderLayout.PAGE_START);
+		
 
 		Container buttons = new Container();
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
@@ -76,7 +75,21 @@ public class ChooseNumPlayers extends JFrame {
 		JPanel p6 = new JPanel();
 		p6.add(six);
 		buttons.add(p6);
+	}
 
+
+	public void playerSelection() {
+		select = new JLabel();
+		select.setText("  SELECT HOW MANY PLAYERS WOULD LIKE TO PLAY");
+		add(select, BorderLayout.PAGE_START);
+	}
+
+	
+	public void initializeFrame() {
+		setTitle("CHUTES AND LADDERS");
+		setSize(800, 600);
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
 	private void modify(JButton button, Color c, ActionListener event) {
